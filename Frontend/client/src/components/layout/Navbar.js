@@ -6,32 +6,33 @@ import {
   faUser,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
     <header>
       <div className="nav-container">
         <div className="logo-wrap">
-          <a href="!#">LIFE FOR US</a>
+          <Link to="/">LIFE FOR US</Link>
         </div>
         <div className="menu-wrap">
-          <a href="!#">ABOUT</a>
-          <a href="!#">ALL</a>
-          <a href="!#">MEN</a>
-          <a href="!#">WOMEN</a>
-          <a href="!#">REVIEW</a>
-          <a href="!#">NOTICE</a>
-          <a href="!#">Q&A</a>
+          <Link to="!#">ABOUT</Link>
+          <Link to="!#">ALL</Link>
+          <Link to="!#">MEN</Link>
+          <Link to="!#">WOMEN</Link>
+          <Link to="/review">REVIEW</Link>
+          <Link to="/notice">NOTICE</Link>
+          <Link to="/qna">Q&A</Link>
           <div className="icon-wrap">
-            <a href="!#">
+            <Link to="!#">
               <FontAwesomeIcon icon={faSearch} />
-            </a>
-            <a href="!#">
+            </Link>
+            <Link to="/login">
               <FontAwesomeIcon icon={faUser} />
-            </a>
-            <a href="!#">
+            </Link>
+            <Link to="!#">
               <FontAwesomeIcon icon={faCartShopping} />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

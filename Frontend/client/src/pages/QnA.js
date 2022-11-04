@@ -9,7 +9,7 @@ function QnA() {
         <p>1:1 질문 게시판입니다. 무엇이든 물어보세요!</p>
         <p>자주 묻는 질문은 공지글에서 확인할 수 있습니다.</p>
       </div>
-      <div className="table-wrap">
+      <div className="qna-table-wrap">
         <table>
           <thead>
             <tr>

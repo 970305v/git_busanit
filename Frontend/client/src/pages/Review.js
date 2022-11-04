@@ -42,7 +42,7 @@ function Review() {
           </div>
         </div>
       </div>
-      <div className="table-wrap">
+      <div className="review-table-wrap">
         <input type="checkbox" id="photo" />
         <label for="photo"> 사진 후기만 보기 (onclick이벤트)</label>
         <table>

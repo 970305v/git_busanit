@@ -8,7 +8,7 @@ function Notice() {
         <h1>Notice</h1>
         <p>공지사항과 다양한 이벤트 소식을 확인하세요.</p>
       </div>
-      <div className="table-wrap">
+      <div className="notice-table-wrap">
         <table>
           <thead>
             <tr>
@@ -42,7 +42,7 @@ function Notice() {
           </form>
         </div>
         <div className="admin-btn">
-          <button>글쓰기</button>
+          <button>글쓰기(관리자권한 없으면 안뜨게)</button>
         </div>
       </div>
       <div className="pagination">
