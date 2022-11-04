@@ -1,5 +1,11 @@
 import React from "react";
 import "../../styles/Navbar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faUser,
+  faCartShopping,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
   return (
@@ -9,22 +15,23 @@ function Navbar() {
           <a href="!#">LIFE FOR US</a>
         </div>
         <div className="menu-wrap">
-          <div>
-            <a href="!#">ABOUT</a>
-            <a href="!#">ALL</a>
-            <a href="!#">MEN</a>
-            <a href="!#">WOMEN</a>
-            <a href="!#">REVIEW</a>
-            <a href="!#">NOTICE</a>
-            <a href="!#">Q&A</a>
-          </div>
-          <div>
+          <a href="!#">ABOUT</a>
+          <a href="!#">ALL</a>
+          <a href="!#">MEN</a>
+          <a href="!#">WOMEN</a>
+          <a href="!#">REVIEW</a>
+          <a href="!#">NOTICE</a>
+          <a href="!#">Q&A</a>
+          <div className="icon-wrap">
             <a href="!#">
-              {" "}
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <FontAwesomeIcon icon={faSearch} />
             </a>
-            <a href="!#">LOGIN</a>
-            <a href="!#">CART</a>
+            <a href="!#">
+              <FontAwesomeIcon icon={faUser} />
+            </a>
+            <a href="!#">
+              <FontAwesomeIcon icon={faCartShopping} />
+            </a>
           </div>
         </div>
       </div>

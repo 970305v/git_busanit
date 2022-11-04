@@ -2,27 +2,14 @@
   font-family: "Roboto", sans-serif;
   width: 100%;
   border-bottom: 1px solid black;
-  height: 140px;
-}
-
-.nav-container {
-  margin-top: 30px;
-}
-
-.nav-container a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.nav-container a:hover {
-  text-decoration: none;
+  height: 110px;
 }
 
 .logo-wrap {
   font-family: "Nanum Myeongjo", serif;
   text-align: center;
   font-size: 30px;
-  margin-bottom: 30px;
+  margin: 30px 0;
 }
 
 .menu-wrap {
@@ -31,8 +18,18 @@
   display: flex;
   justify-content: space-between;
 }
+
 .menu-wrap a {
   margin-left: 25px;
   margin-right: 25px;
   font-size: 14px;
+}
+
+.menu-wrap a:hover {
+  color: #c67c00;
+  transition: 0.3s;
+}
+
+.icon-wrap a {
+  margin: 10px;
 }
