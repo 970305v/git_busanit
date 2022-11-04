@@ -1,0 +1,57 @@
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.table-wrap tr {
+  border-bottom: 1px solid #000;
+}
+
+.table-wrap th,
+td {
+  height: 60px;
+  text-align: center;
+}
+
+.table-wrap td:nth-child(1) {
+  width: 10%;
+}
+
+.table-wrap td:nth-child(2) {
+  width: 60%;
+  text-align: left;
+}
+.table-wrap td:nth-child(3) {
+  width: 10%;
+}
+.table-wrap td:nth-child(4) {
+  width: 10%;
+}
+.table-wrap td:nth-child(5) {
+  width: 10%;
+}
+.bottom-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+input {
+  padding: 12px 12px;
+  border: 1px solid black;
+  outline: none;
+  font-family: inherit;
+}
+
+button {
+  color: #fff;
+  background-color: #000;
+  font-family: inherit;
+  padding: 11px 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.pagination {
+  text-align: center;
+}

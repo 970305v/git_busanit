@@ -13,6 +13,9 @@ input[type="password"] {
   font-family: inherit;
   margin: 10px 0;
 }
+.reg-container input[type="checkbox"] {
+  cursor: pointer;
+}
 
 .reg-container button {
   color: #fff;
