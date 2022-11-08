@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Noto+Sans+KR&family=Roboto:wght@100;300;400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.container {
+  width: 1200px;
+  margin: 60px auto;
+}
+
+.title-container {
+  margin-bottom: 30px;
+}
+
+.title-container h1 {
+  font-family: "Roboto", sans-serif;
+  font-size: 40px;
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+.board-container {
+  width: 800px;
+  margin: 60px auto;
+  padding: 20px;
+}

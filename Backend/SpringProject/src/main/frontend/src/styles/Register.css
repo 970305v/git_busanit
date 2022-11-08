@@ -1,0 +1,64 @@
+.reg-container {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.reg-container input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid black;
+  outline: none;
+  font-family: inherit;
+  margin: 10px 0;
+}
+.reg-container input[type="checkbox"] {
+  cursor: pointer;
+}
+.reg-container button {
+  color: #fff;
+  background-color: #000;
+  font-family: inherit;
+  padding: 12px 20px;
+  width: 100%;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.reg-container label {
+  font-size: 14px;
+}
+
+.reg-title-wrap {
+  padding: 30px 0;
+}
+.reg-title-wrap p {
+  font-size: 24px;
+}
+.reg-title-wrap span {
+  font-size: 14px;
+}
+
+.form-control {
+  position: relative;
+}
+.checkEmail {
+  position: absolute;
+  padding: 8px 12px;
+  top: 38px;
+  right: 6px;
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.address-wrap {
+  position: relative;
+}
+
+.findPostcode {
+  position: absolute;
+  padding: 8px 12px;
+  top: 38px;
+  right: 6px;
+  cursor: pointer;
+}
