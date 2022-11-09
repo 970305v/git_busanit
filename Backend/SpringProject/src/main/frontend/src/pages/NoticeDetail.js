@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 import "../styles/NoticeDetail.css";
 
-function ReviewDetail() {
+function NoticeDetail() {
   return (
     <div className="board-container">
       <div className="title-wrap">
@@ -25,4 +25,4 @@ function ReviewDetail() {
   );
 }
 
-export default ReviewDetail;
+export default NoticeDetail;
