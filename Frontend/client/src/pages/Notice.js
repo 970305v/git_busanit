@@ -41,7 +41,9 @@ function Notice() {
           </form>
         </div>
         <div className="admin-btn">
-          <button>글쓰기(관리자권한 없으면 안뜨게)</button>
+          <button>
+            <a href="/ReviewWrite">글쓰기(관리자권한 없으면 안뜨게)</a>
+          </button>
         </div>
       </div>
       <div className="pagination">

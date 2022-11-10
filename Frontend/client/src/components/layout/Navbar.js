@@ -13,31 +13,6 @@ function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
-<<<<<<< HEAD
-    <header>
-      <div className="nav-container">
-        <div className="logo-wrap">
-          <a href="!#">LIFE FOR US</a>
-        </div>
-        <div className="menu-wrap">
-          <a href="/about">ABOUT</a>
-          <a href="!#">ALL</a>
-          <a href="!#">MEN</a>
-          <a href="!#">WOMEN</a>
-          <a href="/reviewWrite">REVIEW</a>
-          <a href="/noticeWrite">NOTICE</a>
-          <a href="/qnaWrite">Q&A</a>
-          <div className="icon-wrap">
-            <a href="!#">
-              <FontAwesomeIcon icon={faSearch} />
-            </a>
-            <a href="/mypage">
-              <FontAwesomeIcon icon={faUser} />
-            </a>
-            <a href="/cart">
-              <FontAwesomeIcon icon={faCartShopping} />
-            </a>
-=======
     <>
       <header>
         <div className="nav-container">
@@ -45,7 +20,7 @@ function Navbar() {
             <Link to="/">LIFE FOR US</Link>
           </div>
           <div className="menu-wrap">
-            <Link to="!#">ABOUT</Link>
+            <Link to="/about">ABOUT</Link>
             <Link to="/all">ALL</Link>
             <Link to="/men">MEN</Link>
             <Link to="/women">WOMEN</Link>
@@ -81,7 +56,6 @@ function Navbar() {
                 )}
               </form>
             </div>
->>>>>>> a93ce9b25f0fcc1ac886e8ae3bbea2e067dbf5e5
           </div>
         </div>
       </header>

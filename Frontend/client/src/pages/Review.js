@@ -81,7 +81,9 @@ function Review() {
           </form>
         </div>
         <div className="admin-btn">
-          <button>글쓰기</button>
+          <button>
+            <a href="/ReviewWrite">글쓰기</a>
+          </button>
         </div>
       </div>
       <div className="pagination">
