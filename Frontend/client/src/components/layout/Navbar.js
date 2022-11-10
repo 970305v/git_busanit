@@ -15,21 +15,21 @@ function Navbar() {
           <a href="!#">LIFE FOR US</a>
         </div>
         <div className="menu-wrap">
-          <a href="!#">ABOUT</a>
+          <a href="/about">ABOUT</a>
           <a href="!#">ALL</a>
           <a href="!#">MEN</a>
           <a href="!#">WOMEN</a>
-          <a href="!#">REVIEW</a>
-          <a href="!#">NOTICE</a>
-          <a href="!#">Q&A</a>
+          <a href="/reviewWrite">REVIEW</a>
+          <a href="/noticeWrite">NOTICE</a>
+          <a href="/qnaWrite">Q&A</a>
           <div className="icon-wrap">
             <a href="!#">
               <FontAwesomeIcon icon={faSearch} />
             </a>
-            <a href="!#">
+            <a href="/mypage">
               <FontAwesomeIcon icon={faUser} />
             </a>
-            <a href="!#">
+            <a href="/cart">
               <FontAwesomeIcon icon={faCartShopping} />
             </a>
           </div>
