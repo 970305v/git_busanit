@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import "../styles/NoticeDetail.css";
 
 function NoticeDetail() {
@@ -20,7 +21,7 @@ function NoticeDetail() {
           <div>사진</div>
         </div>
       </div>
-      목록으로 가기
+      <Link to="/notice">목록으로 가기</Link>
     </div>
   );
 }

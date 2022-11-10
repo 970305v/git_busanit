@@ -1,12 +1,12 @@
 import React from "react";
-import "../styles/AllProduct.css";
+import "../styles/MenProduct.css";
 
-function AllProduct() {
+function MenProduct() {
   return (
     <div className="container">
       <div className="title-container">
-        <h1>All</h1>
-        <p>라이프포어스의 모든제품을 만나보세요.</p>
+        <h1>Men</h1>
+        <p>남성 제품을 만나보세요.</p>
       </div>
       <div className="product-container">
         <div className="product-list">
@@ -64,4 +64,4 @@ function AllProduct() {
   );
 }
 
-export default AllProduct;
+export default MenProduct;

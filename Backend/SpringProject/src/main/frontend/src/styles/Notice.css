@@ -13,6 +13,9 @@ td {
   height: 60px;
   text-align: center;
 }
+.notice-table-wrap td {
+  font-size: 14px;
+}
 
 .notice-table-wrap td:nth-child(1) {
   width: 10%;

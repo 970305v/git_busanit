@@ -33,3 +33,23 @@
 .icon-wrap a {
   margin: 10px;
 }
+
+.search-btn {
+  font-size: 14px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  color: #c67c00;
+  transition: 0.3s;
+}
+
+.search-input {
+  width: 100px;
+  border: 0;
+  border-bottom: 1px solid #000;
+  font-family: inherit;
+  font-size: 10px;
+  margin: 0;
+}

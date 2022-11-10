@@ -14,6 +14,9 @@ td {
   text-align: center;
 }
 
+.qna-table-wrap td {
+  font-size: 14px;
+}
 .qna-table-wrap td:nth-child(1) {
   width: 10%;
 }

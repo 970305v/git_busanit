@@ -26,9 +26,12 @@
   margin-top: 5px;
   font-size: 14px;
 }
+
 .container label {
+  font-size: 14px;
   cursor: pointer;
 }
+
 .review-table-wrap table {
   width: 100%;
   border-collapse: collapse;
@@ -42,6 +45,12 @@
 .review-table-wrap th,
 td {
   height: 60px;
+  text-align: center;
+}
+
+.review-table-wrap td {
+  height: 60px;
+  font-size: 14px;
   text-align: center;
 }
 

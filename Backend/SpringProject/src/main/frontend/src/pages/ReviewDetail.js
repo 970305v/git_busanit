@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import "../styles/ReviewDetail.css";
 
 function ReviewDetail() {
@@ -21,7 +22,7 @@ function ReviewDetail() {
           <div>사진</div>
         </div>
       </div>
-      목록으로 가기
+      <Link to="/review">목록으로 가기</Link>
     </div>
   );
 }
