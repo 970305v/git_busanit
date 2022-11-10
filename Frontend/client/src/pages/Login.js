@@ -8,9 +8,6 @@ import "../styles/Login.css";
 function Login() {
   const loginHandler = async (e) => {
     e.preventDefault();
-    await axios.post("/api/login", { email, passwd }).then((response) => {
-      console.log(response.data);
-    });
   };
 
   const [email, setEmail] = useState("");

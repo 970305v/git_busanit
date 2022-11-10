@@ -2,45 +2,51 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import DaumPostcode from "react-daum-postcode";
 
 import "../styles/Register.css";
 
 function Register() {
-  const [idchk, setIdchk] = useState("false");
+  const [emailChk, setEmailChk] = useState(false);
   const [email, setEmail] = useState("");
   const [passwd, setPasswd] = useState("");
+  const [passwd2, setPasswd2] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [addr, setAddr] = useState("");
+  const [openPost, setOpenPost] = useState(false);
   const registerHandler = async (e) => {
     e.preventDefault();
-    if (idchk === true) {
-      await axios
-        .post("/api/register", { email, passwd, username })
-        .then((response) => {
-          if (response.status === 200) {
-            window.alert("회원가입 완료.");
-          } else {
-            window.alert("관리자에게 문의하세요.");
-          }
-        });
+    if (passwd === passwd2 && emailChk) {
+      console.log("회원가입 완료");
     } else {
-      window.alert("중복 검사 먼저 해주세요.");
+      console.log("불가능");
     }
   };
-  const emailCheckHandler = async (e) => {
-    e.preventDefault();
-    await axios.post("/api/emailcheck", { email }).then((response) => {
-      if (response.headers.name === "success") {
-        setIdchk(true);
-        window.alert(response.data);
-      } else if (response.headers.name === undefined) {
-        window.alert(response.data);
-      } else if (response.headers.name === "useid") {
-        window.alert(response.data);
+
+  const check = {
+    emailCheckHandler: async (e) => {
+      e.preventDefault();
+      if (isEmailCheck(email)) {
+        // 일단 이메일 유효성 검사 먼저 한 후 sql 에서 검색후 사용가능한 뜨게
+        window.alert("사용가능한 이메일 주소입니다.");
+        setEmailChk(true);
       } else {
-        window.alert("관리자에게 문의하세요.");
+        window.alert("유효하지 않은 이메일 주소입니다.");
       }
-    });
+    },
+  };
+
+  const handle = {
+    selectAddress: (data) => {
+      setAddr(data.address);
+      setZipcode(data.zonecode);
+      setOpenPost(false);
+    },
+    addressHandler: () => {
+      setOpenPost((current) => !current);
+    },
   };
   // 전화번호 정규식
   const phoneHandler = (e) => {
@@ -48,6 +54,11 @@ function Register() {
     if (regex.test(e.target.value)) {
       setPhone(e.target.value);
     }
+  };
+  // 이메일 정규식
+  const isEmailCheck = (email) => {
+    let exp = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+    return exp.test(email);
   };
   useEffect(() => {
     if (phone.length === 10) {
@@ -77,15 +88,16 @@ function Register() {
           <input
             type="text"
             name="email"
+            required
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setIdchk(false);
+              setEmailChk(false);
             }}
           />
           <input
             type="button"
-            onClick={emailCheckHandler}
+            onClick={check.emailCheckHandler}
             className="checkEmail"
             value="중복확인"
           />
@@ -95,6 +107,7 @@ function Register() {
           <input
             type="password"
             name="passwd"
+            required
             placeholder="8자 이상 입력해주세요."
             value={passwd}
             onChange={(e) => setPasswd(e.target.value)}
@@ -102,7 +115,13 @@ function Register() {
         </div>
         <div>
           <p>비밀번호 확인 * </p>
-          <input type="password" name="passwd2" />
+          <input
+            type="password"
+            name="passwd2"
+            value={passwd2}
+            required
+            onChange={(e) => setPasswd2(e.target.value)}
+          />
         </div>
         <div>
           <p>이름 * </p>
@@ -129,10 +148,26 @@ function Register() {
             id="postcode"
             className="postcode"
             placeholder="우편번호"
+            readOnly
+            value={zipcode}
           />
-          <input type="button" className="findPostcode" value="우편번호 찾기" />
+          <input
+            type="button"
+            className="findPostcode"
+            value="우편번호 찾기"
+            onClick={handle.addressHandler}
+          />
+          {openPost && (
+            <DaumPostcode onComplete={handle.selectAddress} autoClose={false} />
+          )}
           <p>주소 *</p>
-          <input type="text" id="address" placeholder="주소" />
+          <input
+            type="text"
+            id="address"
+            placeholder="주소"
+            value={addr}
+            readOnly
+          />
           <input type="text" id="detailAddress" placeholder="상세주소" />
         </div>
         <div>
