@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Review.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import {
   faPen,
   faMessage,
@@ -63,7 +64,7 @@ function Review() {
                 <a href="!#">사진/프레쉬치약(클릭시상품상세보기)</a>
               </td>
               <td>
-                <a href="!#">리뷰 제목(클릭시리뷰상세보기)</a>
+                <Link to="/review/:id">리뷰 제목(클릭시리뷰상세보기)</Link>
               </td>
               <td>a***</td>
               <td>2000.01.01</td>

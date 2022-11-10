@@ -34,3 +34,9 @@ a:hover {
   font-weight: 300;
   margin-bottom: 30px;
 }
+
+.board-container {
+  width: 800px;
+  margin: 60px auto;
+  padding: 20px;
+}

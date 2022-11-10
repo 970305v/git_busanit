@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/Notice.css";
 
 function Notice() {
@@ -23,9 +24,7 @@ function Notice() {
             <tr>
               <td>공지</td>
               <td>
-                <a href="!#">
-                  라이프스토어 쇼핑 가이드 !클릭시 게시물 상세보기!
-                </a>
+                <Link to="/notice/:id">공지 제목(공지 상세보기)</Link>
               </td>
               <td>관리자</td>
               <td>조회수</td>

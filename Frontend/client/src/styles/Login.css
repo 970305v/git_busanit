@@ -29,7 +29,7 @@ input[type="password"] {
   background-color: #000;
   font-family: inherit;
   padding: 12px 20px;
-  width: 48%;
+  width: 190px;
   cursor: pointer;
   margin: 10px 0;
 }
@@ -44,8 +44,8 @@ input[type="password"] {
   color: #000;
   border: 1px solid #000;
   font-family: inherit;
-  padding: 12px 20px;
-  width: 48%;
+  padding: 13px 20px;
+  width: 190px;
   cursor: pointer;
   margin: 10px 0;
 }
@@ -54,4 +54,9 @@ input[type="password"] {
   background-color: #222222;
   color: #fff;
   transition: 0.3s;
+}
+
+.login-title-wrap {
+  font-size: 24px;
+  padding: 30px 0;
 }
