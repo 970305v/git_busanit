@@ -10,7 +10,7 @@ function AdminNav() {
           <h2>ADMINISTRATOR</h2>
         </div>
       </header>
-      <div className="container">
+      <div className="admin-container-wrap">
         <div className="nav-wrap">
           <ul>
             <Link to="users">

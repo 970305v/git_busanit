@@ -46,7 +46,7 @@ function Navbar() {
                     <Link to="/login">
                       <FontAwesomeIcon icon={faUser} id="icon-btn" />
                     </Link>
-                    <Link to="!#">
+                    <Link to="/cart">
                       <FontAwesomeIcon icon={faCartShopping} id="icon-btn" />
                     </Link>
                     <Link to="/admin">
