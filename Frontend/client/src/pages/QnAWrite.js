@@ -12,7 +12,7 @@ function QnAWrite() {
               <option>상품</option>
               <option>주문 / 결제</option>
               <option>배송</option>
-              <option>반품 / 교한</option>
+              <option>반품 / 교환</option>
               <option>기타</option>
             </select>
           </div>
@@ -31,12 +31,12 @@ function QnAWrite() {
         </div>
         <div className="write-bottom">
           <div className="secret-wrap">
-            <input type="checkbox" />
-            <span>비밀글로 지정하기</span>
+            <input type="checkbox" id="secret-chk" />
+            <label htmlFor="secret-chk">비밀글로 지정하기</label>
           </div>
           <div className="btn-wrap">
             <button type="button" className="list-btn">
-              <a href="!#">목록으로 가기</a>
+              <a href="/qna">목록으로 가기</a>
             </button>
             <button type="submit" className="save-btn">
               <a href="!#">저장하기</a>

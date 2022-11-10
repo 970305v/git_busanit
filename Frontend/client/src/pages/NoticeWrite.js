@@ -14,7 +14,7 @@ function NoticeWrite() {
         <div className="write-bottom">
           <div className="btn-wrap">
             <button type="button" className="list-btn">
-              <a href="!#">목록으로 가기</a>
+              <a href="/notice">목록으로 가기</a>
             </button>
             <button type="submit" className="save-btn">
               <a href="!#">저장하기</a>

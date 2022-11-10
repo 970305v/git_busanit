@@ -6,38 +6,44 @@ function Main() {
   return (
     <div>
       <div className="banner">
-        <input type="radio" name="slide" id="slide01" checked></input>
+        <input type="radio" name="slide" id="slide01" checked readOnly></input>
         <input type="radio" name="slide" id="slide02"></input>
         <input type="radio" name="slide" id="slide03"></input>
         <div className="slidewrap">
           <ul className="slidelist">
             <li>
-              <label for="slide03" className="left">
+              <label htmlFor="slide03" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
               <img
+                alt="img"
                 src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/default/image_1598287922652_2500.jpg"
-                alt="k"
               />
-              <label for="slide02" className="right">
+              <label htmlFor="slide02" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
             </li>
             <li>
-              <label for="slide01" className="left">
+              <label htmlFor="slide01" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/default/image_1598284421159_2500.jpg" />
-              <label for="slide03" className="right">
+              <img
+                alt="img"
+                src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/default/image_1598284421159_2500.jpg"
+              />
+              <label htmlFor="slide03" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
             </li>
             <li>
-              <label for="slide02" className="left">
+              <label htmlFor="slide02" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/25991/default/image_1520486178371_2500.jpg" />
-              <label for="slide01" className="right">
+              <img
+                alt="img"
+                src="https://contents.sixshop.com/thumbnails/uploadedFiles/25991/default/image_1520486178371_2500.jpg"
+              />
+              <label htmlFor="slide01" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
             </li>
@@ -67,22 +73,31 @@ function Main() {
             </div>
             <div className="ProdItems">
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
               </div>
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
               </div>
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
@@ -101,22 +116,31 @@ function Main() {
             </div>
             <div className="ProdItems">
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
               </div>
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
               </div>
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
@@ -135,22 +159,31 @@ function Main() {
             </div>
             <div className="ProdItems">
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
               </div>
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
               </div>
               <div className="ProdItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>상품명</p>
                 <span>가격</span>
@@ -169,26 +202,38 @@ function Main() {
             </div>
             <div className="reviewItems">
               <div className="reviewItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>리뷰글</p>
               </div>
               <div className="reviewItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>리뷰글</p>
               </div>
               <div className="reviewItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>리뷰글</p>
               </div>
               <div className="reviewItem">
-                <a href="#">
-                  <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg" />
+                <a href="!#">
+                  <img
+                    alt="img"
+                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
+                  />
                 </a>
                 <p>리뷰글</p>
               </div>

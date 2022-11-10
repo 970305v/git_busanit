@@ -73,10 +73,12 @@
 
 .list-btn {
   background-color: white;
+  color: #000;
 }
 .list-btn:hover {
   background-color: black;
   color: white;
+  transition: 0.3s;
 }
 
 .save-btn {

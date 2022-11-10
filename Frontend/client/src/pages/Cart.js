@@ -34,13 +34,11 @@ function Cart() {
                 <a href="!#">삭제하기</a>
               </td>
               <td>
-                <button className="countBtn" onClick={() => Minus()}>
-                  -
-                </button>
-                <button className="countCenterBtn">{quantity}</button>
-                <button className="countBtn" onClick={() => Plus()}>
-                  +
-                </button>
+                <div className="add-stock">
+                  <a onClick={Minus}>-</a>
+                  <span>{quantity}</span>
+                  <a onClick={Plus}>+</a>
+                </div>
               </td>
               <td>가격</td>
               <td>배송비</td>

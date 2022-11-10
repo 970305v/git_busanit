@@ -26,18 +26,19 @@ function QnA() {
               <td>1</td>
               <td>상품</td>
               <td>
-                <a href="!#">
-                  <div className="qna-title">
+                <div className="qna-title">
+                  <a href="!#">
                     <span>상품이미지</span>
-                    <div>
-                      <Link to="/qna/:id">
-                        {" "}
-                        <p>(자물쇠)제목</p>
-                        <p style={{ color: "#8c8c8c" }}>부제목</p>
-                      </Link>
-                    </div>
+                  </a>
+
+                  <div>
+                    <Link to="/qna/:id">
+                      {" "}
+                      <p>(자물쇠)제목</p>
+                      <p style={{ color: "#8c8c8c" }}>부제목</p>
+                    </Link>
                   </div>
-                </a>
+                </div>
               </td>
               <td>이***</td>
               <td>2000.01.01</td>
@@ -53,9 +54,9 @@ function QnA() {
           </form>
         </div>
         <div className="admin-btn">
-          <button>
-            <a href="/QnAWrite">글쓰기</a>
-          </button>
+          <a href="/QnAWrite">
+            <button>글쓰기</button>
+          </a>
         </div>
       </div>
       <div className="pagination">

@@ -48,6 +48,7 @@ function Navbar() {
                     </Link>
                     <Link to="/cart">
                       <FontAwesomeIcon icon={faCartShopping} id="icon-btn" />
+                      {/* <span>수량, 나중에 useState 적용</span> */}
                     </Link>
                     <Link to="/admin">
                       <FontAwesomeIcon icon={faGear} id="icon-btn" />

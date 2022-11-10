@@ -41,6 +41,7 @@ function UserRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/review" element={<Review />} />
           <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/write" element={<NoticeWrite />} />
           <Route path="/qna" element={<QnA />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -52,7 +53,7 @@ function UserRoutes() {
           <Route path="/all" element={<AllProduct />} />
           <Route path="/men" element={<MenProduct />} />
           <Route path="/women" element={<WomenProduct />} />
-          <Route path="/productdetail" element={<ProductDetail />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/join" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/mypage" element={<Mypage />} />

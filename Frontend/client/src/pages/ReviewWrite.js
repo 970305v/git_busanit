@@ -23,7 +23,7 @@ function ReviewWrite() {
           <div className="file-wrap">
             <div className="file-btn">
               <input type="file" id="upload-file" />
-              <label for="upload-file">
+              <label htmlFor="upload-file">
                 <FontAwesomeIcon icon={faCamera} className="select-file" />
               </label>
             </div>

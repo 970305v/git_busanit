@@ -19,7 +19,7 @@ function ProductDetail() {
         <img></img>
         <div className="product-title-wrap">
           <h3>프레쉬 치약</h3>
-          <p>후기</p>
+          <p>후기(별점)</p>
           <p>가격</p>
           <p>
             자연에서 찾은 허브에 민트향을 더해 보다 상쾌하고 건강하게
