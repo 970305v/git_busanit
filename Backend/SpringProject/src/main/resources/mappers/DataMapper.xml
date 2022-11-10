@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.app.mapper.MemberMapper">
+   <insert id="insertData">
+      INSERT INTO member3 VALUES (NULL, #{email}, #{passwd}, #{username}, NOW())         
+   </insert>
+   <select id="selectDataOne" resultType="com.project.app.dto.MemberDTO">
+      SELECT * FROM member3 WHERE idx = #{idx}
+   </select>
+   <update id="updateData" parameterType="com.project.app.dto.MemberDTO">
+      UPDATE member3 SET title = #{title}, writer = #{writer}, pw = #{pw}, content = #{content} WHERE idx = #{idx}
+   </update>
+   <delete id="deleteData">
+      DELETE FROM member3 WHERE idx = #{idx}
+   </delete>
+   <select id="selectDataAll" resultType="com.project.app.dto.MemberDTO">
+      SELECT * FROM member3
+   </select>
+   <select id="selectDataCount" resultType="int">
+      SELECT COUNT(idx) AS 'count' FROM member3
+   </select>
+    <select id="emailCheck" resultType="int">
+      SELECT COUNT(idx) AS 'count' FROM member3 WHERE email LIKE #{email}
+   </select>
+</mapper>

@@ -1,4 +1,5 @@
 import "./App.css";
+<<<<<<< HEAD
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -33,6 +34,15 @@ function App() {
         <Route path="/*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
+=======
+import UserRoutes from "./Routes/UserRoutes";
+
+function App() {
+  return (
+    <>
+      <UserRoutes />
+    </>
+>>>>>>> a93ce9b25f0fcc1ac886e8ae3bbea2e067dbf5e5
   );
 }
 
