@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/AllProduct.css";
 
 function AllProduct() {
@@ -17,11 +18,13 @@ function AllProduct() {
         </div>
         <div className="product-wrap">
           <div className="product-box">
-            <img></img>
-            <p>
-              <strong>상품명</strong>
-            </p>
-            <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
+            <Link to="/product/:id">
+              <img></img>
+              <p>
+                <strong>상품명</strong>
+              </p>
+              <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
+            </Link>
           </div>
           <div className="product-box">
             <img></img>

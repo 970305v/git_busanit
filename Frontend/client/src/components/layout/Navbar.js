@@ -20,7 +20,7 @@ function Navbar() {
             <Link to="/">LIFE FOR US</Link>
           </div>
           <div className="menu-wrap">
-            <Link to="!#">ABOUT</Link>
+            <Link to="/about">ABOUT</Link>
             <Link to="/all">ALL</Link>
             <Link to="/men">MEN</Link>
             <Link to="/women">WOMEN</Link>
@@ -46,8 +46,9 @@ function Navbar() {
                     <Link to="/login">
                       <FontAwesomeIcon icon={faUser} id="icon-btn" />
                     </Link>
-                    <Link to="!#">
+                    <Link to="/cart">
                       <FontAwesomeIcon icon={faCartShopping} id="icon-btn" />
+                      {/* <span>수량, 나중에 useState 적용</span> */}
                     </Link>
                     <Link to="/admin">
                       <FontAwesomeIcon icon={faGear} id="icon-btn" />

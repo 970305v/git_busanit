@@ -45,7 +45,7 @@ function Review() {
       </div>
       <div className="review-table-wrap">
         <input type="checkbox" id="photo" />
-        <label for="photo"> 사진 후기만 보기 (onclick이벤트)</label>
+        <label htmlFor="photo"> 사진 후기만 보기 (onclick이벤트)</label>
         <table>
           <thead>
             <tr>
@@ -81,7 +81,9 @@ function Review() {
           </form>
         </div>
         <div className="admin-btn">
-          <button>글쓰기</button>
+          <a href="/ReviewWrite">
+            <button>글쓰기 </button>
+          </a>
         </div>
       </div>
       <div className="pagination">

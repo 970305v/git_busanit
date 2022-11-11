@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import "../styles/Notice.css";
 
 function Notice() {
@@ -41,7 +41,9 @@ function Notice() {
           </form>
         </div>
         <div className="admin-btn">
-          <button>글쓰기(관리자권한 없으면 안뜨게)</button>
+          <a href="/notice/write">
+            <button>글쓰기(관리자권한 없으면 안뜨게)</button>
+          </a>
         </div>
       </div>
       <div className="pagination">
