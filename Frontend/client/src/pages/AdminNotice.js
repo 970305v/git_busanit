@@ -13,6 +13,7 @@ function AdminNotice() {
           <div className="admin-table-btn">
             <button>전체목록</button>
             <button>선택삭제</button>
+            <button>공지작성</button>
             <div>
               <span>
                 <strong>공지사항 수 : </strong> 개

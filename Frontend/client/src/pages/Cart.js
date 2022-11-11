@@ -35,9 +35,13 @@ function Cart() {
               </td>
               <td>
                 <div className="add-stock">
-                  <a onClick={Minus}>-</a>
+                  <a href={() => false} onClick={Minus}>
+                    -
+                  </a>
                   <span>{quantity}</span>
-                  <a onClick={Plus}>+</a>
+                  <a href={() => false} onClick={Plus}>
+                    +
+                  </a>
                 </div>
               </td>
               <td>가격</td>

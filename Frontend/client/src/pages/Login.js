@@ -1,13 +1,26 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/Login.css";
 
 function Login() {
+  const navigate = useNavigate();
   const loginHandler = async (e) => {
     e.preventDefault();
+    await axios.post("/login", { email, passwd }).then((response) => {
+      if (response.data.status === 201) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/");
+      } else if (response.data.status === 400) {
+        window.alert(response.data.msg);
+      } else if (response.data.status === 404) {
+        window.alert(response.data.msg);
+      } else {
+        window.alert("관리자에게 문의하세요.");
+      }
+    });
   };
 
   const [email, setEmail] = useState("");
@@ -24,6 +37,7 @@ function Login() {
           <input
             type="text"
             name="email"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -34,6 +48,7 @@ function Login() {
             type="password"
             name="passwd"
             placeholder="8자 이상 입력해주세요."
+            required
             value={passwd}
             onChange={(e) => setPasswd(e.target.value)}
           />

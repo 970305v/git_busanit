@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../styles/Notice.css";
 
 function Notice() {
@@ -39,11 +39,6 @@ function Notice() {
             <input type="text" placeholder="검색어를 입력하세요." />
             <button>검색</button>
           </form>
-        </div>
-        <div className="admin-btn">
-          <a href="/notice/write">
-            <button>글쓰기(관리자권한 없으면 안뜨게)</button>
-          </a>
         </div>
       </div>
       <div className="pagination">

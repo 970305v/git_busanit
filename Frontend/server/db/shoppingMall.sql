@@ -3,19 +3,20 @@ use shoppingmall;
 
 create table member(
     mId int auto_increment primary key,
-    mEamil varchar(50) not null,
+    mEmail varchar(50) not null unique,
     mPwd varchar(500) not null,
     mName varchar(20) not null,
-    mPhone varchar(11) not null,
+    mPhone varchar(13) not null,
     mPostnum varchar(5),
-    mAddress varchar(500),
-    mPoint int(10) DEFAULT 1000,
-    mManager varchar(1),
-    mRegdate date
+    mAddr1 varchar(500),
+    mAddr2 varchar(500),
+    mPoint int(10) DEFAULT 3000,
+    mManager int(1) DEFAULT 0,
+    mRegdate date DEFAULT (current_date) 
 );
 
 create table product(
-    pId int  primary key,
+    pId int primary key,
     pName varchar(100) not null,
     pGender varchar(1) not null,
     pCaregory varchar(20) not null,

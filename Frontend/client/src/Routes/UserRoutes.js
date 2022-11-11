@@ -32,12 +32,12 @@ import Cart from "../pages/Cart";
 import Page404 from "../pages/Page404";
 import Loading from "../pages/Loading";
 
-function UserRoutes() {
+function UserRoutes({ user }) {
   return (
     <Router>
       <Routes>
-        <Route element={<Navbar />}>
-          <Route path="/" element={<Main />} />
+        <Route element={<Navbar user={user} />}>
+          <Route path="/" element={<Main user={user} />} />
           <Route path="/about" element={<About />} />
           <Route path="/review" element={<Review />} />
           <Route path="/notice" element={<Notice />} />
@@ -48,15 +48,15 @@ function UserRoutes() {
           <Route path="/review/:id" element={<ReviewDetail />} />
           <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/qna/:id" element={<QnADetail />} />
-          <Route path="/ReviewWrite" element={<ReviewWrite />} />
+          <Route path="/review/write" element={<ReviewWrite />} />
           <Route path="/qnaWrite" element={<QnAWrite />} />
           <Route path="/all" element={<AllProduct />} />
           <Route path="/men" element={<MenProduct />} />
           <Route path="/women" element={<WomenProduct />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/join" element={<Register />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/mypage" element={<Mypage user={user} />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
         </Route>

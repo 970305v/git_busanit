@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ user }) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
@@ -38,14 +38,19 @@ function Navbar() {
                   }}
                 />
                 {searchOpen ? (
-                  <>
-                    <input className="search-input" id="search-input" />
-                  </>
+                  <input className="search-input" id="search-input" />
                 ) : (
                   <>
-                    <Link to="/login">
-                      <FontAwesomeIcon icon={faUser} id="icon-btn" />
-                    </Link>
+                    {!user ? (
+                      <Link to="/login">
+                        <FontAwesomeIcon icon={faUser} id="icon-btn" />
+                      </Link>
+                    ) : (
+                      <Link to="/mypage">
+                        <FontAwesomeIcon icon={faUser} id="icon-btn" />
+                      </Link>
+                    )}
+
                     <Link to="/cart">
                       <FontAwesomeIcon icon={faCartShopping} id="icon-btn" />
                       {/* <span>수량, 나중에 useState 적용</span> */}
