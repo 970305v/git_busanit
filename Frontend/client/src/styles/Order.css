@@ -20,6 +20,7 @@
 }
 .Info-box input,
 .Info-box select {
+  font-family: inherit;
   border: 1px solid black;
   padding: 12px;
 }

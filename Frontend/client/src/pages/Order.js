@@ -80,7 +80,7 @@ function Order() {
               <span>결제수단</span>
             </div>
             <div className="payCheckbox">
-              <input type="radio" checked />
+              <input type="radio" checked readOnly />
               <span>무통장입금</span>
             </div>
             <select className="payBank">

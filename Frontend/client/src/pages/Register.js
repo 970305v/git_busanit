@@ -60,6 +60,7 @@ function Register() {
     let exp = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
     return exp.test(email);
   };
+  // 전화번호에 자동 하이픈
   useEffect(() => {
     if (phone.length === 10) {
       setPhone(phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"));

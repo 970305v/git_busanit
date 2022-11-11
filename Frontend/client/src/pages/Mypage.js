@@ -9,20 +9,24 @@ function Mypage() {
             <span>주문 내역</span>
           </div>
           <table>
-            <tr>
-              <td>주문번호</td>
-              <td>이미지</td>
-              <td>상품정보</td>
-              <td>주문처리상태</td>
-            </tr>
-            <tr>
-              <td>주문번호</td>
-              <td>
-                <img src="https://via.placeholder.com/50" />
-              </td>
-              <td>상품정보</td>
-              <td>주문처리상태</td>
-            </tr>
+            <thead>
+              <tr>
+                <td>주문번호</td>
+                <td>이미지</td>
+                <td>상품정보</td>
+                <td>주문처리상태</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>주문번호</td>
+                <td>
+                  <img src="https://via.placeholder.com/50" />
+                </td>
+                <td>상품정보</td>
+                <td>주문처리상태</td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div className="myPost-box">
@@ -30,16 +34,20 @@ function Mypage() {
             <span>내가 쓴 글</span>
           </div>
           <table>
-            <tr>
-              <td>일자</td>
-              <td>제목</td>
-              <td>유형</td>
-            </tr>
-            <tr>
-              <td>22.11.08</td>
-              <td>제목</td>
-              <td>질문, 리뷰</td>
-            </tr>
+            <thead>
+              <tr>
+                <td>일자</td>
+                <td>제목</td>
+                <td>유형</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>22.11.08</td>
+                <td>제목</td>
+                <td>질문, 리뷰</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
