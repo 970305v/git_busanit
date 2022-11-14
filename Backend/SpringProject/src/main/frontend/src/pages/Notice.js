@@ -40,9 +40,6 @@ function Notice() {
             <button>검색</button>
           </form>
         </div>
-        <div className="admin-btn">
-          <button>글쓰기(관리자권한 없으면 안뜨게)</button>
-        </div>
       </div>
       <div className="pagination">
         <span>페이징처리</span>

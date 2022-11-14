@@ -3,13 +3,13 @@ use shoppingmall;
 
 create table member(
     mId int auto_increment primary key,
-    mEmail varchar(50) not null unique,
-    mPwd varchar(500) not null,
-    mName varchar(20) not null,
+    mEmail varchar(255) not null unique,
+    mPwd varchar(255) not null,
+    mName varchar(255) not null,
     mPhone varchar(13) not null,
     mPostnum varchar(5),
-    mAddr1 varchar(500),
-    mAddr2 varchar(500),
+    mAddr1 varchar(255),
+    mAddr2 varchar(255),
     mPoint int(10) DEFAULT 3000,
     mManager int(1) DEFAULT 0,
     mRegdate date DEFAULT (current_date) 

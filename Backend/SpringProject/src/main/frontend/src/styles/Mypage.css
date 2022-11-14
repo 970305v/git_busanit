@@ -1,0 +1,72 @@
+.mypage-gird {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 200px;
+}
+.userInfo-left {
+  display: grid;
+}
+.info-title {
+  font-size: 20px;
+}
+.orderHistory-box table,
+.myPost-box table {
+  width: 100%;
+}
+.orderHistory-box table td {
+  padding: 10px 0;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+}
+.orderHistory-box table td:first {
+  padding: 20px 0;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+}
+.myPost-box table td {
+  padding: 20px 0;
+  font-size: 12px;
+  border-bottom: 1px solid black;
+}
+.orderHistory-box table td:last-child,
+.myPost-box table td:last-child {
+  text-align: end;
+}
+.logout {
+  text-align: end;
+  color: #666666;
+}
+.input-item {
+  margin: 10px 0;
+}
+.input-item input {
+  width: 100%;
+  margin-top: 5px;
+  border: 1px solid black;
+  padding: 12px;
+}
+.tel-box {
+  display: flex;
+}
+.tel-box p {
+  margin: 0 5px;
+}
+.link-wrap {
+  text-align: center;
+  color: #666666;
+  margin: 30px 0;
+}
+.link-wrap a {
+  margin: 0 8px;
+}
+.mypageBtn-box {
+  text-align: center;
+}
+.updateSave-btn {
+  padding: 12px;
+  background-color: black;
+  color: white;
+}
+.updateSave-btn:hover {
+  opacity: 0.7;
+}

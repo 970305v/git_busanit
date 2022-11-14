@@ -18,7 +18,23 @@ a {
 a:hover {
   text-decoration: none;
 }
-
+input,
+button,
+textarea,
+select {
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+ul,
+li {
+  list-style: none;
+}
+table {
+  border-collapse: collapse;
+}
+/* 게시판 리스트 */
 .container {
   width: 1200px;
   margin: 60px auto;
@@ -35,6 +51,11 @@ a:hover {
   margin-bottom: 30px;
 }
 
+/* 게시판 글쓰기 */
+.write-container {
+  width: 800px;
+  margin: 60px auto;
+}
 .board-container {
   width: 800px;
   margin: 60px auto;

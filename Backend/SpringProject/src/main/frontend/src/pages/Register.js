@@ -2,45 +2,86 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import DaumPostcode from "react-daum-postcode";
 
 import "../styles/Register.css";
 
 function Register() {
-  const [idchk, setIdchk] = useState("false");
+  const [emailChk, setEmailChk] = useState(false);
   const [email, setEmail] = useState("");
   const [passwd, setPasswd] = useState("");
+  const [passwd2, setPasswd2] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [openPost, setOpenPost] = useState(false);
+
+  const navigate = useNavigate();
+
   const registerHandler = async (e) => {
     e.preventDefault();
-    if (idchk === true) {
+    if (passwd === passwd2 && emailChk) {
       await axios
-        .post("/api/register", { email, passwd, username })
+        .post("/api/register", {
+          mEmail: email,
+          mPwd: passwd,
+          mName: username,
+          mPhone: phone,
+          mPostnum: zipcode,
+          mAddr1: address,
+          mAddr2: address2,
+        })
         .then((response) => {
+          console.log(response);
           if (response.status === 200) {
-            window.alert("회원가입 완료.");
+            window.alert("회원가입을 축하드립니다.");
+            navigate("/login");
           } else {
-            window.alert("관리자에게 문의하세요.");
+            window.alert("회원가입에 실패했습니다.");
+            window.location.reload();
+          }
+        });
+    } else if (!emailChk) {
+      window.alert("이메일 중복확인이 필요합니다.");
+    } else if (passwd !== passwd2) {
+      window.alert("비밀번호를 확인해주세요.");
+    } else {
+      window.alert("가입이 불가능합니다.");
+    }
+  };
+
+  const emailCheckHandler = async (e) => {
+    e.preventDefault();
+    if (isEmailCheck(email)) {
+      await axios
+        .post("/api/emailcheck", { mEmail: email })
+        .then((response) => {
+          if (response.headers.name === "success") {
+            setEmailChk(true);
+            window.alert(response.data);
+          } else if (response.headers.name === "useid") {
+            setEmailChk(false);
+            window.alert(response.data);
           }
         });
     } else {
-      window.alert("중복 검사 먼저 해주세요.");
+      window.alert("유효하지 않은 이메일 주소입니다.");
+      setEmailChk(false);
     }
   };
-  const emailCheckHandler = async (e) => {
-    e.preventDefault();
-    await axios.post("/api/emailcheck", { email }).then((response) => {
-      if (response.headers.name === "success") {
-        setIdchk(true);
-        window.alert(response.data);
-      } else if (response.headers.name === undefined) {
-        window.alert(response.data);
-      } else if (response.headers.name === "useid") {
-        window.alert(response.data);
-      } else {
-        window.alert("관리자에게 문의하세요.");
-      }
-    });
+
+  const handle = {
+    selectAddress: (data) => {
+      setAddress(data.address);
+      setZipcode(data.zonecode);
+      setOpenPost(false);
+    },
+    addressHandler: () => {
+      setOpenPost((current) => !current);
+    },
   };
   // 전화번호 정규식
   const phoneHandler = (e) => {
@@ -49,6 +90,13 @@ function Register() {
       setPhone(e.target.value);
     }
   };
+  // 이메일 정규식
+  const isEmailCheck = (email) => {
+    // eslint-disable-next-line
+    let exp = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+    return exp.test(email);
+  };
+  // 전화번호에 자동 하이픈 & 숫자만 입력가능하게
   useEffect(() => {
     if (phone.length === 10) {
       setPhone(phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"));
@@ -77,10 +125,11 @@ function Register() {
           <input
             type="text"
             name="email"
+            required
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setIdchk(false);
+              setEmailChk(false);
             }}
           />
           <input
@@ -95,6 +144,7 @@ function Register() {
           <input
             type="password"
             name="passwd"
+            required
             placeholder="8자 이상 입력해주세요."
             value={passwd}
             onChange={(e) => setPasswd(e.target.value)}
@@ -102,7 +152,13 @@ function Register() {
         </div>
         <div>
           <p>비밀번호 확인 * </p>
-          <input type="password" name="passwd2" />
+          <input
+            type="password"
+            name="passwd2"
+            value={passwd2}
+            required
+            onChange={(e) => setPasswd2(e.target.value)}
+          />
         </div>
         <div>
           <p>이름 * </p>
@@ -110,6 +166,7 @@ function Register() {
             type="text"
             name="username"
             value={username}
+            required
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -119,21 +176,47 @@ function Register() {
             type="text"
             name="phone"
             onChange={phoneHandler}
+            required
             value={phone}
           />
         </div>
         <div className="address-wrap">
-          <p>우편번호 *</p>
+          <p>우편번호</p>
           <input
             type="text"
             id="postcode"
+            name="postcode"
             className="postcode"
             placeholder="우편번호"
+            readOnly
+            value={zipcode}
           />
-          <input type="button" className="findPostcode" value="우편번호 찾기" />
-          <p>주소 *</p>
-          <input type="text" id="address" placeholder="주소" />
-          <input type="text" id="detailAddress" placeholder="상세주소" />
+          <input
+            type="button"
+            className="findPostcode"
+            value="우편번호 찾기"
+            onClick={handle.addressHandler}
+          />
+          {openPost && (
+            <DaumPostcode onComplete={handle.selectAddress} autoClose={false} />
+          )}
+          <p>주소</p>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            placeholder="주소"
+            value={address}
+            readOnly
+          />
+          <input
+            type="text"
+            id="address2"
+            name="address2"
+            value={address2}
+            placeholder="상세주소"
+            onChange={(e) => setAddress2(e.target.value)}
+          />
         </div>
         <div>
           <input type="checkbox" id="agreebox" required />

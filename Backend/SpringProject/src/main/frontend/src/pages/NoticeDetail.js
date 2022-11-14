@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPen, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "../styles/NoticeDetail.css";
 
@@ -15,13 +15,18 @@ function NoticeDetail() {
         </div>
       </div>
       <div className="content-wrap">
-        <div>아이디 / 작성날짜</div>
+        <div>
+          <span>아이디</span>
+          <span>작성날짜</span>
+        </div>
         <div className="review-content">
           내용
           <div>사진</div>
         </div>
       </div>
-      <Link to="/notice">목록으로 가기</Link>
+      <Link to="/notice">
+        <FontAwesomeIcon icon={faAngleLeft} /> 목록으로 가기
+      </Link>
     </div>
   );
 }

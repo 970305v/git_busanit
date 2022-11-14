@@ -19,7 +19,7 @@ function ProductDetail() {
         <img></img>
         <div className="product-title-wrap">
           <h3>프레쉬 치약</h3>
-          <p>후기</p>
+          <p>후기(별점)</p>
           <p>가격</p>
           <p>
             자연에서 찾은 허브에 민트향을 더해 보다 상쾌하고 건강하게
@@ -29,9 +29,13 @@ function ProductDetail() {
           <span>3,000원 (50,000원 이상 구매 시 무료)</span>
           <p>수량</p>
           <div className="add-stock">
-            <a onClick={minus}>-</a>
+            <a href={() => false} onClick={minus}>
+              -
+            </a>
             <span>{counter}</span>
-            <a onClick={plus}>+</a>
+            <a href={() => false} onClick={plus}>
+              +
+            </a>
           </div>
           <div className="product-price">
             <p>주문수량</p>

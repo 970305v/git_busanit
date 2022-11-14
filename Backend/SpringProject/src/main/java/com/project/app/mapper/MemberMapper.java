@@ -3,6 +3,7 @@ package com.project.app.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.project.app.dto.MemberDTO;
 
@@ -21,5 +22,9 @@ public interface MemberMapper {
 		// 개수 가져오기
 		public int selectDataCount();
 		// 이메일 중복확인
-		public int emailCheck(String email);
+		public int emailCheck(String mEmail);
+		// 로그인
+		public int userLogin(@Param("mEmail") String mEmail,@Param("mPwd") String mPwd);
+		// 암호화 로그인
+		public String getUserAccount(@Param("mEmail") String mEmail);
 }
