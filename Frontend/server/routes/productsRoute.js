@@ -36,7 +36,8 @@ router.get("/products", (req, res) => {
   });
 });
 
-router.post("/product/upload", upload.single("pImage1"), (req, res) => {
+router.post("/products/upload", upload.single("pImage1"), (req, res) => {
+  console.log(req.body);
   const { pGender, pCaregory, pName, pStock, pPrice, pContent } = req.body;
   const { filename } = req.file;
   let sql =

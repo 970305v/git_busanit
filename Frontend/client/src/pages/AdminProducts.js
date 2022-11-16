@@ -7,7 +7,7 @@ import "../styles/AdminProducts.css";
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);
-  async function getProducts() {
+  const getProducts = async () => {
     await axios.get("/products").then((response) => {
       console.log(response);
       if (response.data.status === 201) {
@@ -17,7 +17,7 @@ function AdminProducts() {
         window.alert("Failed.");
       }
     });
-  }
+  };
 
   const deleteItem = () => {};
   useEffect(() => {
@@ -37,7 +37,7 @@ function AdminProducts() {
               </div>
               <div className="button-right">
                 <button>
-                  <a href="/admin/product/upload">상품등록</a>
+                  <Link to="upload">상품등록</Link>
                 </button>
               </div>
             </div>
@@ -110,6 +110,7 @@ function AdminProducts() {
                             type="text"
                             style={{ width: "90%" }}
                             value={product.pPrice}
+                            readOnly
                           />
                         </td>
                         <td style={{ width: "5%" }}>
@@ -117,6 +118,7 @@ function AdminProducts() {
                             type="text"
                             style={{ width: "90%" }}
                             value={product.pStock}
+                            readOnly
                           />
                         </td>
                         <td>{product.pRegdate}</td>

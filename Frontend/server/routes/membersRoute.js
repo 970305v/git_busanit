@@ -89,9 +89,14 @@ router.get("/mypage/:idx", (req, res) => {
     if (err) {
       throw err;
     }
-    console.log(user);
     res.send({ status: 200, user });
   });
+});
+
+router.post("/qnawrite", (req, res) => {
+  console.log(req.body);
+  let sql =
+    "INSERT INTO qna(qId, qCategory, qContent, secret, mId) VALUES(NULL, ?, ?, ?, ?, ?);";
 });
 
 module.exports = router;

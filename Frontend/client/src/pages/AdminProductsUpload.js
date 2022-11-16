@@ -23,9 +23,10 @@ function AdminProductsUpload() {
     formData.append("pPrice", pPrice);
     formData.append("pImage1", pImage1);
     formData.append("pContent", pContent);
-    await axios.post("/product/upload", formData).then((response) => {
+    await axios.post("/products/upload", formData).then((response) => {
       if (response.data.status === 201) {
         window.alert(response.data.msg);
+        window.location.assign("/admin");
       } else {
         window.alert("상품 등록에 실패했습니다.");
       }

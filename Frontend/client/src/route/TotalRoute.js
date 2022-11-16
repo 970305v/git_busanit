@@ -17,6 +17,7 @@ import ProductDetail from "../pages/ProductDetail";
 import AdminNav from "../components/layout/AdminNav";
 import AdminUsers from "../pages/AdminUsers";
 import AdminProducts from "../pages/AdminProducts";
+import AdminProductsUpload from "../pages/AdminProductsUpload";
 import AdminNotice from "../pages/AdminNotice";
 import AdminReview from "../pages/AdminReview";
 import AdminQnA from "../pages/AdminQnA";
@@ -50,7 +51,7 @@ function TotalRoute({ isLogin, isAdmin }) {
           <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/qna/:id" element={<QnADetail />} />
           <Route path="/review/write" element={<ReviewWrite />} />
-          <Route path="/qnaWrite" element={<QnAWrite />} />
+          <Route path="/qnawrite" element={<QnAWrite />} />
           <Route path="/all" element={<AllProduct />} />
           <Route path="/men" element={<MenProduct />} />
           <Route path="/women" element={<WomenProduct />} />
@@ -69,6 +70,7 @@ function TotalRoute({ isLogin, isAdmin }) {
           <Route path="/admin" element={<AdminNav />}>
             <Route path="users" element={<AdminUsers />} />
             <Route path="products" element={<AdminProducts />} />
+            <Route path="products/upload" element={<AdminProductsUpload />} />
             <Route path="notice" element={<AdminNotice />} />
             <Route path="noticeWrite" element={<NoticeWrite />} />
             <Route path="review" element={<AdminReview />} />

@@ -31,12 +31,14 @@ CREATE TABLE product(
 
 CREATE TABLE qna(
     qId INT auto_increment primary key,
-    qCaregory VARCHAR(20) NOT NULL,
+    qCategory VARCHAR(20) NOT NULL,
     pId INT,
     mId INT,
+    pName VARCHAR(200),
     qTitle VARCHAR(100) NOT NULL,
     qContent TEXT NOT NULL,
     qfile VARCHAR(255),
+    qSecret BOOLEAN,
     qHit INT(50),
     qRegdate DATE,
     FOREIGN KEY (pId) REFERENCES product (pId),

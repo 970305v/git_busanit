@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/QnA.css";
 
@@ -54,9 +54,9 @@ function QnA() {
           </form>
         </div>
         <div className="admin-btn">
-          <a href="/QnAWrite">
+          <Link to="/qnawrite">
             <button>글쓰기</button>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="pagination">
