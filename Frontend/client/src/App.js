@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import UserRoutes from "./Routes/UserRoutes";
+import TotalRoute from "./route/TotalRoute";
 
 function App() {
-  const [user, setUser] = useState(localStorage.getItem("token"));
+  const [isLogin, setIsLogin] = useState(localStorage.getItem("token"));
+  const [isAdmin, setIsAdmin] = useState();
+
+  useEffect(() => {
+    if (localStorage.getItem("auth") === "admin") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, []);
   return (
     <>
-      <UserRoutes user={user} />
+      <TotalRoute isLogin={isLogin} isAdmin={isAdmin} />
     </>
   );
 }

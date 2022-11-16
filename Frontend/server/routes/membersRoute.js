@@ -70,7 +70,9 @@ router.post("/login", (req, res) => {
       bcrypt.compare(req.body.passwd, user[0].mPwd, (err, result) => {
         if (result) {
           res.send({
+            idx: user[0].mId,
             token: user[0].mPwd,
+            auth: user[0].mAuth,
             status: 201,
           });
         } else {
@@ -78,6 +80,17 @@ router.post("/login", (req, res) => {
         }
       });
     }
+  });
+});
+
+router.get("/mypage/:idx", (req, res) => {
+  let sql = "SELECT * FROM member WHERE mId = ?;";
+  db.query(sql, [req.params.idx], (err, user) => {
+    if (err) {
+      throw err;
+    }
+    console.log(user);
+    res.send({ status: 200, user });
   });
 });
 

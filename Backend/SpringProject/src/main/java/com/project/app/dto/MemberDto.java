@@ -1,6 +1,17 @@
 package com.project.app.dto;
 
-public class MemberDTO {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MemberDto {
 	private int mId;
 	private String mEmail;
 	private String mPwd;
@@ -9,12 +20,11 @@ public class MemberDTO {
 	private String mPostnum;
 	private String mAddr1;
 	private String mAddr2;
+	private int mPoint;
+	private String mRegdate;
 	
-	public MemberDTO() {}
-
-	public MemberDTO(int mId, String mEmail, String mPwd, String mName, String mPhone, String mPostnum, String mAddr1,
+	public MemberDto(int mId, String mEmail, String mPwd, String mName, String mPhone, String mPostnum, String mAddr1,
 			String mAddr2) {
-		super();
 		this.mId = mId;
 		this.mEmail = mEmail;
 		this.mPwd = mPwd;
@@ -23,6 +33,23 @@ public class MemberDTO {
 		this.mPostnum = mPostnum;
 		this.mAddr1 = mAddr1;
 		this.mAddr2 = mAddr2;
+	}
+
+
+	public int getmPoint() {
+		return mPoint;
+	}
+
+	public void setmPoint(int mPoint) {
+		this.mPoint = mPoint;
+	}
+
+	public String getmRegdate() {
+		return mRegdate;
+	}
+
+	public void setmRegdate(String mRegdate) {
+		this.mRegdate = mRegdate;
 	}
 
 	public int getmId() {
@@ -88,4 +115,5 @@ public class MemberDTO {
 	public void setmAddr2(String mAddr2) {
 		this.mAddr2 = mAddr2;
 	}
+
 }

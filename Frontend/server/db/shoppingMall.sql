@@ -1,91 +1,91 @@
 create database shoppingmall;
 use shoppingmall;
 
-create table member(
-    mId int auto_increment primary key,
-    mEmail varchar(255) not null unique,
-    mPwd varchar(255) not null,
-    mName varchar(255) not null,
-    mPhone varchar(13) not null,
-    mPostnum varchar(5),
-    mAddr1 varchar(255),
-    mAddr2 varchar(255),
-    mPoint int(10) DEFAULT 3000,
-    mManager int(1) DEFAULT 0,
-    mRegdate date DEFAULT (current_date) 
+CREATE TABLE member(
+    mId INT AUTO_INCREMENT PRIMARY KEY,
+    mEmail VARCHAR(255) NOT NULL unique,
+    mPwd VARCHAR(255) NOT NULL,
+    mName VARCHAR(255) NOT NULL,
+    mPhone VARCHAR(13) NOT NULL,
+    mPostnum VARCHAR(5),
+    mAddr1 VARCHAR(255),
+    mAddr2 VARCHAR(255),
+    mPoINT INT(10) DEFAULT 3000,
+    mAuth VARCHAR(10) DEFAULT 'user',
+    mRegdate DATE DEFAULT (current_date) 
 );
 
-create table product(
-    pId int primary key,
-    pName varchar(100) not null,
-    pGender varchar(1) not null,
-    pCaregory varchar(20) not null,
-    pStock int(10) not null,
-    pPrice int(10) not null,
-    pImage1 varchar(255) not null,
-    pImage2 varchar(255),
-    pImage3 varchar(255),
-    pContent text not null,
-    pRegdate date
+CREATE TABLE product(
+    pId INT auto_increment primary key,
+    pName VARCHAR(100) NOT NULL,
+    pGender VARCHAR(5) NOT NULL,
+    pCaregory VARCHAR(20) NOT NULL,
+    pStock INT(10) NOT NULL,
+    pPrice INT(10) NOT NULL,
+    pImage1 VARCHAR(255) NOT NULL,
+    pImage2 VARCHAR(255),
+    pImage3 VARCHAR(255),
+    pContent text NOT NULL,
+    regdate VARCHAR(255) NOT NULL
 );
 
-create table review(
-    rId int auto_increment primary key,
-    oId int,
-    mId int,
-    rTitle varchar(100) not null,
-    rContent text not null,
-    rImage1 varchar(255),
-    rImage2 varchar(255),
-    rImage3 varchar(255),
-    rHit int(50),
-    rRegdate date,
-    FOREIGN KEY (oId) REFERENCES orders (oId),
-    FOREIGN KEY (mId) REFERENCES member (mId)
-);
-
-create table qna(
-    qId int auto_increment primary key,
-    qCaregory varchar(20) not null,
-    pId int,
-    mId int,
-    qTitle varchar(100) not null,
-    qContent text not null,
-    qfile varchar(255),
-    qHit int(50),
-    qRegdate date,
+CREATE TABLE qna(
+    qId INT auto_increment primary key,
+    qCaregory VARCHAR(20) NOT NULL,
+    pId INT,
+    mId INT,
+    qTitle VARCHAR(100) NOT NULL,
+    qContent TEXT NOT NULL,
+    qfile VARCHAR(255),
+    qHit INT(50),
+    qRegdate DATE,
     FOREIGN KEY (pId) REFERENCES product (pId),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
 
-create table notice(
-    nId int auto_increment primary key,
-    mId int,
-    nTitle varchar(100) not null,
-    nContent text not null,
-    nfile varchar(255),
-    nHit int(50),
-    nRegdate date,
+CREATE TABLE notice(
+    nId INT auto_increment primary key,
+    mId INT,
+    nTitle VARCHAR(100) NOT NULL,
+    nContent TEXT NOT NULL,
+    nfile VARCHAR(255),
+    nHit INT(50),
+    nRegdate DATE,
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
 
-create table cart(
-    cId int auto_increment primary key,
-    mId int,
-    pId int,
+CREATE TABLE cart(
+    cId INT auto_increment primary key,
+    mId INT,
+    pId INT,
     FOREIGN KEY (mId) REFERENCES member (mId),
     FOREIGN KEY (pId) REFERENCES product (pId)
 );
 
-create table orders(
-    oId int primary key,
-    mId int,
-    cId int,
-    oPostnum varchar(5),
-    oAddress varchar(500),
-    oPoint varchar(10),
-    oPayment varchar(1), 
-    oDate varchar(100),
+CREATE TABLE orders(
+    oId INT primary key,
+    mId INT,
+    cId INT,
+    oPostnum VARCHAR(5),
+    oAddress VARCHAR(500),
+    oPoINT VARCHAR(10),
+    oPayment VARCHAR(1), 
+    oDate VARCHAR(100),
     FOREIGN KEY (mId) REFERENCES member (mId),
     FOREIGN KEY (cId) REFERENCES cart (cId)
+);
+
+CREATE TABLE review(
+    rId INT auto_increment primary key,
+    oId INT,
+    mId INT,
+    rTitle VARCHAR(100) NOT NULL,
+    rContent TEXT NOT NULL,
+    rImage1 VARCHAR(255),
+    rImage2 VARCHAR(255),
+    rImage3 VARCHAR(255),
+    rHit INT(50),
+    rRegdate DATE,
+    FOREIGN KEY (oId) REFERENCES orders (oId),
+    FOREIGN KEY (mId) REFERENCES member (mId)
 );

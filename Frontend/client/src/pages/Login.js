@@ -5,14 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/Login.css";
 
-function Login() {
+function Login({ isLogin }) {
   const navigate = useNavigate();
   const loginHandler = async (e) => {
     e.preventDefault();
     await axios.post("/login", { email, passwd }).then((response) => {
       if (response.data.status === 201) {
+        localStorage.setItem("idx", response.data.idx);
         localStorage.setItem("token", response.data.token);
-        navigate("/");
+        localStorage.setItem("auth", response.data.auth);
+        window.location.assign("/");
       } else if (response.data.status === 400) {
         window.alert(response.data.msg);
       } else if (response.data.status === 404) {

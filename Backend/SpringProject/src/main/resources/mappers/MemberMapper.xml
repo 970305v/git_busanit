@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.app.mapper.MemberMapper">
+   <insert id="register">
+      INSERT INTO member(mId, mEmail, mPwd, mName, mPhone, mPostnum, mAddr1, mAddr2) VALUES(NULL, #{mEmail}, #{mPwd}, #{mName}, #{mPhone}, #{mPostnum}, #{mAddr1}, #{mAddr2})         
+   </insert>
+   <select id="emailCheck" resultType="int">
+      SELECT COUNT(*) AS 'COUNT' FROM member WHERE mEmail = #{mEmail}
+   </select>
+   <select id="userLogin" resultType="int">
+      SELECT COUNT(*) AS 'COUNT' FROM member WHERE mEmail = #{mEmail} AND mPwd = #{mPwd}
+   </select>
+   <select id="getUserAccount" resultType="com.project.app.dto.MemberDto">
+      SELECT mEmail, mPwd, mName FROM member WHERE mEmail = #{mEmail}
+    </select>
+</mapper>

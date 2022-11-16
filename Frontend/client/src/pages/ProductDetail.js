@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/ProductDetail.css";
 
 function ProductDetail() {
@@ -29,13 +30,9 @@ function ProductDetail() {
           <span>3,000원 (50,000원 이상 구매 시 무료)</span>
           <p>수량</p>
           <div className="add-stock">
-            <a href={() => false} onClick={minus}>
-              -
-            </a>
+            <Link onClick={minus}>-</Link>
             <span>{counter}</span>
-            <a href={() => false} onClick={plus}>
-              +
-            </a>
+            <Link onClick={plus}>+</Link>
           </div>
           <div className="product-price">
             <p>주문수량</p>
