@@ -1,12 +1,9 @@
-body {
-  background-color: #f3f3f3;
-}
 .banner input[id*="slide"] {
   display: none;
 }
 .banner .slidewrap {
-  width: 100vw;
-  height: 300px;
+  width: 90%;
+  height: 600px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -25,15 +22,17 @@ body {
 }
 .banner .slidelist li img {
   width: 100%;
-  height: 300px;
+  margin: 0 auto;
+  height: 600px;
 }
 .banner .slidelist label {
   position: absolute;
   z-index: 10;
-  top: 130px;
+  top: 280px;
   padding: 0 50px;
   cursor: pointer;
   font-size: 40px;
+  color: white;
 }
 .banner .slidelist .left {
   left: 30px;
@@ -55,6 +54,9 @@ body {
   width: 50%;
   margin: 50px auto;
   text-align: center;
+}
+.about span {
+  font-size: 30px;
 }
 .about p {
   margin: 20px 0;
@@ -79,7 +81,7 @@ body {
 }
 .prodBanner,
 .reviewBanner {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -87,7 +89,9 @@ body {
 .ProdItems {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 20px;
   text-align: center;
+  margin: 10px 20px;
 }
 .ProdItem img,
 .reviewItem img {
@@ -97,12 +101,14 @@ body {
 .reviewItems {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
   text-align: center;
+  margin: 10px 20px;
 }
 .prodLeft,
 .prodRight {
   font-size: 40px;
-  color: #666666;
+  color: black;
 }
 .ProdItem span {
   font-size: 14px;
