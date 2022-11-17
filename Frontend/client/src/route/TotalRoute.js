@@ -49,7 +49,7 @@ function TotalRoute({ isLogin, isAdmin }) {
           <Route path="/qna" element={<QnA />} />
           <Route path="/review/:id" element={<ReviewDetail />} />
           <Route path="/notice/:id" element={<NoticeDetail />} />
-          <Route path="/qna/:id" element={<QnADetail />} />
+          <Route path="/qna/:id" element={<QnADetail isAdmin={isAdmin} />} />
           <Route path="/review/write" element={<ReviewWrite />} />
           <Route path="/qnawrite" element={<QnAWrite />} />
           <Route path="/all" element={<AllProduct />} />

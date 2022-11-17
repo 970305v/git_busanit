@@ -1,38 +1,45 @@
 .title-wrap {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
-.review-content {
-    width: 100%;
-    height: 400px;
-    border: 1px solid black;
+.qna-content {
+  width: 100%;
+  border-top: 1px solid #c1c0b6;
+  border-bottom: 1px solid #c1c0b6;
+}
+
+.qna-img-box {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 30%);
 }
 
 .answer-box {
-    padding: 15px 0 15px 0;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+  padding: 15px 0 15px 0;
+  border-top: 1px solid #c1c0b6;
+  border-bottom: 1px solid #c1c0b6;
 }
 
 .write-box input {
-    width: 100%;
+  width: 100%;
 }
 
 .write-box textarea {
-    width: 100%;
-    height: 200px;
-    padding: 12px 12px;
-    border: 1px solid #000;
-    outline: none;
-    resize: none;
+  font-family: inherit;
+  width: 100%;
+  height: 200px;
+  padding: 12px 12px;
+  border: 1px solid #000;
+  outline: none;
+  resize: none;
 }
 
 .write-box {
-    position: relative;
+  position: relative;
 }
 .write-box button {
-    position: absolute;
-    right: 10px;
-    bottom: 20px;
+  position: absolute;
+  right: 10px;
+  bottom: 20px;
 }

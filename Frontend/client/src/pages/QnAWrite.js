@@ -5,31 +5,42 @@ import "../styles/QnAWrite.css";
 
 function QnAWrite() {
   const [qCategory, setQCategory] = useState("");
+  const [pId, setPId] = useState(0);
   const [qTitle, setQTitle] = useState("");
-  const [pName, setPName] = useState("");
+  const [qFile, setQFile] = useState("");
   const [qContent, setQContent] = useState("");
-  const [secret, setSecret] = useState(false);
+  const [qSecret, setQSecret] = useState(false);
+  const [qSearch, setQSearch] = useState("");
 
   const secretChk = () => {
     document.getElementById("secret-chk").checked
-      ? setSecret(true)
-      : setSecret(false);
+      ? setQSecret(true)
+      : setQSecret(false);
   };
 
   const qnaWriteHandler = async (e) => {
     e.preventDefault();
-    await axios
-      .post("/qnawrite", {
-        qCategory,
-        qTitle,
-        pName,
-        qContent,
-        secret,
-        mId: localStorage.getItem("idx"),
-      })
-      .then((response) => {
-        console.log(response);
-      });
+    let formData = new FormData();
+    formData.append("qCategory", qCategory);
+    formData.append("pId", pId);
+    formData.append("mId", localStorage.getItem("idx"));
+    formData.append("qTitle", qTitle);
+    formData.append("qFile", qFile);
+    formData.append("qContent", qContent);
+    formData.append("qSecret", qSecret);
+    await axios.post("/qnawrite", formData).then((response) => {
+      if (response.data.status === 201) {
+        window.alert(response.data.msg);
+        window.location.assign("/qna");
+      } else {
+        window.alert("문의 등록에 실패했습니다.");
+      }
+    });
+  };
+
+  console.log(qSearch);
+  const searchHandler = async () => {
+    await axios.get("/qnawrite", qTitle);
   };
 
   return (
@@ -60,14 +71,39 @@ function QnAWrite() {
               type="text"
               value={qTitle}
               onChange={(e) => setQTitle(e.target.value)}
-            ></input>
+            />
           </div>
         </div>
         {/* select option을 상품을 선택한 경우에만 보임 */}
-        <div className="select-product">
-          <span>상품 이름</span>
-          <input type="text"></input>
-        </div>
+
+        {qCategory === "상품" ? (
+          <div className="select-product">
+            <input
+              type="text"
+              value={qSearch}
+              onChange={(e) => setQSearch(e.target.value)}
+              placeholder="상품명을 입력해주세요..."
+            />
+            <input
+              type="button"
+              className="search-btn"
+              value="검색"
+              onClick={searchHandler}
+            />
+            <div className="search-container">
+              <ul className="search-wrap">
+                <li className="search-data">zzz</li>
+              </ul>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        <input
+          name="qFile"
+          onChange={(e) => setQFile(e.target.files[0])}
+          type="file"
+        />
         <div className="write-content-box">
           <textarea
             className="write-contents"

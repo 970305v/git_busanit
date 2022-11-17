@@ -19,8 +19,11 @@ function Mypage() {
       });
       setLoading(false);
     };
+
     fetchData();
   }, []);
+
+  console.log(users);
 
   return (
     <div className="container mypage-gird">

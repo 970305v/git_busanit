@@ -3,7 +3,7 @@ use shoppingmall;
 
 CREATE TABLE member(
     mId INT AUTO_INCREMENT PRIMARY KEY,
-    mEmail VARCHAR(255) NOT NULL unique,
+    mEmail VARCHAR(255) NOT NULL UNIQUE,
     mPwd VARCHAR(255) NOT NULL,
     mName VARCHAR(255) NOT NULL,
     mPhone VARCHAR(13) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE product(
     pImage1 VARCHAR(255) NOT NULL,
     pImage2 VARCHAR(255),
     pImage3 VARCHAR(255),
-    pContent text NOT NULL,
+    pContent TEXT NOT NULL,
     regdate VARCHAR(255) NOT NULL
 );
 
@@ -37,13 +37,22 @@ CREATE TABLE qna(
     pName VARCHAR(200),
     qTitle VARCHAR(100) NOT NULL,
     qContent TEXT NOT NULL,
-    qfile VARCHAR(255),
+    qFile VARCHAR(255),
     qSecret BOOLEAN,
-    qHit INT(50),
-    qRegdate DATE,
-    FOREIGN KEY (pId) REFERENCES product (pId),
+    qHit INT(50) DEFAULT 0,
+    qRegdate DATE DEFAULT (current_date),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
+
+CREATE TABLE qna_comment(
+	qcId INT AUTO_INCREMENT PRIMARY KEY,
+	qId INT,
+	qcWriter VARCHAR(200),
+	qcContent TEXT,
+	qcRegdate DATE DEFAULT (NOW()),
+	FOREIGN KEY (qId) REFERENCES qna (qId)
+);
+
 
 CREATE TABLE notice(
     nId INT auto_increment primary key,

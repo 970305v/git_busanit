@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt"); // hashCode Generate
+const multer = require("multer");
 
 const saltRounds = 10; // hash 암호화 횟수
 const db = require("../db/conn");
@@ -8,6 +9,18 @@ const db = require("../db/conn");
 // middleware
 router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
+router.use(express.static("uploads"));
+
+// multer
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "./uploads");
+  },
+  filename: function (req, file, callback) {
+    callback(null, Date.now() + "_qna_" + file.originalname);
+  },
+});
+const upload = multer({ storage });
 
 // url
 router.post("/emailCheck", (req, res) => {
@@ -93,10 +106,89 @@ router.get("/mypage/:idx", (req, res) => {
   });
 });
 
-router.post("/qnawrite", (req, res) => {
-  console.log(req.body);
+router.get("/qna", (req, res) => {
+  const page = req.query.page;
+  const offset = parseInt(req.query.offset);
+  const startNums = page * offset;
+
+  const search = req.query.searchQuery || "";
+  const qnaSearch = "%" + search + "%";
+
+  let sql = "SELECT COUNT(qId) AS count FROM qna WHERE qTitle LIKE ?;";
+  db.query(sql, [qnaSearch], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      let dataSql =
+        "SELECT * FROM qna WHERE qTitle LIKE ? ORDER BY qId DESC LIMIT ?, ?;";
+      db.query(dataSql, [qnaSearch, startNums, offset], (err, users) => {
+        if (err) {
+          throw err;
+        } else {
+          res.json({
+            users: users,
+            page: page, // 1, 2, 3 ... 페이지
+            totalPageNumber: Math.ceil(result[0].count / offset), // 전체 페이지 수
+            totalRows: result[0].count, // 전체 사용자 수
+          });
+        }
+      });
+    }
+  });
+});
+
+router.get("/qna/:idx", (req, res) => {
   let sql =
-    "INSERT INTO qna(qId, qCategory, qContent, secret, mId) VALUES(NULL, ?, ?, ?, ?, ?);";
+    "SELECT * FROM qna LEFT JOIN qna_comment ON qna.qId = qna_comment.qId WHERE qna.qId = ?;";
+  db.query(sql, [req.params.idx], (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send({ status: 200, result });
+  });
+});
+
+router.post("/qna/:idx", (req, res) => {
+  let sql =
+    "INSERT INTO qna_comment(qcId, qId, qcWriter, qcContent) VALUES(NULL, ?, ?, ?);";
+  db.query(
+    sql,
+    [req.params.idx, req.body.qcWriter, req.body.qcContent],
+    (err, result) => {
+      if (err) {
+        throw err;
+      }
+      res.send({ status: 201, msg: "작성완료" });
+    }
+  );
+});
+
+router.get("/qnawrite", (req, res) => {
+  let sql = "SELECT * FROM product WHERE pName LIKE %?%";
+  console.log(req.body);
+  // db.query(sql, [req.body.qSearch], (err, result) => {
+  //   if (err) throw err;
+
+  //   console.log(result);
+  // });
+});
+
+router.post("/qnawrite", upload.single("qFile"), (req, res) => {
+  const { qCategory, pId, mId, qTitle, qContent } = req.body;
+  const qSecret = JSON.parse(req.body.qSecret);
+  const { filename } = req.file;
+  let sql =
+    "INSERT INTO qna(qId, qCategory, pId, mId, qTitle, qContent, qFile, qSecret) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
+  db.query(
+    sql,
+    [qCategory, pId, mId, qTitle, qContent, filename, qSecret],
+    (err, result) => {
+      if (err) {
+        throw err;
+      }
+      res.send({ status: 201, result, msg: "문의가 작성되었습니다." });
+    }
+  );
 });
 
 module.exports = router;
