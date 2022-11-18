@@ -120,7 +120,7 @@ router.get("/qna", (req, res) => {
       throw err;
     } else {
       let dataSql =
-        "SELECT * FROM qna WHERE qTitle LIKE ? ORDER BY qId DESC LIMIT ?, ?;";
+        "SELECT qna.*, product.pId, product.pName, product.pImage1, member.mEmail FROM qna LEFT JOIN product ON qna.pId = product.pId LEFT JOIN member ON qna.mId = member.mId WHERE qna.qTitle LIKE ? ORDER BY qId DESC LIMIT ?, ?;";
       db.query(dataSql, [qnaSearch, startNums, offset], (err, users) => {
         if (err) {
           throw err;
@@ -163,20 +163,23 @@ router.post("/qna/:idx", (req, res) => {
   );
 });
 
-router.get("/qnawrite", (req, res) => {
-  let sql = "SELECT * FROM product WHERE pName LIKE %?%";
-  console.log(req.body);
-  // db.query(sql, [req.body.qSearch], (err, result) => {
-  //   if (err) throw err;
-
-  //   console.log(result);
-  // });
+router.post("/qnaproduct", (req, res) => {
+  let sql = "SELECT pId, pName FROM product WHERE pName LIKE ?";
+  const searchValue = "%" + req.body.qSearch + "%";
+  db.query(sql, [searchValue], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send({ status: 201, result });
+    }
+  });
 });
 
 router.post("/qnawrite", upload.single("qFile"), (req, res) => {
-  const { qCategory, pId, mId, qTitle, qContent } = req.body;
+  const { qCategory, mId, qTitle, qContent } = req.body;
   const qSecret = JSON.parse(req.body.qSecret);
-  const { filename } = req.file;
+  const { filename } = req.file || "";
+  const pId = JSON.parse(req.body.pId);
   let sql =
     "INSERT INTO qna(qId, qCategory, pId, mId, qTitle, qContent, qFile, qSecret) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
   db.query(
@@ -189,6 +192,25 @@ router.post("/qnawrite", upload.single("qFile"), (req, res) => {
       res.send({ status: 201, result, msg: "문의가 작성되었습니다." });
     }
   );
+});
+
+router.post("/pwchk", (req, res) => {
+  bcrypt.compare(req.body.pw, req.body.hashpw, function (err, result) {
+    if (err) {
+      throw err;
+    } else if (result) {
+      res.send({ status: 201, msg: "비밀번호 확인 완료" });
+    } else {
+      res.send({ status: 404, msg: "비밀번호가 일치하지 않습니다." });
+    }
+  });
+});
+
+router.delete("/delUser/:id", (req, res) => {
+  let sql = "DELETE FROM member WHERE mId = ?;";
+  db.query(sql, [JSON.parse(req.params.id)], (err) => {
+    if (err) throw err;
+  });
 });
 
 module.exports = router;

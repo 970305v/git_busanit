@@ -2,8 +2,8 @@ import "../styles/Loading.css";
 
 const Loading = () => {
   return (
-    <div class="loader-container">
-      <div class="loader"></div>
+    <div className="loader-container">
+      <div className="loader"></div>
     </div>
   );
 };

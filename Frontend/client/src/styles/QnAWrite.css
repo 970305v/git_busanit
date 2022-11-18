@@ -43,34 +43,39 @@ input[type="file"] {
   border: 0;
 }
 
-.select-product {
+.product-search-container {
   position: relative;
   width: 100%;
   display: flex;
   margin-top: 10px;
 }
-.select-product input:first-child {
-  width: 500px;
+.product-search-container input[type="text"] {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 80%;
 }
-.select-product input:nth-child(2) {
-  width: 100%;
+
+.product-search-container input[type="button"] {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  width: 100px;
+  background-color: #ffc107;
 }
 
 .search-container {
   z-index: 3;
-  height: 50vh;
-  width: 500px;
+  width: 80%;
   background-color: #fff;
   position: absolute;
-  top: 45px;
+  top: 38px;
   border: 1px solid #bbb;
-  padding: 15px;
+  border-radius: 3px;
+  padding: 10px;
 }
 .search-container ul li {
-  padding: 10px 8px;
+  padding: 8px 6px;
   width: 100%;
   font-size: 14px;
-  font-weight: bold;
   z-index: 4;
   letter-spacing: 2px;
 }

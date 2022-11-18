@@ -44,6 +44,14 @@ td {
 .qna-table-wrap p {
   font-size: 14px;
 }
+.qna-img-wrap {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.qna-img-wrap img {
+  width: 100%;
+}
 
 .bottom-wrap {
   display: flex;

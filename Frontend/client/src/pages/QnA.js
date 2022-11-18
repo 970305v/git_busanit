@@ -15,6 +15,7 @@ function QnA() {
   const [msg, setMsg] = useState(""); // 데이터 마지막에 표시하는 메시지
   const [keyword, setKeyword] = useState("");
   const [searchWords, setSearchWords] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       await axios
@@ -70,27 +71,30 @@ function QnA() {
                   <td>{data.qCategory}</td>
                   <td>
                     <div className="qna-title">
-                      <a href="!#">
-                        <span>상품이미지</span>
-                      </a>
+                      {data.pImage1 === null ? null : (
+                        <div className="qna-img-wrap">
+                          <Link to="/qna">
+                            <img src={data.pImage1} alt={data.pImage1} />
+                          </Link>
+                        </div>
+                      )}
                       <div>
-                        <Link to={`/qna/${data.qId}`} data={data}>
-                          {" "}
+                        <Link to={`/qna/${data.qId}`}>
                           <p>
                             {data.qSecret ? (
-                              <FontAwesomeIcon icon={faLock} />
-                            ) : (
-                              ""
-                            )}
-
+                              <FontAwesomeIcon
+                                icon={faLock}
+                                style={{ marginRight: "5px" }}
+                              />
+                            ) : null}
                             {data.qTitle}
                           </p>
-                          <p style={{ color: "#8c8c8c" }}>{data.pId}</p>
+                          <p style={{ color: "#8c8c8c" }}>{data.pName}</p>
                         </Link>
                       </div>
                     </div>
                   </td>
-                  <td>{data.mId}</td>
+                  <td>{data.mEmail}</td>
                   <td>{data.qRegdate}</td>
                 </tr>
               );
@@ -116,9 +120,6 @@ function QnA() {
           </Link>
         </div>
       </div>
-      <p>
-        Total Rows : <strong>{rows}</strong> / Page {page + 1} of {pages}
-      </p>
       <p>{msg}</p>
       <nav key={rows} role="navigation">
         <ReactPaginate

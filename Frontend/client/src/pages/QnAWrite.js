@@ -1,16 +1,20 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/QnAWrite.css";
 
 function QnAWrite() {
   const [qCategory, setQCategory] = useState("");
-  const [pId, setPId] = useState(0);
+  const [pId, setPId] = useState(null);
+  const [pName, setPName] = useState("");
   const [qTitle, setQTitle] = useState("");
   const [qFile, setQFile] = useState("");
   const [qContent, setQContent] = useState("");
   const [qSecret, setQSecret] = useState(false);
   const [qSearch, setQSearch] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchData, setSearchData] = useState([]);
+  const ref = useRef();
 
   const secretChk = () => {
     document.getElementById("secret-chk").checked
@@ -18,6 +22,7 @@ function QnAWrite() {
       : setQSecret(false);
   };
 
+  console.log(pId);
   const qnaWriteHandler = async (e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -38,9 +43,24 @@ function QnAWrite() {
     });
   };
 
-  console.log(qSearch);
+  const handleClickOutSide = (e) => {
+    if (showSearch && !ref.current.contains(e.target)) {
+      setShowSearch(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showSearch) document.addEventListener("mousedown", handleClickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutSide);
+    };
+  });
+
   const searchHandler = async () => {
-    await axios.get("/qnawrite", qTitle);
+    setShowSearch(true);
+    await axios.post("/qnaproduct", { qSearch }).then((response) => {
+      setSearchData(response.data.result);
+    });
   };
 
   return (
@@ -77,28 +97,60 @@ function QnAWrite() {
         {/* select option을 상품을 선택한 경우에만 보임 */}
 
         {qCategory === "상품" ? (
-          <div className="select-product">
-            <input
-              type="text"
-              value={qSearch}
-              onChange={(e) => setQSearch(e.target.value)}
-              placeholder="상품명을 입력해주세요..."
-            />
-            <input
-              type="button"
-              className="search-btn"
-              value="검색"
-              onClick={searchHandler}
-            />
-            <div className="search-container">
-              <ul className="search-wrap">
-                <li className="search-data">zzz</li>
-              </ul>
-            </div>
+          <div className="product-search-container" ref={ref}>
+            {pId > 0 ? (
+              <>
+                {" "}
+                <input type="text" value={pName} readOnly />
+                <input
+                  type="button"
+                  className="search-btn"
+                  value="취소"
+                  onClick={() => {
+                    setPId(null);
+                    setPName("");
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={qSearch}
+                  onChange={(e) => setQSearch(e.target.value)}
+                  placeholder="상품명을 입력해주세요..."
+                  required
+                />
+                <input
+                  type="button"
+                  className="search-btn"
+                  value="검색"
+                  onClick={searchHandler}
+                />
+              </>
+            )}
+
+            {showSearch ? (
+              <div className="search-container">
+                {searchData.map((data, key) => {
+                  return (
+                    <ul
+                      className="search-wrap"
+                      key={key}
+                      onClick={() => {
+                        setPId(data.pId);
+                        setPName(data.pName);
+                        setShowSearch(false);
+                      }}
+                    >
+                      <li className="search-data">{data.pName}</li>
+                    </ul>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
         <input
           name="qFile"
           onChange={(e) => setQFile(e.target.files[0])}

@@ -5,14 +5,14 @@ import "../styles/QnADetail.css";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-function QnADetail({ isAdmin }) {
+function QnADetail({ isAdmin, secretdata }) {
   const [datas, setDatas] = useState([]);
   const [qcContent, setQcContent] = useState("");
-  const idx = useParams();
+  const idx = useParams().id;
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`/qna/${idx.id}`, idx.id).then((response) => {
+      await axios.get(`/qna/${idx}`, idx).then((response) => {
         setDatas(response.data.result);
       });
     };
@@ -22,8 +22,8 @@ function QnADetail({ isAdmin }) {
   const commentHandler = async (e) => {
     e.preventDefault();
     await axios
-      .post(`/qna/${idx.id}`, {
-        idx: idx.id,
+      .post(`/qna/${idx}`, {
+        idx,
         qcWriter: localStorage.getItem("email"),
         qcContent,
       })
@@ -46,11 +46,20 @@ function QnADetail({ isAdmin }) {
               <h2>
                 [{data.qCategory}] {data.qTitle}
               </h2>
-              <div>
-                <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />{" "}
-                /
-                <FontAwesomeIcon icon={faTrash} />
-              </div>
+              {data.mId.value === localStorage.getItem("idx") ? (
+                <div>
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    style={{ marginRight: "5px" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    style={{ marginLeft: "5px" }}
+                  />
+                </div>
+              ) : (
+                <p>{data.mId}</p>
+              )}
             </div>
             <div className="content-wrap">
               <div>
@@ -63,7 +72,9 @@ function QnADetail({ isAdmin }) {
                 {data.qContent}
                 <div className="qna-img-box">
                   <div className="img-box">
-                    <img src={`../${data.qFile}`} alt={data.qFile} />
+                    {data.qFile === null ? null : (
+                      <img src={`../${data.qFile}`} alt={data.qFile} />
+                    )}
                   </div>
                 </div>
               </div>
@@ -80,21 +91,12 @@ function QnADetail({ isAdmin }) {
                 <span>
                   <small>{data.qcRegdate}</small>
                 </span>
-                {/* <span>
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    style={{ marginRight: "5px" }}
-                  />{" "}
-                  / <FontAwesomeIcon icon={faTrash} />
-                </span> */}
               </div>
               <div>{data.qcContent}</div>
             </div>
           );
         })}
-        {!isAdmin ? (
-          ""
-        ) : (
+        {!isAdmin ? null : (
           <div className="write-box">
             <form method="post" onSubmit={commentHandler}>
               <label>답변 작성하기</label>
