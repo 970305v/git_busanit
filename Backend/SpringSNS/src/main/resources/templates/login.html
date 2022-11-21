@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+  <html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+   <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link th:href="@{/css/login.css}" rel="stylesheet" />
+    <title>로그인</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1><a th:href="@{/}">Instagram</a></h1>
+      <form>
+        <div class="login-wrap">
+          <input id="userid" type="text" placeholder="이메일" />
+          <input id="passwd" type="password" placeholder="비밀번호" />
+          <button id="btnLogin" type="submit">로그인</button>
+        </div>
+      </form>
+
+      <span
+        >계정이 없으신가요 ?
+        <a href="#n" style="color: #52adff">가입하기</a></span
+      >
+    </div>
+    <script th:inline="javascript">
+      const userid = document.getElementById("userid");
+      const passwd = document.getElementById("passwd");
+      const loginBtn = document.getElementById("btnLogin");
+      userid.addEventListener("keyup", () => {
+        let isIdvalue = userid.value.length;
+        let isPwValue = passwd.value.length;
+
+        if (0 < isIdvalue && 0 < isPwValue) {
+          loginBtn.classList.add("active");
+        } else {
+          loginBtn.classList.remove("active");
+        }
+      });
+
+      passwd.addEventListener("keyup", () => {
+        let isIdvalue = userid.value.length;
+        let isPwValue = passwd.value.length;
+
+        if (0 < isIdvalue && 0 < isPwValue) {
+          loginBtn.classList.add("active");
+        } else {
+          loginBtn.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>

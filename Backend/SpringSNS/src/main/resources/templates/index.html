@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+  <html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+   <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
+     <link th:href="@{/css/index.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <!--HEADER-->
+    <header>
+      <div class="wrap">
+        <a href="#n" class="logo"><h1>Instagram</h1></a>
+        <div class="search-wrap">
+          <input type="text" placeholder="검색" />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="icon-wrap">
+          <ul>
+            <li class="research"><a href="#">탐색</a></li>
+            <li class="like"><a href="#">좋아요</a></li>
+            <li class="mypage"><a href="#">my profile</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!--//HEADER-->
+
+    <!---MAIN--->
+    <main class="container wrap">
+      <aside>
+        <!--my profile-->
+        <div class="my_profile">
+          <a href="#n" class="profile_img">
+            <img class="round-img" />
+          </a>
+          <span class="my_id">
+            <a href="#n" class="txt_id">My ID</a>
+            <p>My Nickname</p>
+          </span>
+        </div>
+
+        <!--WIDGET - story-->
+        <article class="widget stories">
+          <div class="widget_ttl">
+            <span>스토리</span>
+            <a href="#n">모두 보기</a>
+          </div>
+
+          <section class="list_story">
+            <div class="story">
+              <a href="#n" class="follower_img">
+                <img class="round-img" />
+              </a>
+              <span class="user_id">
+                <a href="#n" class="txt_id">Fallowing ID</a>
+                <p>3h ago</p>
+              </span>
+            </div>
+            <div class="story">
+              <a href="#n" class="follower_img">
+                <img class="round-img" />
+              </a>
+              <span class="user_id">
+                <a href="#n" class="txt_id">Fallowing ID</a>
+                <p>3h ago</p>
+              </span>
+            </div>
+            <div class="story">
+              <a href="#n" class="follower_img">
+                <img class="round-img" />
+              </a>
+              <span class="user_id">
+                <a href="#n" class="txt_id">Fallowing ID</a>
+                <p>3h ago</p>
+              </span>
+            </div>
+          </section>
+        </article>
+        <article class="widget recommends">
+          <div class="widget_ttl">
+            <span>회원님을 위한 추천</span>
+            <a href="#n">모두 보기</a>
+          </div>
+
+          <section class="list_recommend">
+            <div class="recommend">
+              <a href="#n" class="recommend_img">
+                <img class="round-img" />
+              </a>
+              <span class="user_id">
+                <a href="#n" class="txt_id">recommender ID</a>
+                <p>follwor list</p>
+              </span>
+              <button type="button">팔로우</button>
+            </div>
+            <div class="recommend">
+              <a href="#n" class="recommend_img">
+                <img class="round-img" />
+              </a>
+              <span class="user_id">
+                <a href="#n" class="txt_id">recommender ID</a>
+                <p>follwor list</p>
+              </span>
+              <button type="button">팔로우</button>
+            </div>
+            <div class="recommend">
+              <a href="#n" class="recommend_img">
+                <img class="round-img" />
+              </a>
+              <span class="user_id">
+                <a href="#n" class="txt_id">recommender ID</a>
+                <p>follwor list</p>
+              </span>
+              <button type="button">팔로우</button>
+            </div>
+          </section>
+        </article>
+        <!--//WIDGET - recommend-->
+      </aside>
+
+      <!--FEED BOARD-->
+      <div class="feed_board">
+        <!--FEED COMPONENT-->
+        <article class="feed">
+          <!--top-->
+          <div class="new_poster">
+            <a href="#n" class="poster_img">
+              <img class="round-img" />
+            </a>
+            <a href="#n" class="poster_id txt_id">Following ID</a>
+            <button><i class="fas fa-ellipsis-h"></i>옵션 더보기</button>
+          </div>
+
+          <!--content-->
+          <section class="feed_imgs">
+            <img />
+            <div class="interactions">
+              <div class="my_emotion">
+                <button type="button"><i class="far fa-heart"></i>like</button>
+                <button type="button">
+                  <i class="far fa-comment"></i>write_comment
+                </button>
+                <button type="button">
+                  <i class="far fa-paper-plane"></i>send_DM
+                </button>
+              </div>
+              <div class="pagnation"></div>
+              <button type="button" class="bookmark">
+                <i class="far fa-bookmark"></i>bookmark
+              </button>
+            </div>
+            <p>
+              <a href="#n" class="like_user">
+                <img class="round-img" />
+                <span class="txt_id">강당당</span>
+              </a>
+              님
+              <a href="#n" class="like_num txt_id">외 10명</a>
+              이 좋아합니다
+            </p>
+          </section>
+
+          <section class="feed_txt">
+            <a href="#n" class="txt_id">User ID</a>
+            <span
+              >건방진 고양이. 나의 찍찍 펀치를 받아라. <br />
+              건방진 고양이. 나의 찍찍 펀치를 받아라. 건방진 고양이. 나의 찍찍
+              펀치를 받아라. 건방진 고양이. 나의 찍찍 펀치를 받아라. 건방진
+              고양이. 나의 찍찍 펀치를 받아라.</span
+            >
+            <a href="#n" class="more">더보기</a>
+          </section>
+
+          <div class="comments">
+            <div id="listComment" class="list_comment">
+              <p class="txt_comment">
+                <span>
+                  <a href="#n" class="txt_id">follow ID</a>
+                  <span>나는 냥냥</span>
+                </span>
+                <button id="delete" type="button">X</button>
+              </p>
+            </div>
+            <form id="post" class="post_comment">
+              <textarea
+                id="newComment"
+                type="in"
+                placeholder="댓글 달기..."
+              ></textarea>
+              <button id="btnPost" type="submit">게시</button>
+            </form>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>
