@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/css/register.css}" rel="stylesheet" />
+    <title>회원가입</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Instagram</h1>
+      <form th:action="@{/registProc}" method="post">
+        <div class="register-wrap">
+          <input
+            name="mUserid"
+            id="mUserid"
+            type="text"
+            placeholder="아이디"
+          />
+          <button class="idChk" id="idChk">중복확인</button>
+          <input
+            name="mPwd"
+            id="mPwd"
+            type="password"
+            placeholder="비밀번호"
+          />
+          <input
+            name="passwd2"
+            id="passwd2"
+            type="password"
+            placeholder="비밀번호 확인"
+          />
+          <input
+            name="mName"
+            id="mName"
+            type="text"
+            placeholder="이름"
+          />
+          <input
+            name="mPhone"
+            id="mPhone"
+            type="text"
+            placeholder="전화번호"
+          />
+
+          <button class="register-btn" type="submit">회원가입</button>
+        </div>
+      </form>
+
+      <span
+        >이미 계정이 있으신가요 ?
+        <a href="#n" style="color: #52adff">로그인</a></span
+      >
+    </div>
+    <script th:inline="javascript">
+      const userid = document.getElementById("mUserid");
+      const chkBtn = document.getElementById("idChk");
+      userid.addEventListener("keyup", () => {
+        let isIdvalue = userid.value.length;
+        if (0 < isIdvalue) {
+          chkBtn.classList.add("active");
+        } else {
+          chkBtn.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>

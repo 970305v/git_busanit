@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+  <html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+   <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 정보</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
+     <link th:href="@{/css/mypage.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <!--HEADER-->
+    <header>
+      <div class="wrap">
+        <a href="#n" class="logo"><h1>Instagram</h1></a>
+        <div class="search-wrap">
+          <input type="text" placeholder="검색" />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="icon-wrap">
+          <ul>
+            <li class="research"><a href="#">탐색</a></li>
+            <li class="like"><a href="#">좋아요</a></li>
+            <li class="mypage"><a href="#">my profile</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!--//HEADER-->
+    <main class="container wrap">
+      <div class="profile-container">
+        <div class="profile-img-wrap"><img class="profile-img" /></div>
+        <div>
+          <h2>프로필 아이디</h2>
+          <button>프로필 편집</button>
+          <button>게시물 쓰기</button>
+          <p>게시물 : <strong> 0 </strong></p>
+          <p><strong>이름</strong></p>
+          <p>자기소개</p>
+        </div>
+      </div>
+      <div class="grid-container">
+        <div class="grid-box">1번 게시물</div>
+        <div class="grid-box">1번 게시물</div>
+        <div class="grid-box">1번 게시물</div>
+        <div class="grid-box">1번 게시물</div>
+        <div class="grid-box">1번 게시물</div>
+        <div class="grid-box">1번 게시물</div>
+      </div>
+    </main>
+  </body>
+</html>
