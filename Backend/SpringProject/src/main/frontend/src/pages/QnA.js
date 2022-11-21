@@ -1,8 +1,50 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import "../styles/QnA.css";
+import ReactPaginate from "react-paginate";
 
 function QnA() {
+  const [qData, setQData] = useState([]);
+  const [rows, setRows] = useState(0); // 전체 게시물 수
+  const [page, setPage] = useState(0); // 현재 페이지
+  const [pages, setPages] = useState(0); // 전체 페이지
+  const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
+  const [msg, setMsg] = useState(""); // 데이터 마지막에 표시하는 메시지
+  const [keyword, setKeyword] = useState("");
+  const [searchWords, setSearchWords] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`/qna?page=${page}&offset=${offset}&searchQuery=${keyword}`)
+        .then((response) => {
+          setQData(response.data.users);
+          setRows(response.data.totalRows);
+          setPages(response.data.totalPageNumber);
+          setPage(response.data.page);
+        });
+    };
+    fetchData();
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+    if (selected === pages - 1) {
+      setMsg("No More Data");
+    } else {
+      setMsg("");
+    }
+  };
+  const searchData = async (e) => {
+    e.preventDefault();
+    setKeyword(searchWords);
+    setPage(0); // 검색 후 첫페이지로 보내기
+    setSearchWords("");
+  };
+
   return (
     <div className="container">
       <div className="title-container">
@@ -22,46 +64,84 @@ function QnA() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>상품</td>
-              <td>
-                <div className="qna-title">
-                  <a href="!#">
-                    <span>상품이미지</span>
-                  </a>
-
-                  <div>
-                    <Link to="/qna/:id">
-                      {" "}
-                      <p>(자물쇠)제목</p>
-                      <p style={{ color: "#8c8c8c" }}>부제목</p>
-                    </Link>
-                  </div>
-                </div>
-              </td>
-              <td>이***</td>
-              <td>2000.01.01</td>
-            </tr>
+            {qData.map((data, key) => {
+              return (
+                <tr key={key}>
+                  <td>{data.qId}</td>
+                  <td>{data.qCategory}</td>
+                  <td>
+                    <div className="qna-title">
+                      {data.pImage1 === null ? null : (
+                        <div className="qna-img-wrap">
+                          <Link to="/qna">
+                            <img src={data.pImage1} alt={data.pImage1} />
+                          </Link>
+                        </div>
+                      )}
+                      <div>
+                        <Link to={`/qna/${data.qId}`}>
+                          <p>
+                            {data.qSecret ? (
+                              <FontAwesomeIcon
+                                icon={faLock}
+                                style={{ marginRight: "5px" }}
+                              />
+                            ) : null}
+                            {data.qTitle}
+                          </p>
+                          <p style={{ color: "#8c8c8c" }}>{data.pName}</p>
+                        </Link>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{data.mEmail}</td>
+                  <td>{data.qRegdate}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <div className="bottom-wrap">
         <div>
-          <form method="post">
-            <input type="text" placeholder="검색어를 입력하세요." />
+          <form method="post" onSubmit={searchData}>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요."
+              value={searchWords}
+              onChange={(e) => setSearchWords(e.target.value)}
+            />
             <button>검색</button>
           </form>
         </div>
         <div className="admin-btn">
-          <a href="/QnAWrite">
+          <Link to="/qnawrite">
             <button>글쓰기</button>
-          </a>
+          </Link>
         </div>
       </div>
-      <div className="pagination">
-        <span>페이징처리</span>
-      </div>
+      <p>{msg}</p>
+      <nav key={rows} role="navigation">
+        <ReactPaginate
+          breakLabel="..."
+          previousLabel="<"
+          nextLabel=">"
+          onPageChange={changePage}
+          pageCount={pages}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={2}
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+        />
+      </nav>
     </div>
   );
 }

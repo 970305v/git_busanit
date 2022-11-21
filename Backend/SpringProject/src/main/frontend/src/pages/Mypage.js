@@ -1,6 +1,35 @@
 import "../styles/Mypage.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import PasswordModal from "./PasswordModal";
+import Loading from "./Loading";
 
 function Mypage() {
+  const email = localStorage.getItem("email");
+  const [users, setUsers] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // 모달창 노출
+  const showModal = () => {
+    setModalOpen(true);
+  };
+
+  const logout = () => {
+    localStorage.clear();
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`/api/mypage?mEmail=${email}`, { mEmail: email })
+        .then((response) => {
+          setUsers(response.data.userInfo);
+        });
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="container mypage-gird">
       <div className="userInfo-left">
@@ -54,49 +83,101 @@ function Mypage() {
       <form method="post">
         <div className="userInfo-right">
           <div className="info-title">
-            <span>회원 정보</span>
+            <span>
+              <strong>{users.mName}</strong> 님 환영합니다.
+            </span>
           </div>
           <div className="logout">
-            <a href="!#">로그아웃</a>
+            <a href="/" onClick={logout}>
+              로그아웃
+            </a>
           </div>
           <div className="input-box">
             <div className="input-item">
-              <p>이메일</p>
-              <input type="text" name="email" />
+              <label>이메일</label>
+              <input
+                type="text"
+                name="email"
+                value={users.mEmail || ""}
+                readOnly
+              />
             </div>
             <div className="input-item">
-              <p>이름</p>
-              <input type="text" name="name" />
+              <label>이름</label>
+              <input
+                type="text"
+                name="name"
+                value={users.mName || ""}
+                readOnly
+              />
             </div>
             <div className="input-item">
-              <p>휴대폰 번호</p>
-              <div className="tel-box">
-                <input type="text" name="tel1" />
-                <p>-</p>
-                <input type="text" name="tel2" />
-                <p>-</p>
-                <input type="text" name="tel3" />
-              </div>
+              <label>전화번호</label>
+              <input
+                type="text"
+                name="tel"
+                value={users.mPhone || ""}
+                readOnly
+              />
             </div>
             <div className="input-item">
-              <p>우편번호</p>
-              <input type="text" name="post" />
+              <label>우편번호</label>
+              <input
+                type="text"
+                name="post"
+                value={users.mPostnum || ""}
+                readOnly
+              />
             </div>
             <div className="input-item">
-              <p>주소</p>
-              <input type="text" name="addr1" />
-              <input type="text" name="addr2" />
+              <label>주소</label>
+              <input
+                type="text"
+                name="addr1"
+                value={users.mAddr1 || ""}
+                readOnly
+              />
+            </div>
+            <div className="input-item">
+              <label>상세주소</label>
+              <input
+                type="text"
+                name="addr2"
+                value={users.mAddr2 || ""}
+                readOnly
+              />
+            </div>
+            <div className="input-item">
+              <label>적립금</label>
+              <input
+                type="text"
+                name="post"
+                value={`${users.mPoint || ""}원`}
+                readOnly
+              />
+            </div>
+            <div className="input-item">
+              <label>가입일</label>
+              <input
+                type="text"
+                name="post"
+                value={users.mRegdate || ""}
+                readOnly
+              />
             </div>
             <div className="link-wrap">
-              <a href="!#">비밀번호 변경하기</a>
+              <Link onClick={showModal}>회원정보 변경하기</Link>
+              {modalOpen && (
+                <PasswordModal setModalOpen={setModalOpen} user={users} />
+              )}
               <a href="!#">탈퇴하기</a>
             </div>
           </div>
-          <div className="mypageBtn-box">
-            <button className="updateSave-btn" type="submit">
-              변경 사항 저장하기
-            </button>
-          </div>
+          {/* <div className="mypageBtn-box">
+                <button className="updateSave-btn" type="submit">
+                  변경 사항 저장하기
+                </button>
+              </div> */}
         </div>
       </form>
     </div>

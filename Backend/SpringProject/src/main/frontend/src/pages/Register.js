@@ -25,48 +25,44 @@ function Register() {
     e.preventDefault();
     if (passwd === passwd2 && emailChk) {
       await axios
-        .post("/api/register", {
-          mEmail: email,
-          mPwd: passwd,
-          mName: username,
-          mPhone: phone,
-          mPostnum: zipcode,
-          mAddr1: address,
-          mAddr2: address2,
+        .post("/register", {
+          email,
+          passwd,
+          username,
+          phone,
+          zipcode,
+          address,
+          address2,
         })
         .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            window.alert("회원가입을 축하드립니다.");
+          if (response.data.status === 201) {
+            window.alert(response.data.msg);
             navigate("/login");
           } else {
             window.alert("회원가입에 실패했습니다.");
-            window.location.reload();
           }
         });
     } else if (!emailChk) {
-      window.alert("이메일 중복확인이 필요합니다.");
+      console.log("이메일 중복확인이 필요합니다.");
     } else if (passwd !== passwd2) {
-      window.alert("비밀번호를 확인해주세요.");
+      console.log("비밀번호를 확인해주세요.");
     } else {
-      window.alert("가입이 불가능합니다.");
+      console.log("가입이 불가능합니다.");
     }
   };
 
   const emailCheckHandler = async (e) => {
     e.preventDefault();
     if (isEmailCheck(email)) {
-      await axios
-        .post("/api/emailcheck", { mEmail: email })
-        .then((response) => {
-          if (response.headers.name === "success") {
-            setEmailChk(true);
-            window.alert(response.data);
-          } else if (response.headers.name === "useid") {
-            setEmailChk(false);
-            window.alert(response.data);
-          }
-        });
+      await axios.post("/emailCheck", { email }).then((response) => {
+        if (response.data.status === 201) {
+          window.alert("사용가능한 이메일 주소입니다.");
+          setEmailChk(true);
+        } else if (response.data.status === 404) {
+          window.alert("이미 존재하는 이메일 주소입니다.");
+          setEmailChk(false);
+        }
+      });
     } else {
       window.alert("유효하지 않은 이메일 주소입니다.");
       setEmailChk(false);

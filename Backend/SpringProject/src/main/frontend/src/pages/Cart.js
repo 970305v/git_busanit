@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/Cart.css";
 
 function Cart() {
@@ -18,14 +19,19 @@ function Cart() {
         <table>
           <thead>
             <tr>
-              <td colSpan="2">상품정보</td>
-              <td>수량</td>
-              <td>가격</td>
-              <td>배송비</td>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th colSpan="2">상품정보</th>
+              <th>수량</th>
+              <th>가격</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
               <td>
                 <img src="https://via.placeholder.com/70" />
               </td>
@@ -35,17 +41,12 @@ function Cart() {
               </td>
               <td>
                 <div className="add-stock">
-                  <a href={() => false} onClick={Minus}>
-                    -
-                  </a>
+                  <Link onClick={Minus}>-</Link>
                   <span>{quantity}</span>
-                  <a href={() => false} onClick={Plus}>
-                    +
-                  </a>
+                  <Link onClick={Plus}>+</Link>
                 </div>
               </td>
               <td>가격</td>
-              <td>배송비</td>
             </tr>
           </tbody>
         </table>
@@ -71,9 +72,8 @@ function Cart() {
         </table>
       </div>
       <div className="cartBtn">
-        <button type="button">
-          <a href="/order">주문하기</a>
-        </button>
+        <button type="button">선택상품 주문</button>
+        <button type="button">전체상품 주문</button>
       </div>
     </div>
   );
