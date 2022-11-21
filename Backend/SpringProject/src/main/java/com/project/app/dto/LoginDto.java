@@ -1,23 +1,23 @@
 package com.project.app.dto;
 
 public class LoginDto {
-	private String mEamil;
+	private String mEmail;
 	private String mPwd;
 	
 	public LoginDto() {
 	}
 
-	public LoginDto(String mEamil, String mPwd) {
-		this.mEamil = mEamil;
+	public LoginDto(String mEmail, String mPwd) {
+		this.mEmail = mEmail;
 		this.mPwd = mPwd;
 	}
 
-	public String getmEamil() {
-		return mEamil;
+	public String getmEmail() {
+		return mEmail;
 	}
 
-	public void setmEamil(String mEamil) {
-		this.mEamil = mEamil;
+	public void setmEmail(String mEmail) {
+		this.mEmail = mEmail;
 	}
 
 	public String getmPwd() {

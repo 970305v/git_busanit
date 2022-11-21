@@ -11,9 +11,10 @@
 .write-caregory span {
   padding: 5px;
 }
+
 .write-caregory select {
   width: 100%;
-  padding: 12px 12px;
+  padding: 14px 12px;
   border: 1px solid black;
 }
 
@@ -26,20 +27,61 @@
 .write-title span {
   padding: 5px;
 }
-.write-title input,
-.select-product input {
+
+.write-title input[type="text"],
+.select-product input[type="text"] {
+  font-family: inherit;
   padding: 13px 13px;
   border: 1px solid black;
 }
 
-.select-product {
+input[type="file"] {
+  margin-top: 10px;
+  background-color: transparent;
+  font-family: inherit;
+  width: 300px;
+  border: 0;
+}
+
+.product-search-container {
+  position: relative;
   width: 100%;
   display: flex;
-  flex-direction: column;
   margin-top: 10px;
 }
-.select-product span {
-  padding: 5px;
+.product-search-container input[type="text"] {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 80%;
+}
+
+.product-search-container input[type="button"] {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  width: 100px;
+  background-color: #ffc107;
+}
+
+.search-container {
+  z-index: 3;
+  width: 80%;
+  background-color: #fff;
+  position: absolute;
+  top: 38px;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  padding: 10px;
+}
+.search-container ul li {
+  padding: 8px 6px;
+  width: 100%;
+  font-size: 14px;
+  z-index: 4;
+  letter-spacing: 2px;
+}
+.search-container ul li:hover {
+  background-color: #edf5f5;
+  cursor: pointer;
 }
 
 .write-content-box {
@@ -47,6 +89,8 @@
   margin-bottom: 10px;
 }
 .write-contents {
+  background-color: transparent;
+  font-family: inherit;
   resize: none;
   border-top: 1px solid black;
   border-bottom: 1px solid black;

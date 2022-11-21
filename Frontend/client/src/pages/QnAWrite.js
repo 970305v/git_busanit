@@ -22,7 +22,6 @@ function QnAWrite() {
       : setQSecret(false);
   };
 
-  console.log(pId);
   const qnaWriteHandler = async (e) => {
     e.preventDefault();
     let formData = new FormData();

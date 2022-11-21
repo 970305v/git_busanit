@@ -7,10 +7,14 @@
    <select id="emailCheck" resultType="int">
       SELECT COUNT(*) AS 'COUNT' FROM member WHERE mEmail = #{mEmail}
    </select>
-   <select id="userLogin" resultType="int">
+   <select id="userLogin" resultType="String">
       SELECT COUNT(*) AS 'COUNT' FROM member WHERE mEmail = #{mEmail} AND mPwd = #{mPwd}
    </select>
-   <select id="getUserAccount" resultType="com.project.app.dto.MemberDto">
-      SELECT mEmail, mPwd, mName FROM member WHERE mEmail = #{mEmail}
+     <select id="getUserAccount" resultType="com.project.app.dto.MemberDto">
+      SELECT mEmail, mPwd, mName, mAuth FROM member WHERE mEmail = #{mEmail}
     </select>
+      <select id="userInfo" resultType="com.project.app.dto.MemberDto">
+      SELECT * FROM member WHERE mEmail = #{mEmail};
+    </select> 
+   
 </mapper>

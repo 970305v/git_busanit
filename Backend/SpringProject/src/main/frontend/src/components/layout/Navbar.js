@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,9 +9,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet } from "react-router-dom";
 
-function Navbar({ user }) {
+function Navbar({ isLogin, isAdmin }) {
   const [searchOpen, setSearchOpen] = useState(false);
-
+  useEffect(() => {
+    setSearchOpen(false);
+  }, []);
   return (
     <>
       <header>
@@ -41,24 +43,27 @@ function Navbar({ user }) {
                   <input className="search-input" id="search-input" />
                 ) : (
                   <>
-                    {!user ? (
+                    {!isLogin ? (
                       <Link to="/login">
                         <FontAwesomeIcon icon={faUser} id="icon-btn" />
                       </Link>
                     ) : (
-                      <Link to="/mypage">
+                      <Link to={`/mypage`}>
                         <FontAwesomeIcon icon={faUser} id="icon-btn" />
                       </Link>
                     )}
-
                     <Link to="/cart">
                       <FontAwesomeIcon icon={faCartShopping} id="icon-btn" />
                       {/* <span>수량, 나중에 useState 적용</span> */}
                     </Link>
-                    <Link to="/admin">
-                      <FontAwesomeIcon icon={faGear} id="icon-btn" />
-                    </Link>
                   </>
+                )}
+                {!isAdmin ? (
+                  ""
+                ) : (
+                  <Link to="/admin">
+                    <FontAwesomeIcon icon={faGear} id="icon-btn" />
+                  </Link>
                 )}
               </form>
             </div>

@@ -1,25 +1,25 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../styles/Login.css";
 
 function Login() {
-  const navigate = useNavigate();
   const loginHandler = async (e) => {
     e.preventDefault();
     await axios
       .post("/api/login", { mEmail: email, mPwd: passwd })
       .then((response) => {
         console.log(response);
-        if (response.data === "success") {
+        if (response.data.success) {
+          localStorage.loginToken = response.data.data;
+          localStorage.email = JSON.parse(response.config.data).mEmail;
+          console.log(response);
           window.alert(email + "님 환영합니다.");
-          navigate("/");
-        } else if (response.data === "success") {
-          window.alert("아이디 또는 비밀번호를 확인해주세요.");
+          //window.location.assign("/");
         } else {
-          window.alert("관리자에게 문의해주세요.");
+          window.alert("아이디 또는 비밀번호를 확인해주세요.");
         }
       });
   };
@@ -48,6 +48,7 @@ function Login() {
           <input
             type="password"
             name="passwd"
+            placeholder="8자 이상 입력해주세요."
             required
             value={passwd}
             onChange={(e) => setPasswd(e.target.value)}

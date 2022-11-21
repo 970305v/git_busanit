@@ -12,7 +12,8 @@ public interface MemberMapper {
 		// 이메일 중복확인
 		public int emailCheck(String mEmail);
 		// 로그인
-		public String userLogin(@Param("mEmail") String mEmail,@Param("mPwd") String mPwd);
+		public String userLogin(@Param("mEmail") String mEmail, @Param("mPwd") String mPwd);
 		// 암호화 로그인
 		public MemberDto getUserAccount(@Param("mEmail") String mEmail);
+		public MemberDto userInfo(@Param("mEmail") String mEmail);
 }
