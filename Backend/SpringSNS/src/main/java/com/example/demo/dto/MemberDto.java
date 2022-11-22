@@ -3,10 +3,6 @@ package com.example.demo.dto;
 import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 public class MemberDto {
 	private int mIdx;
 	private String mUserid;

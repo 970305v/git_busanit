@@ -1,73 +1,104 @@
 <!DOCTYPE html>
-<html
-  lang="ko"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link th:href="@{/css/register.css}" rel="stylesheet" />
-    <title>회원가입</title>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Instagram</h1>
-      <form th:action="@{/registProc}" method="post">
-        <div class="register-wrap">
-          <input
-            name="mUserid"
-            id="mUserid"
-            type="text"
-            placeholder="아이디"
-          />
-          <button class="idChk" id="idChk">중복확인</button>
-          <input
-            name="mPwd"
-            id="mPwd"
-            type="password"
-            placeholder="비밀번호"
-          />
-          <input
-            name="passwd2"
-            id="passwd2"
-            type="password"
-            placeholder="비밀번호 확인"
-          />
-          <input
-            name="mName"
-            id="mName"
-            type="text"
-            placeholder="이름"
-          />
-          <input
-            name="mPhone"
-            id="mPhone"
-            type="text"
-            placeholder="전화번호"
-          />
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-          <button class="register-btn" type="submit">회원가입</button>
-        </div>
-      </form>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link th:href="@{/css/register.css}" rel="stylesheet" />
+	<title>회원가입</title>
+</head>
 
-      <span
-        >이미 계정이 있으신가요 ?
-        <a href="#n" style="color: #52adff">로그인</a></span
-      >
-    </div>
-    <script th:inline="javascript">
-      const userid = document.getElementById("mUserid");
-      const chkBtn = document.getElementById("idChk");
-      userid.addEventListener("keyup", () => {
-        let isIdvalue = userid.value.length;
-        if (0 < isIdvalue) {
-          chkBtn.classList.add("active");
-        } else {
-          chkBtn.classList.remove("active");
-        }
-      });
-    </script>
-  </body>
+<body>
+	<div class="container">
+		<h1><a th:href="@{/}">Instagram</a></h1>
+		<form th:action="@{/registProc}" th:onsubmit="return submitCheck();" method="post">
+			<div class="register-wrap">
+				<input name="mUserid" id="mUserid" type="text"
+					oninput="this.value = this.value.replace(/[^a-z0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+					placeholder="아이디" />
+				<button class="idChk" id="idChk" type="button" disabled th:onclick="checkID()">중복확인</button>
+				<input name="mPwd" id="mPwd" type="password" placeholder="비밀번호" />
+				<input name="mPwd2" id="mPwd2" type="password" placeholder="비밀번호 확인" />
+				<input name="mName" id="mName" type="text" placeholder="이름" />
+				<input name="mPhone" id="mPhone" type="text"
+					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="11"
+					placeholder="전화번호" />
+				<button class="register-btn" type="submit">회원가입</button>
+			</div>
+		</form>
+
+		<span>이미 계정이 있으신가요 ?
+			<a th:href="@{/login}" style="color: #52adff">로그인</a></span>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+	<script type="text/javascript" th:inline="javascript">
+		function checkID() {
+			$("#mUserid").change(function () {
+				$("#mUserid").attr("check_result", "fail");
+				$("#idChk").attr("disabled", false);
+			});
+				var form = {
+					mUserid: $("#mUserid").val()
+				}
+				$.ajax({
+					url: "/idCheck",
+					method: "POST",
+					contentType: "application/json",
+					data: JSON.stringify(form),
+					success: function (result) {
+						if (result.result == "0") {
+							if (confirm("이 아이디는 사용 가능합니다. \n사용하시겠습니까?")) {
+								$("#mUserid").attr("readonly", true);
+								$("#idChk").attr("disabled", true);
+							}
+						} else if (result.result == "1") {
+							alert("이미 사용중인 아이디입니다.");
+							$("#mUserid").val("");
+							$("#mUserid").focus();
+						} else {
+							alert("관리자에게 문의 해주세요.");
+						}
+					},
+				});
+			}
+	
+		$(mPwd2).keyup(function () {
+			isMatch = false;
+			if ($(mPwd).val() === $(mPwd2).val()) {
+				isMatch = true;
+				return isMatch;
+			} else {
+				isMatch = false;
+				return isMatch;
+			}
+		});
+
+		$(mUserid).keyup(function () {
+			if (0 < $("#mUserid").val().length) {
+				$("#idChk").addClass("active");
+				$("#idChk").attr("disabled", false);
+			} else {
+				$("#idChk").removeClass("active");
+				$("#idChk").attr("disabled", true);
+			}
+		});
+		function submitCheck() {
+			if ($("#mUserid").val().length === 0) {
+				alert("아이디를 입력해주세요.");
+				$("#mUserid").focus();
+				return false;
+			} else if ($("#mPwd").val().length === 0 && !isMatch) {
+				alert("비밀번호를 확인해주세요.");
+				return false;
+			} else {
+				alert("회원가입이 완료되었습니다.");
+				
+				return true;
+			}
+		}
+
+	</script>
+</body>
+
 </html>

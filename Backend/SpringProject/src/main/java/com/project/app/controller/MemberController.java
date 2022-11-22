@@ -118,7 +118,7 @@ public class MemberController {
 		return new ResponseEntity("success", HttpStatus.OK);
 	}
 	
-	@PostMapping("/emailcheck")
+	@PostMapping(value="/emailcheck")
 	public ResponseEntity emailCheck(@RequestBody MemberDto dto) {
     	HttpHeaders headers = new HttpHeaders();
     	String res = "";

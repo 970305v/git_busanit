@@ -54,11 +54,12 @@ function Register() {
   const emailCheckHandler = async (e) => {
     e.preventDefault();
     if (isEmailCheck(email)) {
-      await axios.post("/emailCheck", { email }).then((response) => {
-        if (response.data.status === 201) {
+      await axios.post("api/emailCheck", { email }).then((response) => {
+        console.log(response);
+        if (response.data.success) {
           window.alert("사용가능한 이메일 주소입니다.");
           setEmailChk(true);
-        } else if (response.data.status === 404) {
+        } else {
           window.alert("이미 존재하는 이메일 주소입니다.");
           setEmailChk(false);
         }

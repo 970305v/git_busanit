@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+  <html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+   <head>
+<link th:href="@{/css/header.css}" rel="stylesheet" />
+   </head>
+   <body>
+   <th:block th:fragment="header">
+ <!--HEADER-->
+    <header>
+      <div class="wrap">
+        <a th:href="@{/}" class="logo"><h1>Instagram</h1></a>
+        <div class="search-wrap">
+          <input type="text" placeholder="검색" />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="icon-wrap">
+          <ul>
+            <li class="research"><a href="#">탐색</a></li>
+            <li class="like"><a href="#">좋아요</a></li>
+            <li class="mypage"><a th:if="${session.login == null}" href="/login">my profile</a>
+            <a th:if="${session.login != null}" href="/mypage">my profile</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!--//HEADER-->
+    </th:block>
+   </body>

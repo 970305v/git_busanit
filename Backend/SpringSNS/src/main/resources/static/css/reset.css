@@ -22,9 +22,12 @@ ol ul li {
 }
 
 input,
-textarea {
+textarea,
+input::placeholder,
+textarea::placeholder {
   outline: none;
-}
+  font-family: inherit
+ }
 
 button {
   background: none;

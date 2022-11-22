@@ -14,25 +14,9 @@
      <link th:href="@{/css/index.css}" rel="stylesheet" />
   </head>
   <body>
-    <!--HEADER-->
-    <header>
-      <div class="wrap">
-        <a href="#n" class="logo"><h1>Instagram</h1></a>
-        <div class="search-wrap">
-          <input type="text" placeholder="검색" />
-          <button><i class="fas fa-search"></i></button>
-        </div>
-        <nav class="icon-wrap">
-          <ul>
-            <li class="research"><a href="#">탐색</a></li>
-            <li class="like"><a href="#">좋아요</a></li>
-            <li class="mypage"><a href="#">my profile</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <!--//HEADER-->
-
+   	<!-- header -->
+	<th:block th:replace="/header"></th:block>
+	<!-- header -->
     <!---MAIN--->
     <main class="container wrap">
       <aside>
@@ -42,8 +26,9 @@
             <img class="round-img" />
           </a>
           <span class="my_id">
-            <a href="#n" class="txt_id">My ID</a>
-            <p>My Nickname</p>
+            <p th:if="${session.login != null}" th:text="${session.login.getmUserid()}" class="txt_id"></p>
+            <a th:if="${session.login == null}" href="/login">Login</a>
+            <a th:if="${session.login != null}" href="/logout">Logout</a>
           </span>
         </div>
 

@@ -1,55 +1,49 @@
 <!DOCTYPE html>
-  <html lang="ko"
-	xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     <link th:href="@{/css/login.css}" rel="stylesheet" />
-    <title>로그인</title>
-  </head>
-  <body>
-    <div class="container">
-      <h1><a th:href="@{/}">Instagram</a></h1>
-      <form>
-        <div class="login-wrap">
-          <input id="userid" type="text" placeholder="이메일" />
-          <input id="passwd" type="password" placeholder="비밀번호" />
-          <button id="btnLogin" type="submit">로그인</button>
-        </div>
-      </form>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-      <span
-        >계정이 없으신가요 ?
-        <a href="#n" style="color: #52adff">가입하기</a></span
-      >
-    </div>
-    <script th:inline="javascript">
-      const userid = document.getElementById("userid");
-      const passwd = document.getElementById("passwd");
-      const loginBtn = document.getElementById("btnLogin");
-      userid.addEventListener("keyup", () => {
-        let isIdvalue = userid.value.length;
-        let isPwValue = passwd.value.length;
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link th:href="@{/css/login.css}" rel="stylesheet" />
+	<title>로그인</title>
+</head>
 
-        if (0 < isIdvalue && 0 < isPwValue) {
-          loginBtn.classList.add("active");
-        } else {
-          loginBtn.classList.remove("active");
-        }
-      });
+<body>
+	<div class="container">
+		<h1><a th:href="@{/}">Instagram</a></h1>
+		<form method="post" th:action="loginProc">
+			<div class="login-wrap">
+				<input id="mUserid" name="mUserid" type="text" placeholder="아이디" />
+				<input id="mPwd" name="mPwd" type="password" placeholder="비밀번호" />
+				<button id="btnLogin" disabled type="submit">로그인</button>
+			</div>
+		</form>
 
-      passwd.addEventListener("keyup", () => {
-        let isIdvalue = userid.value.length;
-        let isPwValue = passwd.value.length;
+		<span>계정이 없으신가요 ?
+			<a th:href="@{/register}" style="color: #52adff">가입하기</a></span>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+	<script>
+		$(mUserid).keyup(function () {
+			if (0 < $("#mUserid").val().length && 0 < $("#mPwd").val().length) {
+				$("#btnLogin").addClass("active");
+				$("#btnLogin").attr("disabled", false);
+			} else {
+				$("#btnLogin").removeClass("active");
+				$("#btnLogin").attr("disabled", true);
+			}
+		});
+		$(mPwd).keyup(function () {
+			if (0 < $("#mUserid").val().length && 0 < $("#mPwd").val().length) {
+				$("#btnLogin").addClass("active");
+				$("#btnLogin").attr("disabled", false);
+			} else {
+				$("#btnLogin").removeClass("active");
+				$("#btnLogin").attr("disabled", true);
+			}
+		});
+	</script>
+</body>
 
-        if (0 < isIdvalue && 0 < isPwValue) {
-          loginBtn.classList.add("active");
-        } else {
-          loginBtn.classList.remove("active");
-        }
-      });
-    </script>
-  </body>
 </html>

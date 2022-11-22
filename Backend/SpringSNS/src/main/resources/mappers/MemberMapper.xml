@@ -5,6 +5,12 @@
       INSERT INTO member(mIdx, mUserid, mPwd, mName, mPhone) VALUES(NULL, #{mUserid}, #{mPwd}, #{mName}, #{mPhone})         
    </insert>
    <select id="idCheck" resultType="int">
-      SELECT COUNT(*) AS 'COUNT' FROM member WHERE mUserid = #{mUserid}
+      SELECT COUNT(mIdx) FROM member WHERE mUserid = #{mUserid}
    </select>
+    <select id="login" resultType="com.example.demo.dto.MemberDto">
+      SELECT * FROM member WHERE mUserid = #{mUserid} AND mPwd = #{mPwd}
+   </select>
+   <select id="getUserAccount" resultType="com.example.demo.dto.MemberDto">
+      SELECT * FROM member WHERE mUserid = #{mUserid}
+    </select>
 </mapper>

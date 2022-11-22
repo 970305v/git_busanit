@@ -15,33 +15,18 @@
   </head>
   <body>
     <!--HEADER-->
-    <header>
-      <div class="wrap">
-        <a href="#n" class="logo"><h1>Instagram</h1></a>
-        <div class="search-wrap">
-          <input type="text" placeholder="검색" />
-          <button><i class="fas fa-search"></i></button>
-        </div>
-        <nav class="icon-wrap">
-          <ul>
-            <li class="research"><a href="#">탐색</a></li>
-            <li class="like"><a href="#">좋아요</a></li>
-            <li class="mypage"><a href="#">my profile</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+   <th:block th:replace="/header"></th:block>
     <!--//HEADER-->
     <main class="container wrap">
       <div class="profile-container">
         <div class="profile-img-wrap"><img class="profile-img" /></div>
         <div>
-          <h2>프로필 아이디</h2>
-          <button>프로필 편집</button>
+          <h2 th:text="${session.login.getmUserid()}">프로필 아이디</h2>
+          <a th:href="@{/profile/edit}">정보수정</a>
           <button>게시물 쓰기</button>
           <p>게시물 : <strong> 0 </strong></p>
-          <p><strong>이름</strong></p>
-          <p>자기소개</p>
+          <p><strong th:text="${session.login.getmName()}">이름</strong></p>
+          <p th:text="${session.login.getmInfo()}">자기소개</p>
         </div>
       </div>
       <div class="grid-container">
