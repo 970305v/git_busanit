@@ -54,12 +54,16 @@ td {
   text-align: center;
 }
 
+.review-table-wrap img {
+  width: 40px;
+  margin-right: 10px;
+}
+
 .review-table-wrap td:nth-child(1) {
   width: 10%;
 }
 .review-table-wrap td:nth-child(2) {
   width: 25%;
-  text-align: left;
 }
 .review-table-wrap td:nth-child(3) {
   width: 35%;

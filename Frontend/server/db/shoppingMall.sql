@@ -10,7 +10,7 @@ CREATE TABLE member(
     mPostnum VARCHAR(5),
     mAddr1 VARCHAR(255),
     mAddr2 VARCHAR(255),
-    mPoINT INT(10) DEFAULT 3000,
+    mPoint INT(10) DEFAULT 3000,
     mAuth VARCHAR(10) DEFAULT 'user',
     mRegdate DATE DEFAULT (current_date) 
 );
@@ -30,7 +30,7 @@ CREATE TABLE product(
 );
 
 CREATE TABLE qna(
-    qId INT auto_increment primary key,
+    qId INT AUTO_INCREMENT PRIMARY KEY,
     qCategory VARCHAR(20) NOT NULL,
     pId INT,
     mId INT,
@@ -40,9 +40,11 @@ CREATE TABLE qna(
     qFile VARCHAR(255),
     qSecret BOOLEAN,
     qHit INT(50) DEFAULT 0,
-    qRegdate DATE DEFAULT (current_date),
+    qRegdate DATE DEFAULT (NOW()),
+    FOREIGN KEY (pId) REFERENCES product (pId),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
+
 
 CREATE TABLE qna_comment(
 	qcId INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,7 +57,7 @@ CREATE TABLE qna_comment(
 
 
 CREATE TABLE notice(
-    nId INT auto_increment primary key,
+    nId INT AUTO_INCREMENT PRIMARY KEY,
     mId INT,
     nTitle VARCHAR(100) NOT NULL,
     nContent TEXT NOT NULL,
@@ -66,7 +68,7 @@ CREATE TABLE notice(
 );
 
 CREATE TABLE cart(
-    cId INT auto_increment primary key,
+    cId INT AUTO_INCREMENT PRIMARY KEY,
     mId INT,
     pId INT,
     FOREIGN KEY (mId) REFERENCES member (mId),
@@ -74,29 +76,46 @@ CREATE TABLE cart(
 );
 
 CREATE TABLE orders(
-    oId INT primary key,
+    oId INT AUTO_INCREMENT PRIMARY KEY,
     mId INT,
-    cId INT,
+    oName varchar(255),
     oPostnum VARCHAR(5),
-    oAddress VARCHAR(500),
-    oPoINT VARCHAR(10),
+    oAddr1 VARCHAR(255),
+    oAddr2 VARCHAR(255),
+    oPhone varchar(255),
+    oPoint INT(10),
+    oPrice INT(10),
     oPayment VARCHAR(1), 
-    oDate VARCHAR(100),
+    oDate DATE DEFAULT (current_date),
     FOREIGN KEY (mId) REFERENCES member (mId),
+    FOREIGN KEY (pId) REFERENCES product (pId),
     FOREIGN KEY (cId) REFERENCES cart (cId)
 );
 
-CREATE TABLE review(
-    rId INT auto_increment primary key,
+
+create table orderDetails(
+    odId INT AUTO_INCREMENT PRIMARY KEY,
     oId INT,
+    cId INT,
+    pId INT,
+    pName VARCHAR(255),
+    FOREIGN KEY (mId) REFERENCES member (mId),
+    FOREIGN KEY (oId) REFERENCES order (oId),
+    FOREIGN KEY (pId) REFERENCES product (pId)
+);
+
+CREATE TABLE review(
+    rId INT AUTO_INCREMENT PRIMARY KEY,
+    pId INT,
     mId INT,
     rTitle VARCHAR(100) NOT NULL,
     rContent TEXT NOT NULL,
     rImage1 VARCHAR(255),
     rImage2 VARCHAR(255),
     rImage3 VARCHAR(255),
+    rStar INT,
     rHit INT(50),
     rRegdate DATE,
-    FOREIGN KEY (oId) REFERENCES orders (oId),
+    FOREIGN KEY (pId) REFERENCES product (pId),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );

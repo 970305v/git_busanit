@@ -6,7 +6,7 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import "../styles/QnA.css";
 import ReactPaginate from "react-paginate";
 
-function QnA() {
+function QnA({ isLogin }) {
   const [qData, setQData] = useState([]);
   const [rows, setRows] = useState(0); // 전체 게시물 수
   const [page, setPage] = useState(0); // 현재 페이지
@@ -115,9 +115,13 @@ function QnA() {
           </form>
         </div>
         <div className="admin-btn">
-          <Link to="/qnawrite">
-            <button>글쓰기</button>
-          </Link>
+          {isLogin ? (
+            <Link to="/qnawrite">
+              <button>글쓰기</button>
+            </Link>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <p>{msg}</p>

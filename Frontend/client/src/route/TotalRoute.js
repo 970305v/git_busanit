@@ -46,12 +46,10 @@ function TotalRoute({ isLogin, isAdmin }) {
           <Route path="/review" element={<Review />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/write" element={<NoticeWrite />} />
-          <Route path="/qna" element={<QnA />} />
+          <Route path="/qna" element={<QnA isLogin={isLogin} />} />
           <Route path="/review/:id" element={<ReviewDetail />} />
           <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/qna/:id" element={<QnADetail isAdmin={isAdmin} />} />
-          <Route path="/review/write" element={<ReviewWrite />} />
-          <Route path="/qnawrite" element={<QnAWrite />} />
           <Route path="/all" element={<AllProduct />} />
           <Route path="/men" element={<MenProduct />} />
           <Route path="/women" element={<WomenProduct />} />
@@ -64,6 +62,8 @@ function TotalRoute({ isLogin, isAdmin }) {
             <Route path="/mypage/:idx" element={<Mypage isLogin={isLogin} />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order" element={<Order />} />
+            <Route path="/qnawrite" element={<QnAWrite />} />
+            <Route path="/reviewWrite/:idx" element={<ReviewWrite />} />
           </Route>
         </Route>
         <Route element={<AdminRoute isAdmin={isAdmin} />}>

@@ -97,13 +97,24 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/mypage/:idx", (req, res) => {
-  let sql = "SELECT * FROM member WHERE mId = ?;";
-  db.query(sql, [req.params.idx], (err, user) => {
-    if (err) {
-      throw err;
+  let userSql = "SELECT * FROM member WHERE mId = ?; ";
+  let orderSql = "SELECT * FROM orders WHERE mId = ? ORDER BY oId DESC; ";
+  let boardSql = "SELECT * FROM review, qna, member WHERE member.mId = ?;";
+  db.query(
+    userSql + orderSql + boardSql,
+    [req.params.idx, req.params.idx, req.params.idx],
+    (err, user) => {
+      if (err) {
+        throw err;
+      }
+      res.send({
+        status: 200,
+        user: user[0],
+        orders: user[1],
+        boards: user[2],
+      });
     }
-    res.send({ status: 200, user });
-  });
+  );
 });
 
 router.get("/qna", (req, res) => {
@@ -164,7 +175,7 @@ router.post("/qna/:idx", (req, res) => {
 });
 
 router.post("/qnaproduct", (req, res) => {
-  let sql = "SELECT pId, pName FROM product WHERE pName LIKE ?";
+  let sql = "SELECT pId, pName, pImage1 FROM product WHERE pName LIKE ?";
   const searchValue = "%" + req.body.qSearch + "%";
   db.query(sql, [searchValue], (err, result) => {
     if (err) {
@@ -178,7 +189,7 @@ router.post("/qnaproduct", (req, res) => {
 router.post("/qnawrite", upload.single("qFile"), (req, res) => {
   const { qCategory, mId, qTitle, qContent } = req.body;
   const qSecret = JSON.parse(req.body.qSecret);
-  const { filename } = req.file || "";
+  let { filename } = req.file || "";
   const pId = JSON.parse(req.body.pId);
   let sql =
     "INSERT INTO qna(qId, qCategory, pId, mId, qTitle, qContent, qFile, qSecret) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
@@ -195,7 +206,7 @@ router.post("/qnawrite", upload.single("qFile"), (req, res) => {
 });
 
 router.post("/pwchk", (req, res) => {
-  bcrypt.compare(req.body.pw, req.body.hashpw, function (err, result) {
+  bcrypt.compare(req.body.pw, req.body.hashpw, (err, result) => {
     if (err) {
       throw err;
     } else if (result) {
@@ -211,6 +222,80 @@ router.delete("/delUser/:id", (req, res) => {
   db.query(sql, [JSON.parse(req.params.id)], (err) => {
     if (err) throw err;
   });
+});
+
+router.get("/review", (req, res) => {
+  const page = req.query.page;
+  const offset = parseInt(req.query.offset);
+  const startNums = page * offset;
+
+  const search = req.query.searchQuery || "";
+  const reviewSearch = "%" + search + "%";
+  let sql = "SELECT COUNT(rId) AS count FROM review WHERE rTitle LIKE ?;";
+  db.query(sql, [reviewSearch], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      let dataSql =
+        "SELECT review.*, product.pId, product.pName, product.pImage1, member.mEmail " +
+        "FROM review INNER JOIN product ON review.pId = product.pId " +
+        "INNER JOIN member ON review.mId = member.mId WHERE review.rTitle LIKE ? ORDER BY rId DESC LIMIT ?, ?;";
+      db.query(dataSql, [reviewSearch, startNums, offset], (err, reviews) => {
+        if (err) {
+          throw err;
+        } else {
+          res.json({
+            reviews: reviews,
+            page: page, // 1, 2, 3 ... 페이지
+            totalPageNumber: Math.ceil(result[0].count / offset), // 전체 페이지 수
+            totalRows: result[0].count, // 전체 사용자 수
+          });
+        }
+      });
+    }
+  });
+});
+router.get("/review/:idx", (req, res) => {
+  let sql =
+    "SELECT review.*, product.pId, product.pName, member.mEmail FROM review LEFT JOIN product ON review.pId = product.pId LEFT JOIN member ON review.mId = member.mId WHERE rId = ?;";
+  db.query(sql, [req.params.idx], (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send({ status: 200, result });
+  });
+});
+
+router.get("/reviewWrite/:idx", (req, res) => {
+  let sql =
+    "SELECT orders.oId, orders.oDate, orders.oPrice, product.pId, product.pName, product.pImage1 " +
+    "FROM product " +
+    "INNER JOIN orderDetails ON (orderDetails.pId = product.pId) " +
+    "INNER JOIN orders ON (orders.oId = orderDetails.oId) " +
+    "WHERE (orders.mId = '2') GROUP BY pId;";
+  db.query(sql, [req.params.idx], (err, user) => {
+    if (err) {
+      throw err;
+    }
+    res.send({ status: 201, user });
+  });
+});
+
+router.post("/reviewWrite", upload.single("rFile"), (req, res) => {
+  const { pId, mId, rTitle, rContent, rStar } = req.body;
+  let { filename } = req.file || "";
+  let sql =
+    "INSERT INTO review(rId, pId, mId, rTitle, rContent, rImage1, rStar) VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+  db.query(
+    sql,
+    [pId, mId, rTitle, rContent, filename, rStar],
+    (err, result) => {
+      if (err) {
+        throw err;
+      }
+      res.send({ status: 201, result, msg: "리뷰가 작성되었습니다." });
+    }
+  );
 });
 
 module.exports = router;

@@ -99,7 +99,6 @@ function QnAWrite() {
           <div className="product-search-container" ref={ref}>
             {pId > 0 ? (
               <>
-                {" "}
                 <input type="text" value={pName} readOnly />
                 <input
                   type="button"
@@ -107,7 +106,7 @@ function QnAWrite() {
                   value="취소"
                   onClick={() => {
                     setPId(null);
-                    setPName("");
+                    setPName(null);
                   }}
                 />
               </>
@@ -142,7 +141,10 @@ function QnAWrite() {
                         setShowSearch(false);
                       }}
                     >
-                      <li className="search-data">{data.pName}</li>
+                      <li className="search-data">
+                        <img src={data.pImage1} alt={data.pName} />
+                        <span>{data.pName}</span>
+                      </li>
                     </ul>
                   );
                 })}

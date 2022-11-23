@@ -7,6 +7,8 @@ import Loading from "./Loading";
 
 function Mypage() {
   const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [boards, setBoards] = useState([]);
   const [editUser, setEditUser] = useState(false);
   const idx = localStorage.getItem("idx");
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,10 +26,14 @@ function Mypage() {
     const fetchData = async () => {
       await axios.get(`/mypage/${idx}`, { idx: idx }).then((response) => {
         setUsers(response.data.user);
+        setOrders(response.data.orders);
+        setBoards(response.data.boards);
       });
     };
     fetchData();
   }, []);
+
+  console.log(boards);
 
   return (
     <div className="container mypage-gird">
@@ -40,20 +46,22 @@ function Mypage() {
             <thead>
               <tr>
                 <td>주문번호</td>
-                <td>이미지</td>
-                <td>상품정보</td>
-                <td>주문처리상태</td>
+                <td>가격</td>
+                <td>결제정보</td>
+                <td>주문날짜</td>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>주문번호</td>
-                <td>
-                  <img src="https://via.placeholder.com/50" />
-                </td>
-                <td>상품정보</td>
-                <td>주문처리상태</td>
-              </tr>
+              {orders.map((order, key) => {
+                return (
+                  <tr key={key}>
+                    <td>{order.oId}</td>
+                    <td>{order.oPrice}</td>
+                    <td>{order.oPayment}</td>
+                    <td>{order.oDate}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

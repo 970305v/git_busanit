@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Review.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
@@ -8,8 +8,49 @@ import {
   faCamera,
   faCrown,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
 
 function Review() {
+  const [rData, setRData] = useState([]);
+  const [rows, setRows] = useState(0); // 전체 게시물 수
+  const [page, setPage] = useState(0); // 현재 페이지
+  const [pages, setPages] = useState(0); // 전체 페이지
+  const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
+  const [msg, setMsg] = useState(""); // 데이터 마지막에 표시하는 메시지
+  const [keyword, setKeyword] = useState("");
+  const [searchWords, setSearchWords] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`/review?page=${page}&offset=${offset}&searchQuery=${keyword}`)
+        .then((response) => {
+          setRData(response.data.reviews);
+          setRows(response.data.totalRows);
+          setPages(response.data.totalPageNumber);
+          setPage(response.data.page);
+        });
+    };
+    fetchData();
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+    if (selected === pages - 1) {
+      setMsg("No More Data");
+    } else {
+      setMsg("");
+    }
+  };
+  const searchData = async (e) => {
+    e.preventDefault();
+    setKeyword(searchWords);
+    setPage(0); // 검색 후 첫페이지로 보내기
+    setSearchWords("");
+  };
+
+  console.log(rData);
   return (
     <div className="container">
       <div className="title-container">
@@ -46,7 +87,7 @@ function Review() {
       <div className="review-table-wrap">
         <input type="checkbox" id="photo" />
         <label htmlFor="photo"> 사진 후기만 보기 (onclick이벤트)</label>
-        <table>
+        <table className="review-table">
           <thead>
             <tr>
               <th>번호</th>
@@ -58,36 +99,80 @@ function Review() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>
-                <a href="!#">사진/프레쉬치약(클릭시상품상세보기)</a>
-              </td>
-              <td>
-                <Link to="/review/:id">리뷰 제목(클릭시리뷰상세보기)</Link>
-              </td>
-              <td>a***</td>
-              <td>2000.01.01</td>
-              <td>평점</td>
-            </tr>
+            {rData.map((review, key) => {
+              return (
+                <tr key={key}>
+                  <td>{review.rId}</td>
+                  <td>
+                    <Link to={`/product/${review.pId}`}>
+                      <img src={review.pImage1} alt={review.pName} />
+                      <span>{review.pName}</span>
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/review/${review.rId}`}>
+                      {review.rImage1 === null ? (
+                        <p>{review.rTitle}</p>
+                      ) : (
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faCamera}
+                            style={{ marginRight: "5px" }}
+                          />
+                          {review.rTitle}
+                        </p>
+                      )}
+                    </Link>
+                  </td>
+                  <td>{review.mEmail}</td>
+                  <td>{review.rRegdate}</td>
+                  <td>{review.rStar}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <div className="bottom-wrap">
         <div>
-          <form method="post">
-            <input type="text" placeholder="검색어를 입력하세요." />
+          <form method="post" onSubmit={searchData}>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요."
+              value={searchWords}
+              onChange={(e) => setSearchWords(e.target.value)}
+            />
             <button>검색</button>
           </form>
         </div>
         <div className="admin-btn">
-          <a href="/ReviewWrite">
+          <Link to={`/reviewWrite/${localStorage.getItem("idx")}`}>
             <button>글쓰기 </button>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="pagination">
-        <span>페이징처리</span>
+        <nav key={rows} role="navigation">
+          <ReactPaginate
+            breakLabel="..."
+            previousLabel="<"
+            nextLabel=">"
+            onPageChange={changePage}
+            pageCount={pages}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+          />
+        </nav>
       </div>
     </div>
   );

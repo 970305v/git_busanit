@@ -73,7 +73,6 @@ input[type="file"] {
   padding: 10px;
 }
 .search-container ul li {
-  padding: 8px 6px;
   width: 100%;
   font-size: 14px;
   z-index: 4;
@@ -82,6 +81,10 @@ input[type="file"] {
 .search-container ul li:hover {
   background-color: #edf5f5;
   cursor: pointer;
+}
+.search-data img {
+  width: 30px;
+  margin-right: 10px;
 }
 
 .write-content-box {
