@@ -10,13 +10,19 @@
   border-bottom: 1px solid #c1c0b6;
 }
 
-.qna-img-box {
+.qna-img-box-wrap {
   width: 100%;
   margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(3);
 }
-.img-box img {
+.qna-grid {
+  display: flex;
+}
+
+.qna-img-box {
+  width: 300px;
+}
+
+.qna-img-box img {
   width: 100%;
 }
 
@@ -35,7 +41,8 @@
   width: 100%;
   height: 200px;
   padding: 12px 12px;
-  border: 1px solid #000;
+  background-color: transparent;
+  border-bottom: 1px solid #aaa;
   outline: none;
   resize: none;
 }
@@ -43,8 +50,15 @@
 .write-box {
   position: relative;
 }
+
 .write-box button {
+  border-radius: 3px;
   position: absolute;
   right: 10px;
   bottom: 20px;
+}
+
+.write-box button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: 0.3s;
 }

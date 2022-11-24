@@ -10,9 +10,18 @@
   border-bottom: 1px solid #c1c0b6;
 }
 
-.review-img-box {
+.review-box-wrap {
   width: 100%;
   margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(3);
+}
+.review-grid {
+  display: flex;
+}
+
+.review-img-box {
+  width: 300px;
+}
+
+.review-img-box img {
+  width: 100%;
 }

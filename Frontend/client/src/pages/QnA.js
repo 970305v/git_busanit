@@ -33,7 +33,7 @@ function QnA({ isLogin }) {
   const changePage = ({ selected }) => {
     setPage(selected);
     if (selected === pages - 1) {
-      setMsg("No More Data");
+      setMsg("데이터가 없습니다.");
     } else {
       setMsg("");
     }
@@ -64,41 +64,49 @@ function QnA({ isLogin }) {
             </tr>
           </thead>
           <tbody>
-            {qData.map((data, key) => {
-              return (
-                <tr key={key}>
-                  <td>{data.qId}</td>
-                  <td>{data.qCategory}</td>
-                  <td>
-                    <div className="qna-title">
-                      {data.pImage1 === null ? null : (
-                        <div className="qna-img-wrap">
-                          <Link to="/qna">
-                            <img src={data.pImage1} alt={data.pImage1} />
+            {qData.length === 0 ? (
+              <tr>
+                <td colSpan={5} style={{ fontSize: "14px" }}>
+                  등록된 데이터가 없습니다.
+                </td>
+              </tr>
+            ) : (
+              qData.map((data, key) => {
+                return (
+                  <tr key={key}>
+                    <td>{data.qId}</td>
+                    <td>{data.qCategory}</td>
+                    <td>
+                      <div className="qna-title">
+                        {data.pImage1 === null ? null : (
+                          <div className="qna-img-wrap">
+                            <Link to="/qna">
+                              <img src={data.pImage1} alt={data.pImage1} />
+                            </Link>
+                          </div>
+                        )}
+                        <div>
+                          <Link to={`/qna/${data.qId}`}>
+                            <p>
+                              {data.qSecret ? (
+                                <FontAwesomeIcon
+                                  icon={faLock}
+                                  style={{ marginRight: "5px" }}
+                                />
+                              ) : null}
+                              {data.qTitle}
+                            </p>
+                            <p style={{ color: "#8c8c8c" }}>{data.pName}</p>
                           </Link>
                         </div>
-                      )}
-                      <div>
-                        <Link to={`/qna/${data.qId}`}>
-                          <p>
-                            {data.qSecret ? (
-                              <FontAwesomeIcon
-                                icon={faLock}
-                                style={{ marginRight: "5px" }}
-                              />
-                            ) : null}
-                            {data.qTitle}
-                          </p>
-                          <p style={{ color: "#8c8c8c" }}>{data.pName}</p>
-                        </Link>
                       </div>
-                    </div>
-                  </td>
-                  <td>{data.mEmail}</td>
-                  <td>{data.qRegdate}</td>
-                </tr>
-              );
-            })}
+                    </td>
+                    <td>{data.mEmail}</td>
+                    <td>{data.qRegdate}</td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
@@ -119,9 +127,7 @@ function QnA({ isLogin }) {
             <Link to="/qnawrite">
               <button>글쓰기</button>
             </Link>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
       </div>
       <p>{msg}</p>

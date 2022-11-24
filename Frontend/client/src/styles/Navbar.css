@@ -33,6 +33,12 @@
 .icon-wrap a {
   margin: 10px;
 }
+.icon-wrap button {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  color: #000;
+}
 
 .search-btn {
   font-size: 14px;
@@ -47,9 +53,10 @@
 
 .search-input {
   width: 100px;
+  background-color: transparent;
   border: 0;
   border-bottom: 1px solid #000;
   font-family: inherit;
-  font-size: 10px;
-  margin: 0;
+  font-size: 12px;
+  padding: 0px;
 }

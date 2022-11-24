@@ -1,10 +1,50 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/AdminUsers.css";
+import ReactPaginate from "react-paginate";
 
-function AdminUsers() {
+function AdminUsers({ isAdmin }) {
+  const [rows, setRows] = useState(0); // 전체 게시물 수
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(0); // 전체 페이지
+  const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
+  const [keyword, setKeyword] = useState("");
+  const [searchWords, setSearchWords] = useState("");
+  const [sel, setSel] = useState("mEmail");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(
+          `/admin/users?page=${page}&offset=${offset}&selQuery=${sel}&searchQuery=${keyword}`
+        )
+        .then((response) => {
+          setUsers(response.data.users);
+          setRows(response.data.totalRows);
+          setPage(response.data.page);
+          setPages(response.data.totalPageNumber);
+        });
+    };
+    fetchData();
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+  };
+  const searchData = async (e) => {
+    e.preventDefault();
+    setKeyword(searchWords);
+    setPage(0);
+    setSel("mEmail");
+    setSearchWords("");
+  };
+
+  console.log(sel);
+
   return (
     <>
       <div className="admin-container">
@@ -15,19 +55,25 @@ function AdminUsers() {
             <button>선택삭제</button>
             <div>
               <span>
-                <strong>총 회원수 : </strong> 명
+                <strong>총 회원수 : {rows}</strong> 명
               </span>
             </div>
             <div>
-              <select>
-                <option>회원아이디</option>
-                <option>이름</option>
-                <option>전화번호</option>
-              </select>
-              <input type="text" />
-              <button>
-                <FontAwesomeIcon icon={faSearch} />
-              </button>
+              <form method="post" onSubmit={searchData}>
+                <select value={sel} onChange={(e) => setSel(e.target.value)}>
+                  <option value={"mEmail"}>회원아이디</option>
+                  <option value={"mName"}>이름</option>
+                  <option value={"mPhone"}>전화번호</option>
+                </select>
+                <input
+                  type="text"
+                  value={searchWords}
+                  onChange={(e) => setSearchWords(e.target.value)}
+                />
+                <button>
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+              </form>
             </div>
           </div>
           <div>
@@ -46,24 +92,50 @@ function AdminUsers() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td>1</td>
-                  <td>
-                    <Link to=":id">aa@naver.com</Link>
-                  </td>
-                  <td>
-                    <Link to=":id">홍길동</Link>
-                  </td>
-                  <td>010-1234-1234</td>
-                  <td>일반</td>
-                  <td>2022-01-01</td>
-                </tr>
+                {users.map((user, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>{user.mId}</td>
+                      <td>
+                        <Link to={`${user.mId}`}>{user.mEmail}</Link>
+                      </td>
+                      <td>
+                        <Link to={`${user.mId}`}>{user.mName}</Link>
+                      </td>
+                      <td>{user.mPhone}</td>
+                      <td>{user.mAuth === "admin" ? "관리자" : "일반"}</td>
+                      <td>{user.mRegdate}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-            <div className="pagination">페이지</div>
+            <div className="pagination">
+              <nav key={rows} role="navigation">
+                <ReactPaginate
+                  breakLabel="..."
+                  previousLabel="<"
+                  nextLabel=">"
+                  onPageChange={changePage}
+                  pageCount={pages}
+                  pageRangeDisplayed={5}
+                  marginPagesDisplayed={2}
+                  pageClassName="page-item"
+                  pageLinkClassName="page-link"
+                  previousClassName="page-item"
+                  previousLinkClassName="page-link"
+                  nextClassName="page-item"
+                  nextLinkClassName="page-link"
+                  breakClassName="page-item"
+                  breakLinkClassName="page-link"
+                  containerClassName="pagination"
+                  activeClassName="active"
+                />
+              </nav>
+            </div>
           </div>
         </div>
       </div>

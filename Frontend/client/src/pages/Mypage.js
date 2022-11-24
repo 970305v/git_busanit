@@ -65,27 +65,6 @@ function Mypage() {
             </tbody>
           </table>
         </div>
-        <div className="myPost-box">
-          <div className="info-title">
-            <span>내가 쓴 글</span>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <td>일자</td>
-                <td>제목</td>
-                <td>유형</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>22.11.08</td>
-                <td>제목</td>
-                <td>질문, 리뷰</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
       <form method="post">
         {users.map((user, key) => {

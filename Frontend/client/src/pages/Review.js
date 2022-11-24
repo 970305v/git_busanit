@@ -50,7 +50,6 @@ function Review() {
     setSearchWords("");
   };
 
-  console.log(rData);
   return (
     <div className="container">
       <div className="title-container">
@@ -85,8 +84,8 @@ function Review() {
         </div>
       </div>
       <div className="review-table-wrap">
-        <input type="checkbox" id="photo" />
-        <label htmlFor="photo"> 사진 후기만 보기 (onclick이벤트)</label>
+        {/* <input type="checkbox" id="photo" />
+        <label htmlFor="photo"> 사진 후기만 보기 (onclick이벤트)</label> */}
         <table className="review-table">
           <thead>
             <tr>
@@ -99,37 +98,45 @@ function Review() {
             </tr>
           </thead>
           <tbody>
-            {rData.map((review, key) => {
-              return (
-                <tr key={key}>
-                  <td>{review.rId}</td>
-                  <td>
-                    <Link to={`/product/${review.pId}`}>
-                      <img src={review.pImage1} alt={review.pName} />
-                      <span>{review.pName}</span>
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/review/${review.rId}`}>
-                      {review.rImage1 === null ? (
-                        <p>{review.rTitle}</p>
-                      ) : (
-                        <p>
-                          <FontAwesomeIcon
-                            icon={faCamera}
-                            style={{ marginRight: "5px" }}
-                          />
-                          {review.rTitle}
-                        </p>
-                      )}
-                    </Link>
-                  </td>
-                  <td>{review.mEmail}</td>
-                  <td>{review.rRegdate}</td>
-                  <td>{review.rStar}</td>
-                </tr>
-              );
-            })}
+            {rData.length === 0 ? (
+              <tr>
+                <td colSpan={6} style={{ fontSize: "14px" }}>
+                  등록된 데이터가 없습니다.
+                </td>
+              </tr>
+            ) : (
+              rData.map((review, key) => {
+                return (
+                  <tr key={key}>
+                    <td>{review.rId}</td>
+                    <td>
+                      <Link to={`/product/${review.pId}`}>
+                        <img src={review.pImage1} alt={review.pName} />
+                        <span>{review.pName}</span>
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={`/review/${review.rId}`}>
+                        {review.rImage1 === null ? (
+                          <p>{review.rTitle}</p>
+                        ) : (
+                          <p>
+                            <FontAwesomeIcon
+                              icon={faCamera}
+                              style={{ marginRight: "5px" }}
+                            />
+                            {review.rTitle}
+                          </p>
+                        )}
+                      </Link>
+                    </td>
+                    <td>{review.mEmail}</td>
+                    <td>{review.rRegdate}</td>
+                    <td>{review.rStar}</td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>

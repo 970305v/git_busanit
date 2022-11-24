@@ -8,12 +8,20 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet } from "react-router-dom";
+import axios from "axios";
 
 function Navbar({ isLogin, isAdmin }) {
+  const [searchWord, setSearchWord] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+
   useEffect(() => {
     setSearchOpen(false);
   }, []);
+
+  const searchHandler = async (e) => {
+    await axios.get(`/products/all?=${searchWord}`);
+  };
+
   return (
     <>
       <header>
@@ -30,17 +38,32 @@ function Navbar({ isLogin, isAdmin }) {
             <Link to="/notice">NOTICE</Link>
             <Link to="/qna">Q&A</Link>
             <div className="icon-wrap">
-              <form>
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  className="search-btn"
-                  id="search-btn"
-                  onClick={() => {
-                    setSearchOpen(!searchOpen);
-                  }}
-                />
+              <form method="get" onSubmit={searchHandler}>
+                {searchWord === "" ? (
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className="search-btn"
+                    id="search-btn"
+                    onClick={() => {
+                      setSearchOpen(!searchOpen);
+                    }}
+                  />
+                ) : (
+                  <button>
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="search-btn"
+                      id="search-btn"
+                    />
+                  </button>
+                )}
                 {searchOpen ? (
-                  <input className="search-input" id="search-input" />
+                  <input
+                    className="search-input"
+                    id="search-input"
+                    value={searchWord}
+                    onChange={(e) => setSearchWord(e.target.value)}
+                  />
                 ) : (
                   <>
                     {!isLogin ? (
@@ -58,10 +81,8 @@ function Navbar({ isLogin, isAdmin }) {
                     </Link>
                   </>
                 )}
-                {!isAdmin ? (
-                  ""
-                ) : (
-                  <Link to="/admin">
+                {!isAdmin ? null : (
+                  <Link to="/admin" isAdmin={isAdmin}>
                     <FontAwesomeIcon icon={faGear} id="icon-btn" />
                   </Link>
                 )}

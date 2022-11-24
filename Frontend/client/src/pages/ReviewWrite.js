@@ -12,7 +12,7 @@ function ReviewWrite() {
   const [rTitle, setRTitle] = useState("");
   const [rFile, setRFile] = useState("");
   const [rContent, setRContent] = useState("");
-  const [rStar, setRStar] = useState(0);
+  const [rStar, setRStar] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +29,9 @@ function ReviewWrite() {
     formData.append("pId", pId);
     formData.append("mId", idx);
     formData.append("rTitle", rTitle);
-    formData.append("rFile", rFile);
+    formData.append("rFile", rFile[0]);
+    formData.append("rFile", rFile[1]);
+    formData.append("rFile", rFile[2]);
     formData.append("rContent", rContent);
     formData.append("rStar", rStar);
     await axios.post("/reviewWrite", formData).then((response) => {
@@ -42,7 +44,6 @@ function ReviewWrite() {
     });
   };
 
-  console.log(orders);
   return (
     <div className="write-container">
       <form
@@ -72,21 +73,13 @@ function ReviewWrite() {
           />
         </div>
         <div className="file-wrap">
-          <div className="file-btn">
-            <input
-              type="file"
-              name="rFile"
-              id="rFile"
-              onChange={(e) => setRFile(e.target.files[0])}
-            />
-            <label htmlFor="rFile" name="rFile">
-              <FontAwesomeIcon
-                icon={faCamera}
-                className="select-file"
-                name="rFile"
-              />
-            </label>
-          </div>
+          <input
+            type="file"
+            name="rFile"
+            id="rFile"
+            multiple
+            onChange={(e) => setRFile(e.target.files)}
+          />
         </div>
         <div className="write-content-box">
           <textarea
@@ -108,11 +101,11 @@ function ReviewWrite() {
                 value={rStar}
                 onChange={(e) => setRStar(e.target.value)}
               >
-                <option value={5}>★★★★★</option>
-                <option value={4}>★★★★☆</option>
-                <option value={3}>★★★☆☆</option>
-                <option value={2}>★★☆☆☆</option>
-                <option value={1}>★☆☆☆☆</option>
+                <option value={"★★★★★"}>★★★★★</option>
+                <option value={"★★★★☆"}>★★★★☆</option>
+                <option value={"★★★☆☆"}>★★★☆☆</option>
+                <option value={"★★☆☆☆"}>★★☆☆☆</option>
+                <option value={"★☆☆☆☆"}>★☆☆☆☆</option>
               </select>
               <button type="submit" className="save-btn">
                 저장하기

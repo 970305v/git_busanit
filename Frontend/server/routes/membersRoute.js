@@ -17,7 +17,8 @@ const storage = multer.diskStorage({
     callback(null, "./uploads");
   },
   filename: function (req, file, callback) {
-    callback(null, Date.now() + "_qna_" + file.originalname);
+    let i = 0;
+    callback(null, Date.now() + "_qna_" + file.originalname + i++);
   },
 });
 const upload = multer({ storage });
@@ -99,10 +100,9 @@ router.post("/login", (req, res) => {
 router.get("/mypage/:idx", (req, res) => {
   let userSql = "SELECT * FROM member WHERE mId = ?; ";
   let orderSql = "SELECT * FROM orders WHERE mId = ? ORDER BY oId DESC; ";
-  let boardSql = "SELECT * FROM review, qna, member WHERE member.mId = ?;";
   db.query(
-    userSql + orderSql + boardSql,
-    [req.params.idx, req.params.idx, req.params.idx],
+    userSql + orderSql,
+    [req.params.idx, req.params.idx],
     (err, user) => {
       if (err) {
         throw err;
@@ -111,7 +111,6 @@ router.get("/mypage/:idx", (req, res) => {
         status: 200,
         user: user[0],
         orders: user[1],
-        boards: user[2],
       });
     }
   );
@@ -186,16 +185,33 @@ router.post("/qnaproduct", (req, res) => {
   });
 });
 
-router.post("/qnawrite", upload.single("qFile"), (req, res) => {
+router.post("/qnawrite", upload.array("qFile", 3), (req, res) => {
   const { qCategory, mId, qTitle, qContent } = req.body;
   const qSecret = JSON.parse(req.body.qSecret);
-  let { filename } = req.file || "";
+  let reqFiles = [] || "";
+  if (req.files.length > 0) {
+    for (let i = 0; i < req.files.length; i++) {
+      reqFiles.push(req.files[i].filename);
+    }
+  } else {
+    reqFiles.push(null);
+  }
   const pId = JSON.parse(req.body.pId);
   let sql =
-    "INSERT INTO qna(qId, qCategory, pId, mId, qTitle, qContent, qFile, qSecret) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?);";
+    "INSERT INTO qna(qId, qCategory, pId, mId, qTitle, qContent, qImage1, qImage2, qImage3, qSecret) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
   db.query(
     sql,
-    [qCategory, pId, mId, qTitle, qContent, filename, qSecret],
+    [
+      qCategory,
+      pId,
+      mId,
+      qTitle,
+      qContent,
+      reqFiles[0],
+      reqFiles[1],
+      reqFiles[2],
+      qSecret,
+    ],
     (err, result) => {
       if (err) {
         throw err;
@@ -272,7 +288,7 @@ router.get("/reviewWrite/:idx", (req, res) => {
     "FROM product " +
     "INNER JOIN orderDetails ON (orderDetails.pId = product.pId) " +
     "INNER JOIN orders ON (orders.oId = orderDetails.oId) " +
-    "WHERE (orders.mId = '2') GROUP BY pId;";
+    "WHERE (orders.mId = ?) GROUP BY pId;";
   db.query(sql, [req.params.idx], (err, user) => {
     if (err) {
       throw err;
@@ -281,14 +297,23 @@ router.get("/reviewWrite/:idx", (req, res) => {
   });
 });
 
-router.post("/reviewWrite", upload.single("rFile"), (req, res) => {
+router.post("/reviewWrite", upload.array("rFile", 3), (req, res) => {
   const { pId, mId, rTitle, rContent, rStar } = req.body;
-  let { filename } = req.file || "";
+  let reqFiles = [] || "";
+  if (req.files.length > 0) {
+    for (let i = 0; i < req.files.length; i++) {
+      reqFiles.push(req.files[i].filename);
+    }
+  } else {
+    reqFiles.push(null);
+  }
+
+  console.log(reqFiles);
   let sql =
-    "INSERT INTO review(rId, pId, mId, rTitle, rContent, rImage1, rStar) VALUES(NULL, ?, ?, ?, ?, ?, ?);";
+    "INSERT INTO review(rId, pId, mId, rTitle, rContent, rImage1, rImage2, rImage3, rStar) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
   db.query(
     sql,
-    [pId, mId, rTitle, rContent, filename, rStar],
+    [pId, mId, rTitle, rContent, reqFiles[0], reqFiles[1], reqFiles[2], rStar],
     (err, result) => {
       if (err) {
         throw err;
@@ -296,6 +321,15 @@ router.post("/reviewWrite", upload.single("rFile"), (req, res) => {
       res.send({ status: 201, result, msg: "리뷰가 작성되었습니다." });
     }
   );
+});
+
+router.delete("/delReview/:idx", (req, res) => {
+  let sql = "DELETE FROM review WHERE rId = ?;";
+  db.query(sql, [req.params.idx], (err, result) => {
+    if (err) throw err;
+
+    res.send({ status: 201, result, msg: "리뷰가 삭제 되었습니다." });
+  });
 });
 
 module.exports = router;

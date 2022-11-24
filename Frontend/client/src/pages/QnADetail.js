@@ -37,6 +37,8 @@ function QnADetail({ isAdmin, secretdata }) {
       });
   };
 
+  console.log(datas);
+
   return (
     <div className="board-container">
       {datas.map((data, key) => {
@@ -70,12 +72,22 @@ function QnADetail({ isAdmin, secretdata }) {
               </div>
               <div className="qna-content">
                 {data.qContent}
-                <div className="qna-img-box">
-                  <div className="img-box">
-                    {data.qFile === null ? null : (
-                      <img src={`../${data.qFile}`} alt={data.qFile} />
-                    )}
-                  </div>
+                <div className="qna-img-box-wrap">
+                  {data.qImage1 &&
+                  data.qImage2 &&
+                  data.qImage3 === null ? null : (
+                    <div className="qna-grid">
+                      <div className="qna-img-box">
+                        <img src={`../${data.qImage1}`} alt={data.qImage1} />
+                      </div>
+                      <div className="qna-img-box">
+                        <img src={`../${data.qImage2}`} alt={data.qImage2} />
+                      </div>
+                      <div className="qna-img-box">
+                        <img src={`../${data.qImage3}`} alt={data.qImage3} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -99,12 +111,12 @@ function QnADetail({ isAdmin, secretdata }) {
         {!isAdmin ? null : (
           <div className="write-box">
             <form method="post" onSubmit={commentHandler}>
-              <label>답변 작성하기</label>
               <textarea
                 value={qcContent}
                 onChange={(e) => setQcContent(e.target.value)}
+                placeholder="답변 작성하기"
               />
-              <button>댓글쓰기</button>
+              <button>답변 쓰기</button>
             </form>
           </div>
         )}

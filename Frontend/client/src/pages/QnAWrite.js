@@ -29,7 +29,9 @@ function QnAWrite() {
     formData.append("pId", pId);
     formData.append("mId", localStorage.getItem("idx"));
     formData.append("qTitle", qTitle);
-    formData.append("qFile", qFile);
+    formData.append("qFile", qFile[0]);
+    formData.append("qFile", qFile[1]);
+    formData.append("qFile", qFile[2]);
     formData.append("qContent", qContent);
     formData.append("qSecret", qSecret);
     await axios.post("/qnawrite", formData).then((response) => {
@@ -154,7 +156,8 @@ function QnAWrite() {
         ) : null}
         <input
           name="qFile"
-          onChange={(e) => setQFile(e.target.files[0])}
+          multiple
+          onChange={(e) => setQFile(e.target.files)}
           type="file"
         />
         <div className="write-content-box">
@@ -162,6 +165,7 @@ function QnAWrite() {
             className="write-contents"
             value={qContent}
             onChange={(e) => setQContent(e.target.value)}
+            required
           />
         </div>
         <div className="write-bottom">

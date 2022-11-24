@@ -63,6 +63,7 @@ td {
   width: 10%;
 }
 .review-table-wrap td:nth-child(2) {
+  text-align: left;
   width: 25%;
 }
 .review-table-wrap td:nth-child(3) {

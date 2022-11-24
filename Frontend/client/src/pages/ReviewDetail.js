@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import "../styles/ReviewDetail.css";
 import axios from "axios";
 
-function ReviewDetail() {
+function ReviewDetail({ isLogin }) {
   const [datas, setDatas] = useState([]);
   const idx = useParams().id;
   useEffect(() => {
@@ -16,7 +16,22 @@ function ReviewDetail() {
     };
     fetchData();
   }, []);
-  console.log(datas);
+
+  const deleteHandler = async () => {
+    if (window.confirm("정말 삭제하시겠습니까 ?")) {
+      await axios.delete(`/delReview/${idx}`, idx).then((response) => {
+        if (response.data.status === 201) {
+          window.alert(response.data.msg);
+          window.location.assign("/review");
+        } else {
+          window.alert("error");
+        }
+      });
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className="board-container">
       {datas.map((data, key) => {
@@ -25,23 +40,54 @@ function ReviewDetail() {
             <div className="title-wrap">
               <h2>{data.rTitle}</h2>
               <div>
-                <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />{" "}
-                <FontAwesomeIcon icon={faTrash} />
+                {isLogin ? (
+                  data.mId == localStorage.getItem("idx") ? (
+                    <>
+                      <Link to={`/reviewEdit/${idx}`}>
+                        <FontAwesomeIcon
+                          icon={faPen}
+                          style={{ marginRight: "10px" }}
+                        />
+                      </Link>
+                      <Link onClick={deleteHandler}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        style={{ marginRight: "10px" }}
+                      />
+                      <FontAwesomeIcon icon={faTrash} />
+                    </>
+                  )
+                ) : null}
               </div>
             </div>
             <div className="content-wrap">
               <div>{data.rStar}</div>
               <div>
-                <span>{data.mEmail}</span>/<span>{data.rRegdate}</span>
+                <span>{data.mEmail}</span> / <span>{data.rRegdate}</span>
               </div>
               <div className="review-content">
                 {data.rContent}
-                <div className="review-img-box">
-                  <div className="img-box">
-                    {data.rImage1 === null ? null : (
-                      <img src={`../${data.rImage1}`} alt={data.rImage1} />
-                    )}
-                  </div>
+                <div className="review-box-wrap">
+                  {data.rImage1 &&
+                  data.rImage2 &&
+                  data.rImage3 === null ? null : (
+                    <div className="review-grid">
+                      <div className="review-img-box">
+                        <img src={`../${data.rImage1}`} alt={data.rImage1} />
+                      </div>
+                      <div className="review-img-box">
+                        <img src={`../${data.rImage2}`} alt={data.rImage2} />
+                      </div>
+                      <div className="review-img-box">
+                        <img src={`../${data.rImage3}`} alt={data.rImage3} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

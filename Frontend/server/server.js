@@ -12,6 +12,7 @@ const db = require("./db/conn");
 
 // routes
 const memberRoute = require("./routes/membersRoute.js");
+const adminRoute = require("./routes/adminRoute.js");
 const productsRoute = require("./routes/productsRoute.js");
 // multer
 const storage = multer.diskStorage({
@@ -40,6 +41,7 @@ app.use(
 app.use(express.static("uploads"));
 app.use(memberRoute);
 app.use(productsRoute);
+app.use(adminRoute);
 
 // url
 

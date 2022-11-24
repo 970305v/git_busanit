@@ -4,7 +4,7 @@ import TotalRoute from "./route/TotalRoute";
 
 function App() {
   const [isLogin, setIsLogin] = useState(localStorage.getItem("token"));
-  const [isAdmin, setIsAdmin] = useState();
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("auth") === "admin") {

@@ -43,11 +43,14 @@ function TotalRoute({ isLogin, isAdmin }) {
         <Route element={<Navbar isLogin={isLogin} isAdmin={isAdmin} />}>
           <Route path="/" element={<Main />} />
           <Route path="/about" element={<About />} />
-          <Route path="/review" element={<Review />} />
+          <Route path="/review" element={<Review isLogin={isLogin} />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/write" element={<NoticeWrite />} />
           <Route path="/qna" element={<QnA isLogin={isLogin} />} />
-          <Route path="/review/:id" element={<ReviewDetail />} />
+          <Route
+            path="/review/:id"
+            element={<ReviewDetail isLogin={isLogin} />}
+          />
           <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/qna/:id" element={<QnADetail isAdmin={isAdmin} />} />
           <Route path="/all" element={<AllProduct />} />
@@ -64,17 +67,27 @@ function TotalRoute({ isLogin, isAdmin }) {
             <Route path="/order" element={<Order />} />
             <Route path="/qnawrite" element={<QnAWrite />} />
             <Route path="/reviewWrite/:idx" element={<ReviewWrite />} />
+            <Route path="/reviewEdit/:idx" element={<ReviewWrite />} />
           </Route>
         </Route>
         <Route element={<AdminRoute isAdmin={isAdmin} />}>
-          <Route path="/admin" element={<AdminNav />}>
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="products" element={<AdminProducts />} />
-            <Route path="products/upload" element={<AdminProductsUpload />} />
-            <Route path="notice" element={<AdminNotice />} />
-            <Route path="noticeWrite" element={<NoticeWrite />} />
-            <Route path="review" element={<AdminReview />} />
-            <Route path="qna" element={<AdminQnA />} />
+          <Route path="/admin" element={<AdminNav isAdmin={isAdmin} />}>
+            <Route path="users" element={<AdminUsers isAdmin={isAdmin} />} />
+            <Route
+              path="products"
+              element={<AdminProducts isAdmin={isAdmin} />}
+            />
+            <Route
+              path="products/upload"
+              element={<AdminProductsUpload isAdmin={isAdmin} />}
+            />
+            <Route path="notice" element={<AdminNotice isAdmin={isAdmin} />} />
+            <Route
+              path="noticeWrite"
+              element={<NoticeWrite isAdmin={isAdmin} />}
+            />
+            <Route path="review" element={<AdminReview isAdmin={isAdmin} />} />
+            <Route path="qna" element={<AdminQnA isAdmin={isAdmin} />} />
           </Route>
         </Route>
         <Route path="/*" element={<Page404 />} />
