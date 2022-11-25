@@ -3,7 +3,7 @@ use shoppingmall;
 
 CREATE TABLE member(
     mId INT AUTO_INCREMENT PRIMARY KEY,
-    mEmail VARCHAR(255) NOT NULL UNIQUE,
+    mEmail VARCHAR(255) NOT NULL unique,
     mPwd VARCHAR(255) NOT NULL,
     mName VARCHAR(255) NOT NULL,
     mPhone VARCHAR(13) NOT NULL,
@@ -34,17 +34,17 @@ CREATE TABLE qna(
     qCategory VARCHAR(20) NOT NULL,
     pId INT,
     mId INT,
-    pName VARCHAR(200),
     qTitle VARCHAR(100) NOT NULL,
     qContent TEXT NOT NULL,
-    qFile VARCHAR(255),
+    qImage1 VARCHAR(255),
+ 	 qImage2 VARCHAR(255),
+    qImage3 VARCHAR(255),
     qSecret BOOLEAN,
     qHit INT(50) DEFAULT 0,
     qRegdate DATE DEFAULT (NOW()),
     FOREIGN KEY (pId) REFERENCES product (pId),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
-
 
 CREATE TABLE qna_comment(
 	qcId INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,17 +55,19 @@ CREATE TABLE qna_comment(
 	FOREIGN KEY (qId) REFERENCES qna (qId)
 );
 
-
 CREATE TABLE notice(
-    nId INT AUTO_INCREMENT PRIMARY KEY,
+    nId INT AUTO_INCREMENT PRIMARY KEY ,
     mId INT,
     nTitle VARCHAR(100) NOT NULL,
     nContent TEXT NOT NULL,
-    nfile VARCHAR(255),
+    nImage1 VARCHAR(255),
+    nImage2 VARCHAR(255),
+    nImage3 VARCHAR(255),
     nHit INT(50),
-    nRegdate DATE,
+    nRegdate DATE DEFAULT (current_date),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
+
 
 CREATE TABLE cart(
     cId INT AUTO_INCREMENT PRIMARY KEY,
@@ -113,9 +115,9 @@ CREATE TABLE review(
     rImage1 VARCHAR(255),
     rImage2 VARCHAR(255),
     rImage3 VARCHAR(255),
-    rStar INT,
+    rStar VARCHAR(5),
     rHit INT(50),
-    rRegdate DATE,
+    rRegdate DATE DEFAULT (current_date),
     FOREIGN KEY (pId) REFERENCES product (pId),
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
