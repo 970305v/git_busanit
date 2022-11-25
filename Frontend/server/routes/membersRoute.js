@@ -332,4 +332,44 @@ router.delete("/delReview/:idx", (req, res) => {
   });
 });
 
+router.get("/notice", (req, res) => {
+  const page = req.query.page;
+  const offset = parseInt(req.query.offset);
+  const startNums = page * offset;
+
+  const search = req.query.searchQuery || "";
+  const qnaSearch = "%" + search + "%";
+
+  let sql = "SELECT COUNT(nId) AS count FROM notice WHERE nTitle LIKE ?;";
+  db.query(sql, [qnaSearch], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      let dataSql =
+        "SELECT notice.*, member.mAuth FROM notice LEFT JOIN member ON notice.mId = member.mId WHERE notice.nTitle LIKE ? ORDER BY nId DESC LIMIT ?, ?;";
+      db.query(dataSql, [qnaSearch, startNums, offset], (err, data) => {
+        if (err) {
+          throw err;
+        } else {
+          res.json({
+            data: data,
+            page: page, // 1, 2, 3 ... 페이지
+            totalPageNumber: Math.ceil(result[0].count / offset), // 전체 페이지 수
+            totalRows: result[0].count, // 전체 사용자 수
+          });
+        }
+      });
+    }
+  });
+});
+
+router.get(`/notice/:idx`, (req, res) => {
+  let sql = "SELECT * FROM notice WHERE nId = ?;";
+  db.query(sql, [req.params.idx], (err, result) => {
+    if (err) throw err;
+
+    res.send({ status: 201, result });
+  });
+});
+
 module.exports = router;

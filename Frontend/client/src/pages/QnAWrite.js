@@ -95,7 +95,6 @@ function QnAWrite() {
             />
           </div>
         </div>
-        {/* select option을 상품을 선택한 경우에만 보임 */}
 
         {qCategory === "상품" ? (
           <div className="product-search-container" ref={ref}>

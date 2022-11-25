@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import "../../styles/AdminNav.css";
 
-function AdminNav({ isAdmin }) {
+function AdminNav() {
   return (
     <>
       <header>

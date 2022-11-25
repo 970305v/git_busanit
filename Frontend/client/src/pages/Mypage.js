@@ -8,7 +8,6 @@ import Loading from "./Loading";
 function Mypage() {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [boards, setBoards] = useState([]);
   const [editUser, setEditUser] = useState(false);
   const idx = localStorage.getItem("idx");
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,13 +26,10 @@ function Mypage() {
       await axios.get(`/mypage/${idx}`, { idx: idx }).then((response) => {
         setUsers(response.data.user);
         setOrders(response.data.orders);
-        setBoards(response.data.boards);
       });
     };
     fetchData();
   }, []);
-
-  console.log(boards);
 
   return (
     <div className="container mypage-gird">
@@ -151,11 +147,6 @@ function Mypage() {
                   <a href="!#">탈퇴하기</a>
                 </div>
               </div>
-              {/* <div className="mypageBtn-box">
-                <button className="updateSave-btn" type="submit">
-                  변경 사항 저장하기
-                </button>
-              </div> */}
             </div>
           );
         })}

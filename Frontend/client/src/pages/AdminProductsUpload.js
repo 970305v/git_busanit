@@ -11,6 +11,7 @@ function AdminProductsUpload() {
   const [pImage1, setPImage1] = useState("");
   const [pImage2, setPImage2] = useState("");
   const [pImage3, setPImage3] = useState("");
+
   const [pContent, setPContent] = useState("");
 
   const productHandler = async (e) => {

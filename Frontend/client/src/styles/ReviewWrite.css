@@ -29,8 +29,8 @@
 }
 .write-contents {
   resize: none;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
   width: 100%;
   padding: 12px 12px;
   height: 400px;

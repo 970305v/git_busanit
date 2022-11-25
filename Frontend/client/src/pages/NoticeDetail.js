@@ -1,29 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link, useParams } from "react-router-dom";
 import "../styles/NoticeDetail.css";
+import axios from "axios";
 
 function NoticeDetail() {
+  const [datas, setDatas] = useState([]);
+  const idx = useParams().id;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(`/notice/${idx}`, idx).then((response) => {
+        setDatas(response.data.result);
+      });
+    };
+    fetchData();
+  }, [idx]);
+
   return (
     <div className="board-container">
-      <div className="title-wrap">
-        <h2>공지 제목</h2>
-        <div>
-          <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />{" "}
-          <FontAwesomeIcon icon={faTrash} />
-        </div>
-      </div>
-      <div className="content-wrap">
-        <div>
-          <span>아이디</span>
-          <span>작성날짜</span>
-        </div>
-        <div className="review-content">
-          내용
-          <div>사진</div>
-        </div>
-      </div>
+      {datas.map((data, key) => {
+        return (
+          <div key={key}>
+            <div className="title-wrap">
+              <h2>{data.nTitle}</h2>
+            </div>
+            <div className="content-wrap">
+              <div>
+                <span>{data.nRegdate}</span>
+              </div>
+              <div className="review-content">
+                {data.nContent}
+                <div className="review-box-wrap">
+                  {data.nImage1 === null ? null : (
+                    <div className="review-grid">
+                      <div className="review-img-box">
+                        <img src={`../${data.nImage1}`} alt={data.nImage1} />
+                      </div>
+                      <div className="review-img-box">
+                        <img src={`../${data.nImage2}`} alt={data.nImage2} />
+                      </div>
+                      <div className="review-img-box">
+                        <img src={`../${data.nImage3}`} alt={data.nImage3} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
       <Link to="/notice">
         <FontAwesomeIcon icon={faAngleLeft} /> 목록으로 가기
       </Link>

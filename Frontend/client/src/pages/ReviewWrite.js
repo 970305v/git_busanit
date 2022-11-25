@@ -1,6 +1,4 @@
 import "../styles/ReviewWrite.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -21,7 +19,7 @@ function ReviewWrite() {
       });
     };
     fetchData();
-  }, []);
+  }, [idx]);
 
   const reviewWriteHandler = async (e) => {
     e.preventDefault();
@@ -34,14 +32,18 @@ function ReviewWrite() {
     formData.append("rFile", rFile[2]);
     formData.append("rContent", rContent);
     formData.append("rStar", rStar);
-    await axios.post("/reviewWrite", formData).then((response) => {
-      if (response.data.status === 201) {
-        window.alert(response.data.msg);
-        window.location.assign("/review");
-      } else {
-        window.alert("문의 등록에 실패했습니다.");
-      }
-    });
+    if (rStar === "") {
+      window.alert("별점은 필수입니다.");
+    } else {
+      await axios.post("/reviewWrite", formData).then((response) => {
+        if (response.data.status === 201) {
+          window.alert(response.data.msg);
+          window.location.assign("/review");
+        } else {
+          window.alert("문의 등록에 실패했습니다.");
+        }
+      });
+    }
   };
 
   return (
@@ -96,11 +98,8 @@ function ReviewWrite() {
               </button>
             </div>
             <div className="right-wrap">
-              <select
-                required
-                value={rStar}
-                onChange={(e) => setRStar(e.target.value)}
-              >
+              <select value={rStar} onChange={(e) => setRStar(e.target.value)}>
+                <option>별점을 선택해주세요.</option>
                 <option value={"★★★★★"}>★★★★★</option>
                 <option value={"★★★★☆"}>★★★★☆</option>
                 <option value={"★★★☆☆"}>★★★☆☆</option>

@@ -6,21 +6,21 @@ import { Link } from "react-router-dom";
 import "../styles/AdminUsers.css";
 import ReactPaginate from "react-paginate";
 
-function AdminUsers({ isAdmin }) {
+function AdminUsers() {
   const [rows, setRows] = useState(0); // 전체 게시물 수
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(0); // 전체 페이지
   const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
   const [keyword, setKeyword] = useState("");
   const [searchWords, setSearchWords] = useState("");
-  const [sel, setSel] = useState("mEmail");
+  const [searchType, setSearchType] = useState("mEmail");
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       await axios
         .get(
-          `/admin/users?page=${page}&offset=${offset}&selQuery=${sel}&searchQuery=${keyword}`
+          `/admin/users?page=${page}&offset=${offset}&typeQuery=${searchType}&searchQuery=${keyword}`
         )
         .then((response) => {
           setUsers(response.data.users);
@@ -35,15 +35,13 @@ function AdminUsers({ isAdmin }) {
   const changePage = ({ selected }) => {
     setPage(selected);
   };
+
   const searchData = async (e) => {
     e.preventDefault();
     setKeyword(searchWords);
     setPage(0);
-    setSel("mEmail");
     setSearchWords("");
   };
-
-  console.log(sel);
 
   return (
     <>
@@ -60,8 +58,11 @@ function AdminUsers({ isAdmin }) {
             </div>
             <div>
               <form method="post" onSubmit={searchData}>
-                <select value={sel} onChange={(e) => setSel(e.target.value)}>
-                  <option value={"mEmail"}>회원아이디</option>
+                <select
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}
+                >
+                  <option value={"mEmail"}>이메일</option>
                   <option value={"mName"}>이름</option>
                   <option value={"mPhone"}>전화번호</option>
                 </select>

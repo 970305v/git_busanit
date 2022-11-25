@@ -54,7 +54,6 @@ function Login() {
             onChange={(e) => setPasswd(e.target.value)}
           />
         </div>
-        <a href="!#">비밀번호 찾기</a>
         <div className="btn-wrap">
           <button className="login-btn">로그인</button>
           <Link to="/register">

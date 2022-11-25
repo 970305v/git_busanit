@@ -5,7 +5,7 @@ import "../styles/QnADetail.css";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-function QnADetail({ isAdmin, secretdata }) {
+function QnADetail({ isAdmin }) {
   const [datas, setDatas] = useState([]);
   const [qcContent, setQcContent] = useState("");
   const idx = useParams().id;
@@ -17,7 +17,7 @@ function QnADetail({ isAdmin, secretdata }) {
       });
     };
     fetchData();
-  }, []);
+  }, [idx]);
 
   const commentHandler = async (e) => {
     e.preventDefault();
@@ -36,8 +36,6 @@ function QnADetail({ isAdmin, secretdata }) {
         }
       });
   };
-
-  console.log(datas);
 
   return (
     <div className="board-container">

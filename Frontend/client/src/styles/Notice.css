@@ -17,42 +17,36 @@ td {
   font-size: 14px;
 }
 
-.notice-table-wrap td:nth-child(1) {
-  width: 10%;
-}
-
 .notice-table-wrap td:nth-child(2) {
   width: 60%;
-  text-align: left;
+  text-align: center;
 }
-.notice-table-wrap td:nth-child(3) {
-  width: 10%;
-}
-.notice-table-wrap td:nth-child(4) {
-  width: 10%;
-}
-.notice-table-wrap td:nth-child(5) {
-  width: 10%;
-}
+
 .bottom-wrap {
   display: flex;
   justify-content: space-between;
 }
 
-input {
-  padding: 12px 12px;
-  border: 1px solid black;
+.bottom-wrap input {
+  padding: 10px 12px;
+  border-radius: 3px;
+  border: 1px solid #aaa;
   outline: none;
   font-family: inherit;
 }
 
-button {
+.bottom-wrap button {
   color: #fff;
   background-color: #000;
+  border: 1px solid #000;
+  border-radius: 3px;
   font-family: inherit;
-  padding: 11px 20px;
+  padding: 10px 20px;
   cursor: pointer;
-  margin-left: 10px;
+  margin: 0;
+}
+.bottom-wrap button:hover {
+  opacity: 0.7;
 }
 
 .pagination {

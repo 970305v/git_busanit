@@ -82,7 +82,7 @@ function Navbar({ isLogin, isAdmin }) {
                   </>
                 )}
                 {!isAdmin ? null : (
-                  <Link to="/admin" isAdmin={isAdmin}>
+                  <Link to="/admin">
                     <FontAwesomeIcon icon={faGear} id="icon-btn" />
                   </Link>
                 )}
