@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/AdminProductsUpload.css";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function AdminProductsUpload() {
-  const navigate = useNavigate();
-
+  const { id } = useParams();
+  const [product, setProduct] = useState("");
   const [pGender, setPGender] = useState("");
   const [pCaregory, setPCaregory] = useState("");
   const [pName, setPName] = useState("");
@@ -17,6 +17,20 @@ function AdminProductsUpload() {
   const [pImage3, setPImage3] = useState("");
   const [pContent, setPContent] = useState("");
   const [showImages, setShowImages] = useState([]);
+
+  async function getProductInfo() {
+    await axios.get("/product/edit/" + id).then((response) => {
+      if (response.data.status === 201) {
+        setProduct(response.data.result[0]);
+      } else {
+        window.alert("상품 불러오기를 실패했습니다.");
+      }
+    });
+  }
+
+  useEffect(() => {
+    getProductInfo();
+  }, []);
 
   // 이미지 상대경로 저장
   const handleAddImages = (event) => {
@@ -31,26 +45,6 @@ function AdminProductsUpload() {
     setShowImages(imageUrlLists);
   };
 
-  const stockHandler = (e) => {
-    const regex = /^[0-9]*$/;
-    if (regex.test(e.target.value)) {
-      setPStock(e.target.value);
-    } else {
-      window.alert("재고는 숫자만 입력이 가능합니다.");
-      e.target.value = "";
-    }
-  };
-
-  const priceHandler = (e) => {
-    const regex = /^[0-9]*$/;
-    if (regex.test(e.target.value)) {
-      setPPrice(e.target.value);
-    } else {
-      window.alert("가격는 숫자만 입력이 가능합니다.");
-      e.target.value = "";
-    }
-  };
-
   const productHandler = async (e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -63,32 +57,22 @@ function AdminProductsUpload() {
     formData.append("pImage2", pImage2);
     formData.append("pImage3", pImage3);
     formData.append("pContent", pContent);
-    if (pGender == "") {
-      alert("성별을 선택해주세요.");
-      return false;
-    }
-    if (pCaregory == "") {
-      alert("카테고리를 선택해주세요.");
-      return false;
-    }
     if (imageLength != 3) {
       alert("상품이미지는 3개 선택해주세요");
       return false;
     }
-    await axios.post("/product/upload", formData).then((response) => {
+    await axios.post("/product/edit", formData).then((response) => {
       if (response.data.status === 201) {
         window.alert(response.data.msg);
       } else {
-        window.alert("상품 등록에 실패했습니다.");
+        window.alert("상품 수정에 실패했습니다.");
       }
     });
-
-    navigate("/admin/products");
   };
 
   return (
     <div className="admin-container">
-      <h1>상품 등록</h1>
+      <h1>상품 수정</h1>
       <form
         method="post"
         encType="multipart/form-data"
@@ -105,12 +89,12 @@ function AdminProductsUpload() {
                       <td>성별 분류</td>
                       <td>
                         <select
-                          value={pGender}
+                          value={product.pGender}
                           onChange={(e) => setPGender(e.target.value)}
                         >
-                          <option value="">선택하세요</option>
-                          <option value="MEN">MEN</option>
-                          <option value="WOMEN">WOMEN</option>
+                          <option>선택하세요</option>
+                          <option>MEN</option>
+                          <option>WOMEN</option>
                         </select>
                       </td>
                     </tr>
@@ -118,13 +102,13 @@ function AdminProductsUpload() {
                       <td>카테고리 분류</td>
                       <td>
                         <select
-                          value={pCaregory}
+                          value={product.pCaregory}
                           onChange={(e) => setPCaregory(e.target.value)}
                         >
-                          <option value="">선택하세요</option>
-                          <option value="상의">상의</option>
-                          <option value="하의">하의</option>
-                          <option value="기타">기타</option>
+                          <option>선택하세요</option>
+                          <option>상의</option>
+                          <option>하의</option>
+                          <option>기타</option>
                         </select>
                       </td>
                     </tr>
@@ -142,9 +126,8 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          value={pName}
+                          value={product.pName}
                           onChange={(e) => setPName(e.target.value)}
-                          required
                         ></input>
                       </td>
                     </tr>
@@ -152,9 +135,8 @@ function AdminProductsUpload() {
                       <td>상품 설명</td>
                       <td>
                         <textarea
-                          value={pContent}
+                          value={product.pContent}
                           onChange={(e) => setPContent(e.target.value)}
-                          required
                         ></textarea>
                       </td>
                     </tr>
@@ -163,8 +145,8 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          onChange={priceHandler}
-                          required
+                          value={product.pPrice}
+                          onChange={(e) => setPPrice(e.target.value)}
                         ></input>
                       </td>
                     </tr>
@@ -173,8 +155,8 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          onChange={stockHandler}
-                          required
+                          value={product.pStock}
+                          onChange={(e) => setPStock(e.target.value)}
                         ></input>
                       </td>
                     </tr>
@@ -202,18 +184,41 @@ function AdminProductsUpload() {
                           type="file"
                           accept="image/jpg,image/png,image/jpeg,image/gif"
                           multiple
-                          required
                         ></input>
                       </td>
                     </tr>
                   </tbody>
                 </table>
                 <div className="prevImg">
+                  <p>
+                    수정 전<br />
+                    이미지 파일
+                  </p>
+                  <img src={`../../../${product.pImage1}`}></img>
+                  <img src={`../../../${product.pImage2}`}></img>
+                  <img src={`../../../${product.pImage3}`}></img>
+                </div>
+                <div className="prevImg">
+                  <p>
+                    수정 후<br />
+                    이미지 파일
+                  </p>
                   {showImages.map((image, id) => (
                     <div key={id}>
                       <img src={image} alt={`${image}-${id}`} />
                     </div>
                   ))}
+                </div>
+                <div className="prevImg">
+                  <p
+                    style={{
+                      color: "red",
+                      fontWeight: "bold",
+                      fontSize: "14px",
+                    }}
+                  >
+                    새로운 이미지를 선택 안할 시 기존 이미지로 유지됩니다.
+                  </p>
                 </div>
               </div>
             </div>

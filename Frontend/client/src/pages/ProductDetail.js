@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/ProductDetail.css";
 
 function ProductDetail() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const idx = localStorage.getItem("idx");
+
   const [counter, setCounter] = useState(1);
   const plus = () => {
     setCounter(counter + 1);
@@ -14,36 +19,105 @@ function ProductDetail() {
       setCounter(counter - 1);
     }
   };
+
+  const [product, setProduct] = useState([]);
+  async function getProduct() {
+    await axios.get("/detail/" + id).then((response) => {
+      if (response.data.status === 201) {
+        setProduct(response.data.result[0]);
+      } else {
+        window.alert("Failed.");
+      }
+    });
+  }
+
+  const totalPrice = counter * product.pPrice;
+  const pid = product.pId;
+
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  const cartHandler = async (e) => {
+    e.preventDefault();
+    await axios.post("/cart", { idx, counter, pid }).then((response) => {
+      if (response.data.status === 201) {
+        window.alert(response.data.msg);
+        const isOrder = window.confirm("장바구니 페이지로 이동하시겠습니까?");
+        if (isOrder) {
+          navigate("/cart");
+        } else {
+          navigate(-1);
+        }
+      } else {
+        window.alert("상품 등록에 실패했습니다.");
+      }
+    });
+  };
+
+  const pName = product.pName;
+  const pCounter = counter;
+  const buyHandler = async (e) => {
+    e.preventDefault();
+    await axios.post("/buy/" + idx, { pName, pCounter }).then((response) => {
+      if (response.data.status === 201) {
+        navigate("/order");
+      } else {
+        window.alert("상품 등록에 실패했습니다.");
+      }
+    });
+  };
+
   return (
     <div className="container">
       <div className="product">
-        <img></img>
+        <img src={`../${product.pImage1}`} />
         <div className="product-title-wrap">
-          <h3>프레쉬 치약</h3>
+          <h3>{product.pName}</h3>
           <p>후기(별점)</p>
-          <p>가격</p>
-          <p>
-            자연에서 찾은 허브에 민트향을 더해 보다 상쾌하고 건강하게
-            케어합니다.
-          </p>
+          <p>{product.pPrice}원</p>
           <span>배송비</span>
           <span>3,000원 (50,000원 이상 구매 시 무료)</span>
           <p>수량</p>
           <div className="add-stock">
-            <Link onClick={minus}>-</Link>
+            <a href={() => false} onClick={minus}>
+              -
+            </a>
             <span>{counter}</span>
-            <Link onClick={plus}>+</Link>
+            <a href={() => false} onClick={plus}>
+              +
+            </a>
           </div>
-          <div className="product-price">
-            <p>주문수량</p>
-            <p>총 상품 금액</p>
-            <button className="buy-btn">구매하기</button>
-            <button className="cart-btn">장바구니에 담기</button>
-          </div>
+          <form method="post" onSubmit={cartHandler}>
+            <div className="product-price">
+              <div className="product-price-item">
+                <span>주문수량</span>
+                <span>{counter}개</span>
+              </div>
+              <div className="product-price-item">
+                <span>총 상품 금액</span>
+                <span>{totalPrice}원</span>
+              </div>
+              <button type="button" className="buy-btn" onClick={buyHandler}>
+                구매하기
+              </button>
+              <button type="submit" className="cart-btn">
+                장바구니에 담기
+              </button>
+            </div>
+          </form>
         </div>
       </div>
       <div className="product-detail-container">
-        <div className="product-detail-content">내용~~</div>
+        <div className="product-detail-content">
+          <img src={`../${product.pImage2}`} />
+          <p>&nbsp;</p>
+          <img src={`../${product.pImage3}`} />
+          <p>&nbsp;</p>
+          <span>{product.pName}</span>
+          <p>&nbsp;</p>
+          <p>{product.pContent}</p>
+        </div>
         <div className="product-delivery">
           <table className="delivery-table">
             <thead>

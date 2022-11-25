@@ -116,4 +116,23 @@ router.get(`/admin/notice`, (req, res) => {
   });
 });
 
+router.delete(`/admin/notice/:id`, (req, res) => {
+  let sql = "DELETE FROM notice WHERE nId = ?;";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) throw err;
+
+    res.send({ status: 201, msg: "삭제가 완료되었습니다.", result });
+  });
+});
+
+router.get(`/admin/notice/:id`, (req, res) => {
+  let sql = "SELECT * FROM notice WHERE nId = ?;";
+  db.query(sql, [req.params.idx], (err, result) => {
+    if (err) throw err;
+
+    console.log(result);
+    res.send({ status: 201, result });
+  });
+});
+
 module.exports = router;

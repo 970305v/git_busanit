@@ -30,6 +30,10 @@
 .product-price {
   border-top: 1px solid black;
 }
+.product-price-item {
+  display: flex;
+  justify-content: space-between;
+}
 
 .add-stock span {
   display: inline-block;
@@ -89,6 +93,16 @@
   width: 800px;
   margin: 20px auto;
 }
+
+.product-detail-content img {
+  width: 100%;
+}
+.product-detail-content span {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .delivery-table {
   width: 100%;
   margin: 50px auto;

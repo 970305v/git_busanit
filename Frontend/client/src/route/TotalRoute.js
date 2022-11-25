@@ -35,6 +35,8 @@ import Loading from "../pages/Loading";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import AdminRoute from "./AdminRoute";
+import NoticeEdit from "../pages/NoticeEdit";
+import AdminProductsEdit from "../pages/AdminProductsEdit";
 
 function TotalRoute({ isLogin, isAdmin }) {
   return (
@@ -80,7 +82,15 @@ function TotalRoute({ isLogin, isAdmin }) {
               path="products/upload"
               element={<AdminProductsUpload isAdmin={isAdmin} />}
             />
+            <Route
+              path="product/edit/:id"
+              element={<AdminProductsEdit isAdmin={isAdmin} />}
+            />
             <Route path="notice" element={<AdminNotice isAdmin={isAdmin} />} />
+            <Route
+              path="notice/:idx"
+              element={<NoticeEdit isAdmin={isAdmin} />}
+            />
             <Route
               path="noticewrite"
               element={<NoticeWrite isAdmin={isAdmin} />}

@@ -6,6 +6,7 @@
 .product-list a {
   margin-right: 30px;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .product-wrap {
@@ -28,4 +29,8 @@
 }
 .product-box p {
   text-align: center;
+}
+
+.click {
+  font-weight: bold;
 }

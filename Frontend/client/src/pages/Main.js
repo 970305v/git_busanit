@@ -4,15 +4,54 @@ import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 function Main() {
   const [allProducts, setAllProducts] = useState([]);
+  const [menProducts, setMenProducts] = useState([]);
+  const [womenProducts, setWomenProducts] = useState([]);
+  const [rows, setRows] = useState(0); //전체 게시물 수
+  const [page, setPage] = useState(0); //현재 페이지
+  const [pages, setPages] = useState(0); //전체 페이지
+  const [offset, setOffset] = useState(3); //한 페이지에 표시할 데이터 수
+  const caregory = "all";
+
   async function getAllProducts() {
-    await axios.get("/products/all").then((response) => {
-      console.log(response);
+    await axios
+      .get(
+        "/products/all?caregory=" +
+          caregory +
+          "&page=" +
+          page +
+          "&offset=" +
+          offset
+      )
+      .then((response) => {
+        if (response.data.status === 201) {
+          setAllProducts(response.data.result);
+          setPage(response.data.page);
+          setPages(response.data.totalPageNumber);
+          setRows(response.data.totalRows);
+        } else {
+          window.alert("Failed.");
+        }
+      });
+  }
+
+  async function getMenProducts() {
+    await axios.get("/products/men?caregory=" + caregory).then((response) => {
       if (response.data.status === 201) {
-        setAllProducts(response.data.result);
-        console.log(response.data.msg);
+        setMenProducts(response.data.result);
+      } else {
+        window.alert("Failed.");
+      }
+    });
+  }
+
+  async function getWomenProducts() {
+    await axios.get("/products/women?caregory=" + caregory).then((response) => {
+      if (response.data.status === 201) {
+        setWomenProducts(response.data.result);
       } else {
         window.alert("Failed.");
       }
@@ -21,7 +60,13 @@ function Main() {
 
   useEffect(() => {
     getAllProducts();
-  }, []);
+    getMenProducts();
+    getWomenProducts();
+  }, [page]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+  };
 
   return (
     <div>
@@ -93,7 +138,7 @@ function Main() {
                 allProducts.map((allProduct, key) => {
                   return (
                     <div className="product-box" key={key}>
-                      <Link to="/product/:id">
+                      <Link to={`/product/${allProduct.pId}`}>
                         <img src={`../${allProduct.pImage1}`} alt="" />
                         <p>
                           <strong>{allProduct.pName}</strong>
@@ -118,6 +163,27 @@ function Main() {
               <FontAwesomeIcon icon={faAngleRight} className="prodRight" />
             </div>
           </div>
+          <nav key={rows} role="navigation">
+            <ReactPaginate
+              breakLabel="..."
+              previousLabel="<"
+              nextLabel=">"
+              onPageChange={changePage}
+              pageCount={pages}
+              pageRangeDisplayed={5}
+              marginPagesDisplayed={2}
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              containerClassName="pagination"
+              activeClassName="active"
+            />
+          </nav>
         </div>
         <div className="productBanner">
           <h1>MEN</h1>
@@ -126,36 +192,30 @@ function Main() {
               <FontAwesomeIcon icon={faAngleLeft} className="prodLeft" />
             </div>
             <div className="ProdItems">
-              <div className="ProdItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>상품명</p>
-                <span>가격</span>
-              </div>
-              <div className="ProdItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>상품명</p>
-                <span>가격</span>
-              </div>
-              <div className="ProdItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>상품명</p>
-                <span>가격</span>
-              </div>
+              {menProducts.length > 0 ? (
+                menProducts.map((menProduct, key) => {
+                  return (
+                    <div className="product-box" key={key}>
+                      <Link to={`/product/${menProduct.pId}`}>
+                        <img src={`../${menProduct.pImage1}`} alt="" />
+                        <p>
+                          <strong>{menProduct.pName}</strong>
+                        </p>
+                        <p style={{ color: "#8c8c8c", fontSize: "14px" }}>
+                          {menProduct.pPrice}원
+                        </p>
+                      </Link>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="product-box">
+                  <img src="https://via.placeholder.com/300.png"></img>
+                  <p>
+                    <strong>등록된 상품이 없습니다.</strong>
+                  </p>
+                </div>
+              )}
             </div>
             <div>
               <FontAwesomeIcon icon={faAngleRight} className="prodRight" />
@@ -169,85 +229,30 @@ function Main() {
               <FontAwesomeIcon icon={faAngleLeft} className="prodLeft" />
             </div>
             <div className="ProdItems">
-              <div className="ProdItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>상품명</p>
-                <span>가격</span>
-              </div>
-              <div className="ProdItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>상품명</p>
-                <span>가격</span>
-              </div>
-              <div className="ProdItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>상품명</p>
-                <span>가격</span>
-              </div>
-            </div>
-            <div>
-              <FontAwesomeIcon icon={faAngleRight} className="prodRight" />
-            </div>
-          </div>
-        </div>
-        <div className="reviewBannerWrap">
-          <h1>BEST REVIEW</h1>
-          <div className="reviewBanner">
-            <div>
-              <FontAwesomeIcon icon={faAngleLeft} className="prodLeft" />
-            </div>
-            <div className="reviewItems">
-              <div className="reviewItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>리뷰글</p>
-              </div>
-              <div className="reviewItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>리뷰글</p>
-              </div>
-              <div className="reviewItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>리뷰글</p>
-              </div>
-              <div className="reviewItem">
-                <a href="!#">
-                  <img
-                    alt="img"
-                    src="https://contents.sixshop.com/thumbnails/uploadedFiles/137352/product/image_1598251564779_1000.jpg"
-                  />
-                </a>
-                <p>리뷰글</p>
-              </div>
+              {womenProducts.length > 0 ? (
+                womenProducts.map((womenProduct, key) => {
+                  return (
+                    <div className="product-box" key={key}>
+                      <Link to={`/product/${womenProduct.pId}`}>
+                        <img src={`../${womenProduct.pImage1}`} alt="" />
+                        <p>
+                          <strong>{womenProduct.pName}</strong>
+                        </p>
+                        <p style={{ color: "#8c8c8c", fontSize: "14px" }}>
+                          {womenProduct.pPrice}원
+                        </p>
+                      </Link>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="product-box">
+                  <img src="https://via.placeholder.com/300.png"></img>
+                  <p>
+                    <strong>등록된 상품이 없습니다.</strong>
+                  </p>
+                </div>
+              )}
             </div>
             <div>
               <FontAwesomeIcon icon={faAngleRight} className="prodRight" />

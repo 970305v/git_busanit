@@ -25,6 +25,7 @@
 .admin-table-wrap select,
 input {
   padding: 8px 8px;
+  outline: none;
   border: 1px solid black;
   font-family: inherit;
   margin-right: 5px;
@@ -48,17 +49,17 @@ input {
   width: 5%;
 }
 .product-table th:nth-child(3) {
-  width: 15%;
+  width: 10%;
 }
 
-.product-table th:nth-child(5) {
-  width: 5%;
+.product-table th:nth-child(5),
+.product-table th:nth-child(6),
+.product-table th:nth-child(7),
+.product-table th:nth-child(8) {
+  width: 7%;
 }
-.product-table th:nth-child(6) {
-  width: 5%;
-}
-.product-table th:nth-child(10) {
-  width: 10%;
+.product-table th:nth-child(9) {
+  width: 15%;
 }
 .product-table th:last-child {
   width: 10%;
@@ -69,4 +70,46 @@ input {
 .product-table img {
   width: 80px;
   height: 80px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul.pagination li {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+ul.pagination li:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+ul.pagination li:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+}
+
+ul.pagination li.active a {
+  color: #c67c00;
 }

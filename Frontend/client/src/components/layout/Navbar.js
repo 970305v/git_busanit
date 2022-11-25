@@ -13,14 +13,27 @@ import axios from "axios";
 function Navbar({ isLogin, isAdmin }) {
   const [searchWord, setSearchWord] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [carts, setCarts] = useState([]);
+  const idx = localStorage.getItem("idx");
 
   useEffect(() => {
     setSearchOpen(false);
+    getCartCount();
   }, []);
 
   const searchHandler = async (e) => {
     await axios.get(`/products/all?=${searchWord}`);
   };
+
+  async function getCartCount() {
+    await axios.get("/cart/" + idx).then((response) => {
+      if (response.data.status === 201) {
+        setCarts(response.data.cart);
+      } else {
+        window.alert("Failed.");
+      }
+    });
+  }
 
   return (
     <>
@@ -76,8 +89,14 @@ function Navbar({ isLogin, isAdmin }) {
                       </Link>
                     )}
                     <Link to="/cart">
-                      <FontAwesomeIcon icon={faCartShopping} id="icon-btn" />
-                      {/* <span>수량, 나중에 useState 적용</span> */}
+                      <FontAwesomeIcon
+                        icon={faCartShopping}
+                        id="icon-btn"
+                        style={{ marginRight: "5px" }}
+                      />
+                      <span>
+                        {carts.length == 0 ? null : `${carts.length}`}
+                      </span>
                     </Link>
                   </>
                 )}

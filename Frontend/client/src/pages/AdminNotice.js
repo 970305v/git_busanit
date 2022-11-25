@@ -15,6 +15,7 @@ function AdminNotice() {
   const [searchWords, setSearchWords] = useState("");
   const [searchType, setSearchType] = useState("nTitle");
   const [datas, setDatas] = useState([]);
+  const [checkItems, setCheckItems] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +44,36 @@ function AdminNotice() {
     setSearchWords("");
   };
 
+  const handleSingleCheck = (checked, id) => {
+    if (checked) {
+      setCheckItems((prev) => [...prev, id]);
+    } else {
+      setCheckItems(checkItems.filter((el) => el !== id));
+    }
+  };
+
+  const handleAllCheck = (checked) => {
+    if (checked) {
+      const idArray = [];
+      datas.forEach((el) => idArray.push(el.pId));
+      setCheckItems(idArray);
+    } else {
+      setCheckItems([]);
+    }
+  };
+
+  const deleteNotice = async (id) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      await axios.delete(`notice/${id}`).then((response) => {
+        if (response.data.status === 201) {
+          window.alert(response.data.msg);
+        } else {
+          window.alert("삭제에 실패했습니다.");
+        }
+      });
+    }
+  };
+
   return (
     <>
       <div className="admin-container">
@@ -60,21 +91,23 @@ function AdminNotice() {
               </span>
             </div>
             <div>
-              <select
-                value={searchType}
-                onChange={(e) => setSearchType(e.target.value)}
-              >
-                <option value={"nTitle"}>제목</option>
-                <option value={"nId"}>번호</option>
-              </select>
-              <input
-                type="text"
-                value={searchWords}
-                onChange={(e) => setSearchWords(e.target.value)}
-              />
-              <button>
-                <FontAwesomeIcon icon={faSearch} />
-              </button>
+              <form onSubmit={searchData}>
+                <select
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}
+                >
+                  <option value={"nTitle"}>제목</option>
+                  <option value={"nId"}>번호</option>
+                </select>
+                <input
+                  type="text"
+                  value={searchWords}
+                  onChange={(e) => setSearchWords(e.target.value)}
+                />
+                <button>
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+              </form>
             </div>
           </div>
           <div>
@@ -82,7 +115,13 @@ function AdminNotice() {
               <thead>
                 <tr>
                   <th>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      onChange={(e) => handleAllCheck(e.target.checked)}
+                      checked={
+                        checkItems.length === datas.length ? true : false
+                      }
+                    />
                   </th>
                   <th>번호</th>
                   <th>제목</th>
@@ -95,14 +134,31 @@ function AdminNotice() {
                   return (
                     <tr key={key}>
                       <td>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          name={data.nId}
+                          onChange={(e) =>
+                            handleSingleCheck(e.target.checked, data.nId)
+                          }
+                          checked={checkItems.includes(data.nId) ? true : false}
+                        />
                       </td>
                       <td>{data.nId}</td>
                       <td>
                         <Link to={`/notice/${data.nId}`}>{data.nTitle}</Link>
                       </td>
                       <td>{data.nRegdate}</td>
-                      <td>수정 / 삭제</td>
+                      <td>
+                        <Link to={`${data.nId}`}>
+                          <button type="button">수정</button>
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => deleteNotice(data.nId)}
+                        >
+                          삭제
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}

@@ -1,9 +1,12 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import "../styles/Cart.css";
 
 function Cart() {
   const [quantity, setQuantity] = useState(1);
+  let totalPrice = 0;
+
   function Plus() {
     setQuantity(quantity + 1);
   }
@@ -12,69 +15,135 @@ function Cart() {
       setQuantity(quantity - 1);
     }
   }
+
+  const idx = localStorage.getItem("idx");
+  const [carts, setCarts] = useState([]);
+
+  async function getCartList() {
+    await axios.get("/cart/" + idx).then((response) => {
+      if (response.data.status === 201) {
+        setCarts(response.data.cart);
+      } else {
+        window.alert("Failed.");
+      }
+    });
+  }
+  async function deleteItem(id) {
+    const isDelete = window.confirm("상품을 삭제하시겠습니까?");
+    if (isDelete) {
+      await axios
+        .delete("/delete/cart?mId=" + idx + "&pId=" + id)
+        .then((response) => {
+          if (response.data.status === 201) {
+            window.alert(response.data.msg);
+            getCartList();
+          } else {
+            window.alert("Failed.");
+          }
+        });
+    }
+  }
+
+  useEffect(() => {
+    getCartList();
+  }, []);
+
   return (
     <div className="cartWrap">
-      <h1>장바구니()</h1>
-      <div className="table-center">
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" />
-              </th>
-              <th colSpan="2">상품정보</th>
-              <th>수량</th>
-              <th>가격</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>
-                <img src="https://via.placeholder.com/70" />
-              </td>
-              <td>
-                <p>상품 이름</p>
-                <a href="!#">삭제하기</a>
-              </td>
-              <td>
-                <div className="add-stock">
-                  <Link onClick={Minus}>-</Link>
-                  <span>{quantity}</span>
-                  <Link onClick={Plus}>+</Link>
+      <h1>장바구니({carts.length})</h1>
+      {carts.length > 0 ? (
+        <div className="cart-box">
+          <div className="tb">
+            <div className="tb-title">
+              <span className="name">상품정보</span>
+              <span className="qty">수량</span>
+              <span className="price">가격</span>
+              <span className="deliveryPrice">배송비</span>
+            </div>
+            <div className="tb-main">
+              <div className="tb-main-left">
+                {carts.map((cart, key) => {
+                  {
+                    totalPrice += cart.cQuantity * cart.pPrice;
+                  }
+                  return (
+                    <div key={key} className="tb-cartInfo">
+                      <div className="product-info">
+                        <Link to={`/product/${cart.pId}`}>
+                          <img src={`../${cart.pImage1}`} />
+                        </Link>
+
+                        <div className="text">
+                          <Link to={`/product/${cart.pId}`}>{cart.pname}</Link>
+                          <span
+                            onClick={() => deleteItem(cart.pId)}
+                            style={{ cursor: "pointer", color: "#666" }}
+                          >
+                            삭제하기
+                          </span>
+                        </div>
+                      </div>
+                      <div className="add-stock">
+                        <a href={() => false} onClick={Minus}>
+                          -
+                        </a>
+                        <span>{cart.cQuantity}</span>
+                        <a href={() => false} onClick={Plus}>
+                          +
+                        </a>
+                      </div>
+                      <div className="cartPrice">
+                        <p>{cart.cQuantity * cart.pPrice}원</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="tb-delivery-group">
+                <div className="delivery-priceInfo">
+                  {totalPrice > 50000 ? "0원" : "3,000원"}
                 </div>
-              </td>
-              <td>가격</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="table-right">
-        <table>
-          <thead>
-            <tr>
-              <td>상품합계</td>
-              <td>원</td>
-            </tr>
-            <tr>
-              <td>배송비</td>
-              <td>원</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>합계</td>
-              <td>원</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="cartBtn">
-        <button type="button">선택상품 주문</button>
-        <button type="button">전체상품 주문</button>
-      </div>
+                <div className="delivery-freeInfo">
+                  50,000원 이상 구매 시 무료
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="tb-bottom">
+            <div className="cartInfo-bottom">
+              <div className="bottom-box">
+                <div className="title">상품 합계</div>
+                <div className="content">{totalPrice}원</div>
+              </div>
+              <div className="bottom-box">
+                <div className="title">배송비</div>
+                <div className="content">
+                  {totalPrice > 50000 ? "0원" : "3,000원"}
+                </div>
+              </div>
+            </div>
+            <div className="price-total">
+              <div className="bottom-box total">
+                <div className="title">합계</div>
+                <div className="content">
+                  {totalPrice > 50000
+                    ? `${totalPrice}원`
+                    : `${totalPrice + 3000}원`}
+                </div>
+              </div>
+            </div>
+            <div className="cartBtn">
+              <button type="button">
+                <Link to="/order">주문하기</Link>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="noncart-box">
+          <p>장바구니가 비어 있습니다.</p>
+        </div>
+      )}
     </div>
   );
 }

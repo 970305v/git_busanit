@@ -1,8 +1,28 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/AllProduct.css";
 
 function AllProduct() {
+  const [gender, setGender] = useState("all");
+  const [caregory, setCaregory] = useState("all");
+  const [products, setProducts] = useState([]);
+  async function getProducts() {
+    await axios
+      .get("/products/list?gender=" + gender + "&caregory=" + caregory)
+      .then((response) => {
+        if (response.data.status === 201) {
+          setProducts(response.data.result);
+        } else {
+          window.alert("Failed.");
+        }
+      });
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, [caregory]);
+
   return (
     <div className="container">
       <div className="title-container">
@@ -11,56 +31,63 @@ function AllProduct() {
       </div>
       <div className="product-container">
         <div className="product-list">
-          <a href="!#">All</a>
-          <a href="!#">상의</a>
-          <a href="!#">하의</a>
-          <a href="!#">기타</a>
+          <Link
+            className={`${caregory === "all" ? "click" : ""}`}
+            onClick={() => {
+              setCaregory("all");
+            }}
+          >
+            All
+          </Link>
+          <Link
+            className={`${caregory === "상의" ? "click" : ""}`}
+            onClick={() => {
+              setCaregory("상의");
+            }}
+          >
+            상의
+          </Link>
+          <Link
+            className={`${caregory === "하의" ? "click" : ""}`}
+            onClick={() => {
+              setCaregory("하의");
+            }}
+          >
+            하의
+          </Link>
+          <Link
+            className={`${caregory === "기타" ? "click" : ""}`}
+            onClick={() => {
+              setCaregory("기타");
+            }}
+          >
+            기타
+          </Link>
         </div>
         <div className="product-wrap">
-          <div className="product-box">
-            <Link to="/product/:id">
-              <img></img>
+          {products.length > 0 ? (
+            products.map((product, key) => {
+              return (
+                <div className="product-box" key={key}>
+                  <Link to={`/product/${product.pId}`}>
+                    <img src={`../${product.pImage1}`} alt="" />
+                    <p>
+                      <strong>{product.pName}</strong>
+                    </p>
+                    <p style={{ color: "#8c8c8c", fontSize: "14px" }}>
+                      {product.pPrice}원
+                    </p>
+                  </Link>
+                </div>
+              );
+            })
+          ) : (
+            <div className="product-none-box">
               <p>
-                <strong>상품명</strong>
+                <strong>{caregory}에 등록된 상품이 없습니다.</strong>
               </p>
-              <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
-            </Link>
-          </div>
-          <div className="product-box">
-            <img></img>
-            <p>
-              <strong>상품명</strong>
-            </p>
-            <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
-          </div>
-          <div className="product-box">
-            <img></img>
-            <p>
-              <strong>상품명</strong>
-            </p>
-            <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
-          </div>
-          <div className="product-box">
-            <img></img>
-            <p>
-              <strong>상품명</strong>
-            </p>
-            <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
-          </div>
-          <div className="product-box">
-            <img></img>
-            <p>
-              <strong>상품명</strong>
-            </p>
-            <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
-          </div>
-          <div className="product-box">
-            <img></img>
-            <p>
-              <strong>상품명</strong>
-            </p>
-            <p style={{ color: "#8c8c8c", fontSize: "14px" }}>가격</p>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -5,10 +5,11 @@
 }
 
 .login-container input[type="text"],
-input[type="password"] {
+.login-container input[type="password"] {
   width: 100%;
   padding: 12px 12px;
-  border: 1px solid black;
+  border: 1px solid #aaa;
+  border-radius: 3px;
   outline: none;
   font-family: inherit;
   margin: 10px 0;
