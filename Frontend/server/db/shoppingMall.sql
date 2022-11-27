@@ -73,6 +73,7 @@ CREATE TABLE cart(
     cId INT AUTO_INCREMENT PRIMARY KEY,
     mId INT,
     pId INT,
+    cQuantity INT,
     FOREIGN KEY (mId) REFERENCES member (mId),
     FOREIGN KEY (pId) REFERENCES product (pId)
 );
@@ -87,22 +88,20 @@ CREATE TABLE orders(
     oPhone varchar(255),
     oPoint INT(10),
     oPrice INT(10),
-    oPayment VARCHAR(1), 
+    oPayment VARCHAR(100), 
     oDate DATE DEFAULT (current_date),
-    FOREIGN KEY (mId) REFERENCES member (mId),
-    FOREIGN KEY (pId) REFERENCES product (pId),
-    FOREIGN KEY (cId) REFERENCES cart (cId)
-);
+    FOREIGN KEY (mId) REFERENCES member (mId)
+    );
 
 
 create table orderDetails(
     odId INT AUTO_INCREMENT PRIMARY KEY,
     oId INT,
+    mId INT,
     cId INT,
     pId INT,
-    pName VARCHAR(255),
     FOREIGN KEY (mId) REFERENCES member (mId),
-    FOREIGN KEY (oId) REFERENCES order (oId),
+    FOREIGN KEY (oId) REFERENCES orders (oId),
     FOREIGN KEY (pId) REFERENCES product (pId)
 );
 

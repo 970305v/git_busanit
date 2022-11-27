@@ -48,7 +48,6 @@ function Login() {
           <input
             type="password"
             name="passwd"
-            placeholder="8자 이상 입력해주세요."
             required
             value={passwd}
             onChange={(e) => setPasswd(e.target.value)}

@@ -1,10 +1,78 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/AdminReview.css";
+import "../styles/AdminQnA.css";
+import ReactPaginate from "react-paginate";
 
 function AdminQnA() {
+  const [rows, setRows] = useState(0); // 전체 게시물 수
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(0); // 전체 페이지
+  const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
+  const [keyword, setKeyword] = useState("");
+  const [searchWords, setSearchWords] = useState("");
+  const [searchType, setSearchType] = useState("qTitle");
+  const [datas, setDatas] = useState([]);
+  const [checkItems, setCheckItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(
+          `/admin/qna?page=${page}&offset=${offset}&typeQuery=${searchType}&searchQuery=${keyword}`
+        )
+        .then((response) => {
+          setDatas(response.data.users);
+          setRows(response.data.totalRows);
+          setPage(response.data.page);
+          setPages(response.data.totalPageNumber);
+        });
+    };
+    fetchData();
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+  };
+
+  const searchData = async (e) => {
+    e.preventDefault();
+    setKeyword(searchWords);
+    setPage(0);
+    setSearchWords("");
+  };
+
+  const handleSingleCheck = (checked, id) => {
+    if (checked) {
+      setCheckItems((prev) => [...prev, id]);
+    } else {
+      setCheckItems(checkItems.filter((el) => el !== id));
+    }
+  };
+
+  const handleAllCheck = (checked) => {
+    if (checked) {
+      const idArray = [];
+      datas.forEach((el) => idArray.push(el.pId));
+      setCheckItems(idArray);
+    } else {
+      setCheckItems([]);
+    }
+  };
+
+  const deleteNotice = async (id) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      await axios.delete(`qna/${id}`).then((response) => {
+        if (response.data.status === 201) {
+          window.alert(response.data.msg);
+        } else {
+          window.alert("삭제에 실패했습니다.");
+        }
+      });
+    }
+  };
   return (
     <>
       <div className="admin-container">
@@ -15,19 +83,29 @@ function AdminQnA() {
             <button>선택삭제</button>
             <div>
               <span>
-                <strong>질문 수 : </strong> 개
+                <strong>질문 수 : {rows}</strong> 개
               </span>
             </div>
             <div>
-              <select>
-                <option>제목</option>
-                <option>작성자</option>
-                <option>상품코드</option>
-              </select>
-              <input type="text" />
-              <button>
-                <FontAwesomeIcon icon={faSearch} />
-              </button>
+              <form onSubmit={searchData}>
+                <div>
+                  <select
+                    value={searchType}
+                    onChange={(e) => setSearchType(e.target.value)}
+                  >
+                    <option value={"qTitle"}>제목</option>
+                    <option value={"qCategory"}>분류</option>
+                  </select>
+                  <input
+                    type="text"
+                    value={searchWords}
+                    onChange={(e) => setSearchWords(e.target.value)}
+                  />
+                  <button>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
           <div>
@@ -38,32 +116,61 @@ function AdminQnA() {
                     <input type="checkbox" />
                   </th>
                   <th>번호</th>
-                  <th>상품명</th>
+                  <th>분류</th>
                   <th>제목</th>
                   <th>작성자</th>
-                  <th>답변</th>
+                  <th>날짜</th>
                   <th>-</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td>1</td>
-                  <td>
-                    <Link to=":id">상품명.</Link>
-                  </td>
-                  <td>
-                    <Link to=":id">사이즈문의</Link>
-                  </td>
-                  <td>아이디</td>
-                  <td>yes or no</td>
-                  <td>수정 / 삭제</td>
-                </tr>
+                {datas.map((data, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>{data.qId}</td>
+                      <td>{data.qCategory}</td>
+                      <td>{data.qTitle}</td>
+                      <td>{data.mEmail}</td>
+                      <td>{data.qRegdate}</td>
+                      <td>
+                        <button
+                          type="button"
+                          onClick={() => deleteNotice(data.qId)}
+                        >
+                          삭제
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-            <div className="pagination">페이지</div>
+            <div className="pagination">
+              <nav key={rows} role="navigation">
+                <ReactPaginate
+                  breakLabel="..."
+                  previousLabel="<"
+                  nextLabel=">"
+                  onPageChange={changePage}
+                  pageCount={pages}
+                  pageRangeDisplayed={5}
+                  marginPagesDisplayed={2}
+                  pageClassName="page-item"
+                  pageLinkClassName="page-link"
+                  previousClassName="page-item"
+                  previousLinkClassName="page-link"
+                  nextClassName="page-item"
+                  nextLinkClassName="page-link"
+                  breakClassName="page-item"
+                  breakLinkClassName="page-link"
+                  containerClassName="pagination"
+                  activeClassName="active"
+                />
+              </nav>
+            </div>
           </div>
         </div>
       </div>

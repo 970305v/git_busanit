@@ -139,7 +139,6 @@ router.get("/products/all", (req, res) => {
       });
       console.log(page);
       console.log(Math.ceil(result.length / offset));
-      console.log(result[0].cnt);
     }
   });
 });

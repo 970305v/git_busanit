@@ -67,7 +67,7 @@ function Order() {
   const [oAddr2, setOAddr2] = useState("");
   const [openPost, setOpenPost] = useState(false);
   const [oPhone, setOPhone] = useState("");
-  const [oPoint, setOPoint] = useState("0원");
+  const [oPoint, setOPoint] = useState(0);
   const [oPrice, setOPrice] = useState(totalPrice);
   const [oPayment, setOPayment] = useState("무통장입금");
   const [count, setCount] = useState([]);
@@ -82,8 +82,8 @@ function Order() {
   const handle = {
     // 카카오 주소 api
     selectAddress: (data) => {
-      setOPostnum(data.address);
-      setOAddr1(data.zonecode);
+      setOPostnum(data.zonecode);
+      setOAddr1(data.address);
       setOpenPost(false);
     },
     addressHandler: () => {

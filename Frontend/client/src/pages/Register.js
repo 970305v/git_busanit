@@ -43,11 +43,11 @@ function Register() {
           }
         });
     } else if (!emailChk) {
-      console.log("이메일 중복확인이 필요합니다.");
+      window.alert("이메일 중복확인이 필요합니다.");
     } else if (passwd !== passwd2) {
-      console.log("비밀번호를 확인해주세요.");
+      window.alert("비밀번호를 확인해주세요.");
     } else {
-      console.log("가입이 불가능합니다.");
+      window.alert("가입이 불가능합니다.");
     }
   };
 

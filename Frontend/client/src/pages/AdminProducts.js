@@ -93,7 +93,7 @@ function AdminProducts() {
               </div>
               <div className="button-right">
                 <button>
-                  <a href="/admin/product/upload">상품등록</a>
+                  <Link to="/admin/products/upload">상품등록</Link>
                 </button>
               </div>
             </div>

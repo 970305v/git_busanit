@@ -144,7 +144,6 @@ function Mypage() {
                   {modalOpen && (
                     <PasswordModal setModalOpen={setModalOpen} user={user} />
                   )}
-                  <a href="!#">탈퇴하기</a>
                 </div>
               </div>
             </div>

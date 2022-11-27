@@ -135,4 +135,97 @@ router.get(`/admin/notice/:id`, (req, res) => {
   });
 });
 
+router.get(`/admin/review`, (req, res) => {
+  const page = req.query.page;
+  const offset = parseInt(req.query.offset);
+  const startNums = page * offset;
+
+  let searchType = `${req.query.typeQuery}` || "";
+  let search = req.query.searchQuery || "";
+  let searchWord = `%${search}%`;
+
+  let sql = "SELECT COUNT(rId) AS count FROM review WHERE ? LIKE ?;";
+  let dataSql =
+    "SELECT review.*, product.pName, member.mEmail FROM review " +
+    "INNER JOIN product ON review.pId = product.pId " +
+    "INNER JOIN member ON review.mId = member.mId WHERE ?? LIKE ? ORDER BY rId DESC LIMIT ?, ?;";
+  db.query(sql, [searchType, searchWord], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      db.query(
+        dataSql,
+        [searchType, searchWord, startNums, offset],
+        (err, users) => {
+          if (err) throw err;
+
+          res.json({
+            users: users,
+            page: page, // 1, 2, 3 ... 페이지
+            totalPageNumber: Math.ceil(result[0].count / offset), // 전체 페이지 수
+            totalRows: result[0].count, // 전체 사용자 수
+          });
+        }
+      );
+    }
+  });
+});
+
+router.get(`/admin/qna`, (req, res) => {
+  const page = req.query.page;
+  const offset = parseInt(req.query.offset);
+  const startNums = page * offset;
+
+  let searchType = `${req.query.typeQuery}` || "";
+  let search = req.query.searchQuery || "";
+  let searchWord = `%${search}%`;
+
+  let sql = "SELECT COUNT(qId) AS count FROM qna WHERE ? LIKE ?;";
+  let dataSql =
+    "SELECT qna.*, member.mEmail FROM qna " +
+    "INNER JOIN member ON qna.mId = member.mId " +
+    "WHERE ?? LIKE ? ORDER BY qId DESC LIMIT ?, ?;";
+
+  db.query(sql, [searchType, searchWord], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      db.query(
+        dataSql,
+        [searchType, searchWord, startNums, offset],
+        (err, users) => {
+          if (err) throw err;
+
+          console.log(result);
+          console.log(users);
+          res.json({
+            users: users,
+            page: page, // 1, 2, 3 ... 페이지
+            totalPageNumber: Math.ceil(result[0].count / offset), // 전체 페이지 수
+            totalRows: result[0].count, // 전체 사용자 수
+          });
+        }
+      );
+    }
+  });
+});
+
+router.delete(`/admin/review/:id`, (req, res) => {
+  let sql = "DELETE FROM review WHERE rId = ?;";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) throw err;
+
+    res.send({ status: 201, msg: "삭제가 완료되었습니다.", result });
+  });
+});
+
+router.delete(`/admin/qna/:id`, (req, res) => {
+  let sql = "DELETE FROM qna WHERE qId = ?;";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) throw err;
+
+    res.send({ status: 201, msg: "삭제가 완료되었습니다.", result });
+  });
+});
+
 module.exports = router;

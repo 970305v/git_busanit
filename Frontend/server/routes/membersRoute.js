@@ -221,12 +221,40 @@ router.post("/qnawrite", upload.array("qFile", 3), (req, res) => {
   );
 });
 
-router.post("/pwchk", (req, res) => {
+router.post(`/upUser/:id`, (req, res) => {
   bcrypt.compare(req.body.pw, req.body.hashpw, (err, result) => {
     if (err) {
       throw err;
     } else if (result) {
-      res.send({ status: 201, msg: "비밀번호 확인 완료" });
+      const user = {
+        username: req.body.username,
+        phone: req.body.phone,
+        zipcode: req.body.zipcode,
+        address: req.body.address,
+        address2: req.body.address2,
+      };
+      let sql =
+        "UPDATE member SET mPwd = ? , mName = ?, mPhone = ?, mPostnum = ?, mAddr1 = ?, mAddr2 = ?  WHERE mId = ?;";
+      bcrypt.hash(req.body.newPw, saltRounds, function (err, hash) {
+        db.query(
+          sql,
+          [
+            hash,
+            user.username,
+            user.phone,
+            user.zipcode,
+            user.address,
+            user.address2,
+            JSON.parse(req.params.id),
+          ],
+          (err) => {
+            if (err) throw err;
+
+            console.log(req.params.id);
+            res.send({ status: 201, msg: "정보 변경 완료" });
+          }
+        );
+      });
     } else {
       res.send({ status: 404, msg: "비밀번호가 일치하지 않습니다." });
     }
@@ -288,7 +316,7 @@ router.get("/reviewWrite/:idx", (req, res) => {
     "FROM product " +
     "INNER JOIN orderDetails ON (orderDetails.pId = product.pId) " +
     "INNER JOIN orders ON (orders.oId = orderDetails.oId) " +
-    "WHERE (orders.mId = ?) GROUP BY pId;";
+    "WHERE (orders.mId = ?);";
   db.query(sql, [req.params.idx], (err, user) => {
     if (err) {
       throw err;
@@ -308,7 +336,6 @@ router.post("/reviewWrite", upload.array("rFile", 3), (req, res) => {
     reqFiles.push(null);
   }
 
-  console.log(reqFiles);
   let sql =
     "INSERT INTO review(rId, pId, mId, rTitle, rContent, rImage1, rImage2, rImage3, rStar) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?);";
   db.query(
