@@ -19,7 +19,7 @@ function Navbar({ isLogin, isAdmin }) {
   useEffect(() => {
     setSearchOpen(false);
     getCartCount();
-  }, []);
+  }, [getCartCount()]);
 
   const searchHandler = async (e) => {
     await axios.get(`/products/all?=${searchWord}`);
@@ -101,7 +101,7 @@ function Navbar({ isLogin, isAdmin }) {
                   </>
                 )}
                 {!isAdmin ? null : (
-                  <Link to="/admin">
+                  <Link to="/admin/users">
                     <FontAwesomeIcon icon={faGear} id="icon-btn" />
                   </Link>
                 )}

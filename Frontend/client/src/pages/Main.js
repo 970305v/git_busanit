@@ -67,6 +67,12 @@ function Main() {
   const changePage = ({ selected }) => {
     setPage(selected);
   };
+  const prevPage = () => {
+    setPage(-1);
+  };
+  const nextPage = () => {
+    setPage(+1);
+  };
 
   return (
     <div>
@@ -80,10 +86,7 @@ function Main() {
               <label htmlFor="slide03" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img
-                alt="img"
-                src="https://cdn.imweb.me/thumbnail/20211014/ac9c7e74b7db2.png"
-              />
+              <img alt="img" src="./assets/img/main_banner2.jpg" />
               <label htmlFor="slide02" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
@@ -92,10 +95,7 @@ function Main() {
               <label htmlFor="slide01" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img
-                alt="img"
-                src="https://contents.sixshop.com/thumbnails/uploadedFiles/183003/default/image_1634643350876_2500.jpg"
-              />
+              <img alt="img" src="./assets/img/main_banner1.jpg" />
               <label htmlFor="slide03" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
@@ -104,7 +104,7 @@ function Main() {
               <label htmlFor="slide02" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img alt="img" src="https://kangolkorea.com/main/19.jpg" />
+              <img alt="img" src="./assets/img/main_banner3.jpg" />
               <label htmlFor="slide01" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
@@ -131,7 +131,11 @@ function Main() {
           <h1>ALL</h1>
           <div className="prodBanner">
             <div>
-              <FontAwesomeIcon icon={faAngleLeft} className="prodLeft" />
+              <FontAwesomeIcon
+                icon={faAngleLeft}
+                className="prodLeft"
+                onClick={prevPage}
+              />
             </div>
             <div className="ProdItems">
               {allProducts.length > 0 ? (
@@ -152,7 +156,7 @@ function Main() {
                 })
               ) : (
                 <div className="product-box">
-                  <img src="https://via.placeholder.com/300.png"></img>
+                  <img src="./assets/img/img_null.png" />
                   <p>
                     <strong>등록된 상품이 없습니다.</strong>
                   </p>
@@ -160,30 +164,13 @@ function Main() {
               )}
             </div>
             <div>
-              <FontAwesomeIcon icon={faAngleRight} className="prodRight" />
+              <FontAwesomeIcon
+                icon={faAngleRight}
+                className="prodRight"
+                onClick={nextPage}
+              />
             </div>
           </div>
-          <nav key={rows} role="navigation">
-            <ReactPaginate
-              breakLabel="..."
-              previousLabel="<"
-              nextLabel=">"
-              onPageChange={changePage}
-              pageCount={pages}
-              pageRangeDisplayed={5}
-              marginPagesDisplayed={2}
-              pageClassName="page-item"
-              pageLinkClassName="page-link"
-              previousClassName="page-item"
-              previousLinkClassName="page-link"
-              nextClassName="page-item"
-              nextLinkClassName="page-link"
-              breakClassName="page-item"
-              breakLinkClassName="page-link"
-              containerClassName="pagination"
-              activeClassName="active"
-            />
-          </nav>
         </div>
         <div className="productBanner">
           <h1>MEN</h1>
@@ -210,7 +197,7 @@ function Main() {
                 })
               ) : (
                 <div className="product-box">
-                  <img src="https://via.placeholder.com/300.png"></img>
+                  <img src="./assets/img/img_null.png"></img>
                   <p>
                     <strong>등록된 상품이 없습니다.</strong>
                   </p>
@@ -247,7 +234,7 @@ function Main() {
                 })
               ) : (
                 <div className="product-box">
-                  <img src="https://via.placeholder.com/300.png"></img>
+                  <img src="./assets/img/img_null.png"></img>
                   <p>
                     <strong>등록된 상품이 없습니다.</strong>
                   </p>

@@ -130,7 +130,6 @@ router.get(`/admin/notice/:id`, (req, res) => {
   db.query(sql, [req.params.idx], (err, result) => {
     if (err) throw err;
 
-    console.log(result);
     res.send({ status: 201, result });
   });
 });
@@ -196,8 +195,6 @@ router.get(`/admin/qna`, (req, res) => {
         (err, users) => {
           if (err) throw err;
 
-          console.log(result);
-          console.log(users);
           res.json({
             users: users,
             page: page, // 1, 2, 3 ... 페이지

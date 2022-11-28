@@ -18,9 +18,10 @@
 }
 
 .admin-table-wrap select,
-input {
-  padding: 8px 8px;
-  border: 1px solid black;
+.admin-table-wrap input {
+  border-radius: 3px;
+  border: 1px solid #bbb;
+  padding: 8px;
   font-family: inherit;
   margin-right: 5px;
 }

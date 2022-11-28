@@ -90,7 +90,7 @@
   transform: translate(-50%, -50%);
 
   /* 모달창 디자인 */
-  background-color: #fff;
+  background-color: #f4f3e8;
   border: 1px solid #aaa;
   border-radius: 5px;
   padding: 50px;
@@ -101,4 +101,16 @@
   position: absolute;
   right: 10px;
   top: 10px;
+}
+
+.modal-button button:first-child {
+  border: 1px solid #000;
+  border-radius: 3px;
+}
+
+.modal-button button:last-child {
+  border: 1px solid #000;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #000;
 }

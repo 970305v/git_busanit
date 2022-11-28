@@ -33,19 +33,23 @@ function NoticeDetail() {
               <div className="review-content">
                 {data.nContent}
                 <div className="review-box-wrap">
-                  {data.nImage1 === null ? null : (
-                    <div className="review-grid">
+                  <div className="review-grid">
+                    {data.nImage1 === null ? null : (
                       <div className="review-img-box">
                         <img src={`../${data.nImage1}`} alt={data.nImage1} />
                       </div>
+                    )}
+                    {data.nImage2 === null ? null : (
                       <div className="review-img-box">
                         <img src={`../${data.nImage2}`} alt={data.nImage2} />
                       </div>
+                    )}
+                    {data.nImage3 === null ? null : (
                       <div className="review-img-box">
                         <img src={`../${data.nImage3}`} alt={data.nImage3} />
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

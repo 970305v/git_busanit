@@ -43,8 +43,7 @@ router.get("/products", (req, res) => {
         [searchType, searchWord, startNums, offset],
         (err, products) => {
           if (err) throw err;
-          console.log(result + "/" + searchType + "/" + searchWord);
-          console.log(products);
+
           res.json({
             status: 201,
             products: products,
@@ -137,14 +136,13 @@ router.get("/products/all", (req, res) => {
         totalPageNumber: Math.ceil(result.length / offset),
         totalRows: result.length,
       });
-      console.log(page);
-      console.log(Math.ceil(result.length / offset));
     }
   });
 });
 
 router.get("/products/men", (req, res) => {
-  let sql1 = "select * from product where pgender='MEN' order by pId desc;";
+  let sql1 =
+    "select * from product where pgender='MEN' order by pId desc limit 1,3;";
   db.query(sql1, (err, result) => {
     if (err) {
       throw err;
@@ -305,7 +303,6 @@ router.get("/detail/:id", (req, res) => {
 });
 
 router.get("/product/edit/:id", (req, res) => {
-  console.log(req.params.id);
   let sql = "select * from product where pid=?;";
   db.query(sql, [req.params.id], (err, result) => {
     if (err) {
@@ -318,6 +315,47 @@ router.get("/product/edit/:id", (req, res) => {
     }
   });
 });
+
+// router.post("/product/edit/:id", upload.array("pImage", 3), (req, res) => {
+//   const { pGender, pCaregory, pName, pStock, pPrice, pContent } = req.body;
+//   let sql =
+//     "UPDATE product SET pName = ? , pGender = ?, pCaregory = ?, pStock = ?, pPrice = ?, pImage1 = ?, pImage2 = ?, pImage3 = ?, pContent = ? WHERE pId = ?;";
+//   let reqFiles = [] || "";
+//   console.log(req.files);
+//   console.log(req.file);
+//   // if (req.files.length > 0) {
+//   //   for (let i = 0; i < req.files.length; i++) {
+//   //     reqFiles.push(req.files[i].filename);
+//   //   }
+//   // } else {
+//   //   reqFiles.push(null);
+//   // }
+//   // db.query(
+//   //   sql,
+//   //   [
+//   //     pName,
+//   //     pGender,
+//   //     pCaregory,
+//   //     pStock,
+//   //     pPrice,
+//   //     req.files[0].filename,
+//   //     req.files[1].filename,
+//   //     req.files[2].filename,
+//   //     pContent,
+//   //     req.params.id,
+//   //   ],
+//   //   (err, result) => {
+//   //     if (err) {
+//   //       throw err;
+//   //     } else {
+//   //       res.send({
+//   //         result,
+//   //         status: 201,
+//   //       });
+//   //     }
+//   //   }
+//   // );
+// });
 
 router.post("/cart", (req, res) => {
   const { idx, counter, pid } = req.body;

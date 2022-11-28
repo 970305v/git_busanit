@@ -77,6 +77,7 @@ function QnAWrite() {
             <select
               value={qCategory}
               onChange={(e) => setQCategory(e.target.value)}
+              required
             >
               <option>선택하세요.</option>
               <option>상품</option>

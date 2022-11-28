@@ -17,7 +17,6 @@ function Review() {
   const [page, setPage] = useState(0); // 현재 페이지
   const [pages, setPages] = useState(0); // 전체 페이지
   const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
-  const [msg, setMsg] = useState(""); // 데이터 마지막에 표시하는 메시지
   const [keyword, setKeyword] = useState("");
   const [searchWords, setSearchWords] = useState("");
 
@@ -37,11 +36,6 @@ function Review() {
 
   const changePage = ({ selected }) => {
     setPage(selected);
-    if (selected === pages - 1) {
-      setMsg("No More Data");
-    } else {
-      setMsg("");
-    }
   };
   const searchData = async (e) => {
     e.preventDefault();
@@ -111,24 +105,35 @@ function Review() {
                     <td>{review.rId}</td>
                     <td>
                       <Link to={`/product/${review.pId}`}>
-                        <img src={review.pImage1} alt={review.pName} />
                         <span>{review.pName}</span>
                       </Link>
                     </td>
                     <td>
-                      <Link to={`/review/${review.rId}`}>
-                        {review.rImage1 === null ? (
-                          <p>{review.rTitle}</p>
-                        ) : (
-                          <p>
-                            <FontAwesomeIcon
-                              icon={faCamera}
-                              style={{ marginRight: "5px" }}
-                            />
-                            {review.rTitle}
-                          </p>
-                        )}
-                      </Link>
+                      <div className="review-title">
+                        <div className="review-img-wrap">
+                          <img src={review.pImage1} alt={review.pImage1} />
+                        </div>
+                        <div>
+                          <Link to={`/review/${review.rId}`}>
+                            {review.rImage1 === null ? (
+                              <p>{review.rTitle}</p>
+                            ) : (
+                              <>
+                                <p>
+                                  <FontAwesomeIcon
+                                    icon={faCamera}
+                                    style={{ marginRight: "5px" }}
+                                  />
+                                  {review.rTitle}
+                                </p>
+                                <p style={{ color: "#8c8c8c" }}>
+                                  {review.pName}
+                                </p>
+                              </>
+                            )}
+                          </Link>
+                        </div>
+                      </div>
                     </td>
                     <td>{review.mEmail}</td>
                     <td>{review.rRegdate}</td>

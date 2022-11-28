@@ -31,12 +31,12 @@ import Mypage from "../pages/Mypage";
 import Cart from "../pages/Cart";
 
 import Page404 from "../pages/Page404";
-import Loading from "../pages/Loading";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import AdminRoute from "./AdminRoute";
 import NoticeEdit from "../pages/NoticeEdit";
 import AdminProductsEdit from "../pages/AdminProductsEdit";
+import ReviewEdit from "../pages/ReviewEdit";
 
 function TotalRoute({ isLogin, isAdmin }) {
   return (
@@ -68,7 +68,7 @@ function TotalRoute({ isLogin, isAdmin }) {
             <Route path="/order" element={<Order />} />
             <Route path="/qnawrite" element={<QnAWrite />} />
             <Route path="/reviewWrite/:idx" element={<ReviewWrite />} />
-            <Route path="/reviewEdit/:idx" element={<ReviewWrite />} />
+            <Route path="/reviewEdit/:idx" element={<ReviewEdit />} />
           </Route>
         </Route>
         <Route element={<AdminRoute isAdmin={isAdmin} />}>

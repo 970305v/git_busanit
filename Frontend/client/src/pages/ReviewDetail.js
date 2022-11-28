@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link, useParams } from "react-router-dom";
 import "../styles/ReviewDetail.css";
 import axios from "axios";
@@ -15,7 +15,7 @@ function ReviewDetail({ isLogin }) {
       });
     };
     fetchData();
-  }, []);
+  }, [idx]);
 
   const deleteHandler = async () => {
     if (window.confirm("정말 삭제하시겠습니까 ?")) {
@@ -43,51 +43,48 @@ function ReviewDetail({ isLogin }) {
                 {isLogin ? (
                   data.mId == localStorage.getItem("idx") ? (
                     <>
-                      <Link to={`/reviewEdit/${idx}`}>
+                      {/* <Link to={`/reviewEdit/${idx}`} datas={datas}>
                         <FontAwesomeIcon
                           icon={faPen}
                           style={{ marginRight: "10px" }}
                         />
-                      </Link>
+                      </Link> */}
                       <Link onClick={deleteHandler}>
                         <FontAwesomeIcon icon={faTrash} />
                       </Link>
                     </>
-                  ) : (
-                    <>
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        style={{ marginRight: "10px" }}
-                      />
-                      <FontAwesomeIcon icon={faTrash} />
-                    </>
-                  )
+                  ) : null
                 ) : null}
               </div>
             </div>
             <div className="content-wrap">
               <div>{data.rStar}</div>
               <div>
-                <span>{data.mEmail}</span> / <span>{data.rRegdate}</span>
+                <span>{data.mEmail}</span> /
+                <span>
+                  <small style={{ color: "#8c8c8c" }}> {data.rRegdate}</small>
+                </span>
               </div>
               <div className="review-content">
                 {data.rContent}
                 <div className="review-box-wrap">
-                  {data.rImage1 &&
-                  data.rImage2 &&
-                  data.rImage3 === null ? null : (
-                    <div className="review-grid">
+                  <div className="review-grid">
+                    {data.rImage1 === null ? null : (
                       <div className="review-img-box">
                         <img src={`../${data.rImage1}`} alt={data.rImage1} />
                       </div>
+                    )}
+                    {data.rImage2 === null ? null : (
                       <div className="review-img-box">
                         <img src={`../${data.rImage2}`} alt={data.rImage2} />
                       </div>
+                    )}
+                    {data.rImage3 === null ? null : (
                       <div className="review-img-box">
                         <img src={`../${data.rImage3}`} alt={data.rImage3} />
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

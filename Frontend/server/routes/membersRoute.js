@@ -130,7 +130,9 @@ router.get("/qna", (req, res) => {
       throw err;
     } else {
       let dataSql =
-        "SELECT qna.*, product.pId, product.pName, product.pImage1, member.mEmail FROM qna LEFT JOIN product ON qna.pId = product.pId LEFT JOIN member ON qna.mId = member.mId WHERE qna.qTitle LIKE ? ORDER BY qId DESC LIMIT ?, ?;";
+        "SELECT qna.*, product.pId, product.pName, product.pImage1, member.mEmail " +
+        "FROM qna LEFT JOIN product ON qna.pId = product.pId LEFT JOIN member " +
+        "ON qna.mId = member.mId WHERE qna.qTitle LIKE ? ORDER BY qId DESC LIMIT ?, ?;";
       db.query(dataSql, [qnaSearch, startNums, offset], (err, users) => {
         if (err) {
           throw err;
@@ -149,7 +151,10 @@ router.get("/qna", (req, res) => {
 
 router.get("/qna/:idx", (req, res) => {
   let sql =
-    "SELECT * FROM qna LEFT JOIN qna_comment ON qna.qId = qna_comment.qId WHERE qna.qId = ?;";
+    "SELECT qna.*, qna_comment.*, member.mId, member.mEmail, product.pId, product.pName FROM qna " +
+    "LEFT JOIN qna_comment ON qna.qId = qna_comment.qId " +
+    "LEFT JOIN member ON qna.mId = member.mId " +
+    "LEFT JOIN product ON qna.pId = product.pId WHERE qna.qId = ?;";
   db.query(sql, [req.params.idx], (err, result) => {
     if (err) {
       throw err;
@@ -250,7 +255,6 @@ router.post(`/upUser/:id`, (req, res) => {
           (err) => {
             if (err) throw err;
 
-            console.log(req.params.id);
             res.send({ status: 201, msg: "정보 변경 완료" });
           }
         );

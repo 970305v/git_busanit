@@ -175,7 +175,7 @@ function AdminProducts() {
                             <Link to={`/admin/product/edit/${product.pId}`}>
                               수정
                             </Link>
-                          </button>{" "}
+                          </button>
                           <button
                             type="button"
                             onClick={() => deleteItem(product.pId)}

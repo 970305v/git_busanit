@@ -74,7 +74,6 @@ function Notice() {
                     <td>
                       <Link to={`${data.nId}`}>{data.nTitle} </Link>
                     </td>
-
                     <td>{data.mAuth === "admin" ? "관리자" : ""}</td>
                     <td>{data.nRegdate}</td>
                   </tr>
@@ -98,7 +97,6 @@ function Notice() {
         </div>
       </div>
       <div className="pagination">
-        <p>{msg}</p>
         <nav key={rows} role="navigation">
           <ReactPaginate
             breakLabel="..."

@@ -17,9 +17,9 @@ function About() {
       </div>
       <div className="div-line" />
       <div className="img-box">
-        <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/25991/default/image_1522220059196_300.jpg" />
-        <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/25991/default/image_1522220059196_300.jpg" />
-        <img src="https://contents.sixshop.com/thumbnails/uploadedFiles/25991/default/image_1522220059196_300.jpg" />
+        <img src="./assets/img/about_img1.jpg" />
+        <img src="./assets/img/about_img1.jpg" />
+        <img src="./assets/img/about_img1.jpg" />
       </div>
       <div className="items">
         <div className="item-box">

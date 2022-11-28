@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../styles/ProductDetail.css";
 
 function ProductDetail() {
@@ -67,26 +67,34 @@ function ProductDetail() {
       }
     });
   };
-
+  console.log(product);
   return (
     <div className="container">
       <div className="product">
         <img src={`../${product.pImage1}`} />
         <div className="product-title-wrap">
           <h3>{product.pName}</h3>
-          <p>후기(별점)</p>
-          <p>{product.pPrice}원</p>
-          <span>배송비</span>
+          {product.pStock === 0 ? (
+            <>
+              <span
+                className="price-value"
+                style={{ textDecoration: "line-through" }}
+              >
+                {product.pPrice}원
+              </span>
+              <p className="product-soldout">품절</p>
+            </>
+          ) : (
+            <span className="price-value">{product.pPrice}원</span>
+          )}
+
+          <p>배송비</p>
           <span>3,000원 (50,000원 이상 구매 시 무료)</span>
           <p>수량</p>
           <div className="add-stock">
-            <a href={() => false} onClick={minus}>
-              -
-            </a>
+            <Link onClick={minus}>-</Link>
             <span>{counter}</span>
-            <a href={() => false} onClick={plus}>
-              +
-            </a>
+            <Link onClick={plus}>+</Link>
           </div>
           <form method="post" onSubmit={cartHandler}>
             <div className="product-price">

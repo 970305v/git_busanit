@@ -11,8 +11,7 @@ function QnA({ isLogin }) {
   const [rows, setRows] = useState(0); // 전체 게시물 수
   const [page, setPage] = useState(0); // 현재 페이지
   const [pages, setPages] = useState(0); // 전체 페이지
-  const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
-  const [msg, setMsg] = useState(""); // 데이터 마지막에 표시하는 메시지
+  const [offset, setOffset] = useState(5); // 한 페이지에 표시할 게시물 수
   const [keyword, setKeyword] = useState("");
   const [searchWords, setSearchWords] = useState("");
 
@@ -32,11 +31,6 @@ function QnA({ isLogin }) {
 
   const changePage = ({ selected }) => {
     setPage(selected);
-    if (selected === pages - 1) {
-      setMsg("데이터가 없습니다.");
-    } else {
-      setMsg("");
-    }
   };
   const searchData = async (e) => {
     e.preventDefault();
@@ -130,7 +124,6 @@ function QnA({ isLogin }) {
           ) : null}
         </div>
       </div>
-      <p>{msg}</p>
       <nav key={rows} role="navigation">
         <ReactPaginate
           breakLabel="..."

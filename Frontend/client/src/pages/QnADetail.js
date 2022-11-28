@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import "../styles/QnADetail.css";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -37,6 +37,7 @@ function QnADetail({ isAdmin }) {
       });
   };
 
+  console.log(datas);
   return (
     <div className="board-container">
       {datas.map((data, key) => {
@@ -46,46 +47,41 @@ function QnADetail({ isAdmin }) {
               <h2>
                 [{data.qCategory}] {data.qTitle}
               </h2>
-              {data.mId.value === localStorage.getItem("idx") ? (
-                <div>
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    style={{ marginRight: "5px" }}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    style={{ marginLeft: "5px" }}
-                  />
-                </div>
-              ) : (
-                <p>{data.mId}</p>
-              )}
+
+              {data.mId === localStorage.getItem("idx") ? (
+                <FontAwesomeIcon icon={faTrash} />
+              ) : null}
             </div>
             <div className="content-wrap">
               <div>
-                <span>{data.mId}</span>/
+                <p style={{ color: "#8c8c8c" }}>
+                  {data.pName !== null ? data.pName : null}
+                </p>
+                <span>{data.mEmail}</span> /
                 <span>
-                  <small>{data.qRegdate}</small>
+                  <small style={{ color: "#8c8c8c" }}> {data.qRegdate}</small>
                 </span>
               </div>
               <div className="qna-content">
                 {data.qContent}
                 <div className="qna-img-box-wrap">
-                  {data.qImage1 &&
-                  data.qImage2 &&
-                  data.qImage3 === null ? null : (
-                    <div className="qna-grid">
+                  <div className="qna-grid">
+                    {data.qImage1 === null ? null : (
                       <div className="qna-img-box">
                         <img src={`../${data.qImage1}`} alt={data.qImage1} />
                       </div>
+                    )}
+                    {data.qImage2 === null ? null : (
                       <div className="qna-img-box">
                         <img src={`../${data.qImage2}`} alt={data.qImage2} />
                       </div>
+                    )}
+                    {data.qImage3 === null ? null : (
                       <div className="qna-img-box">
                         <img src={`../${data.qImage3}`} alt={data.qImage3} />
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

@@ -71,12 +71,31 @@ function WomenProduct() {
                 <div className="product-box" key={key}>
                   <Link to={`/product/${product.pId}`}>
                     <img src={`../${product.pImage1}`} alt="" />
-                    <p>
-                      <strong>{product.pName}</strong>
-                    </p>
-                    <p style={{ color: "#8c8c8c", fontSize: "14px" }}>
-                      {product.pPrice}원
-                    </p>
+                    {product.pStock > 0 ? (
+                      <>
+                        <p>
+                          <strong>{product.pName}</strong>
+                        </p>
+                        <p style={{ color: "#8c8c8c", fontSize: "14px" }}>
+                          {product.pPrice}원
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p>
+                          <strong>품절상품</strong>
+                        </p>
+                        <p
+                          style={{
+                            color: "#8c8c8c",
+                            fontSize: "14px",
+                            textDecoration: "line-through",
+                          }}
+                        >
+                          {product.pPrice}원
+                        </p>
+                      </>
+                    )}
                   </Link>
                 </div>
               );
@@ -84,7 +103,7 @@ function WomenProduct() {
           ) : (
             <div className="product-none-box">
               <p>
-                <strong>{caregory}에 등록된 상품이 없습니다.</strong>
+                <strong>등록된 상품이 없습니다.</strong>
               </p>
             </div>
           )}

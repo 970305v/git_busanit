@@ -1,14 +1,21 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import "../../styles/AdminNav.css";
 
 function AdminNav() {
+  const logout = () => {
+    localStorage.clear();
+  };
+
   return (
     <>
       <header>
         <div className="header-wrap">
-          <Link to="/admin">
-            <h2>ADMINISTRATOR</h2>
+          <Link to="/">
+            <FontAwesomeIcon icon={faHouse} style={{ marginRight: "10px" }} />
+            LIFE FOR US
           </Link>
         </div>
       </header>
@@ -30,12 +37,11 @@ function AdminNav() {
             <Link to="qna">
               <li>Q&A 관리</li>
             </Link>
-            <Link to="/">
-              <li>홈화면으로</li>
-            </Link>
-            <Link to="/">
-              <li>로그아웃</li>
-            </Link>
+            <li>
+              <a href="/" onClick={logout}>
+                로그아웃
+              </a>
+            </li>
           </ul>
         </div>
         <main>

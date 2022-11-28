@@ -121,6 +121,7 @@ function Register() {
           <input
             type="text"
             name="email"
+            placeholder="이메일을 입력해주세요..."
             required
             value={email}
             onChange={(e) => {
@@ -151,6 +152,7 @@ function Register() {
           <input
             type="password"
             name="passwd2"
+            placeholder="비밀번호 확인"
             value={passwd2}
             required
             onChange={(e) => setPasswd2(e.target.value)}
@@ -161,6 +163,7 @@ function Register() {
           <input
             type="text"
             name="username"
+            placeholder="이름"
             value={username}
             required
             onChange={(e) => setUsername(e.target.value)}
@@ -171,6 +174,7 @@ function Register() {
           <input
             type="text"
             name="phone"
+            placeholder="전화번호"
             onChange={phoneHandler}
             required
             value={phone}

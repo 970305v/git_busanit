@@ -13,7 +13,6 @@ function PasswordModal({ setModalOpen, user }) {
   const [address, setAddress] = useState(user.mAddr1);
   const [address2, setAddress2] = useState(user.mAddr2);
   const [openPost, setOpenPost] = useState(false);
-  const idx = localStorage.getItem("idx").id;
 
   const closeModal = () => {
     setModalOpen(false);
@@ -42,6 +41,12 @@ function PasswordModal({ setModalOpen, user }) {
           window.alert("관리자에게 문의해주세요.");
         }
       });
+  };
+  const phoneHandler = (e) => {
+    const regex = /^[0-9\b -]{0,13}$/;
+    if (regex.test(e.target.value)) {
+      setPhone(e.target.value);
+    }
   };
   useEffect(() => {
     if (phone.length === 10) {
@@ -106,14 +111,17 @@ function PasswordModal({ setModalOpen, user }) {
             type="password"
             name="newPw"
             defaultValue={newPw}
-            onChange={(e) => {
-              setNewPw(e.target.value);
-            }}
+            onChange={(e) => setNewPw(e.target.value)}
           />
         </div>
         <div className="input-item">
           <label>전화번호</label>
-          <input type="text" name="phone" defaultValue={phone} />
+          <input
+            type="text"
+            name="phone"
+            defaultValue={phone}
+            onChange={phoneHandler}
+          />
         </div>
         <div className="input-item">
           <label>우편번호</label>
@@ -142,8 +150,10 @@ function PasswordModal({ setModalOpen, user }) {
           />
         </div>
       </div>
-      <button onClick={chkPwHandler}>입력</button>
-      <button onClick={closeModal}>취소</button>
+      <div className="modal-button">
+        <button onClick={chkPwHandler}>변경하기</button>
+        <button onClick={closeModal}>취소</button>
+      </div>
     </div>
   );
 }

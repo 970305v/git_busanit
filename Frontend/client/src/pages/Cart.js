@@ -72,7 +72,6 @@ function Cart() {
                         <Link to={`/product/${cart.pId}`}>
                           <img src={`../${cart.pImage1}`} />
                         </Link>
-
                         <div className="text">
                           <Link to={`/product/${cart.pId}`}>{cart.pname}</Link>
                           <span
@@ -84,13 +83,9 @@ function Cart() {
                         </div>
                       </div>
                       <div className="add-stock">
-                        <a href={() => false} onClick={Minus}>
-                          -
-                        </a>
+                        <Link onClick={Minus}>-</Link>
                         <span>{cart.cQuantity}</span>
-                        <a href={() => false} onClick={Plus}>
-                          +
-                        </a>
+                        <Link onClick={Plus}>+</Link>
                       </div>
                       <div className="cartPrice">
                         <p>{cart.cQuantity * cart.pPrice}원</p>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/AdminProductsUpload.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function AdminProductsUpload() {
   const { id } = useParams();
@@ -9,9 +9,10 @@ function AdminProductsUpload() {
   const [pGender, setPGender] = useState("");
   const [pCaregory, setPCaregory] = useState("");
   const [pName, setPName] = useState("");
-  const [pStock, setPStock] = useState("");
-  const [pPrice, setPPrice] = useState("");
+  const [pStock, setPStock] = useState(0);
+  const [pPrice, setPPrice] = useState(0);
   const [imageLength, setImageLength] = useState("");
+  const [pImage, setPImage] = useState("");
   const [pImage1, setPImage1] = useState("");
   const [pImage2, setPImage2] = useState("");
   const [pImage3, setPImage3] = useState("");
@@ -45,6 +46,7 @@ function AdminProductsUpload() {
     setShowImages(imageUrlLists);
   };
 
+  console.log(pImage);
   const productHandler = async (e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -53,21 +55,26 @@ function AdminProductsUpload() {
     formData.append("pName", pName);
     formData.append("pStock", pStock);
     formData.append("pPrice", pPrice);
-    formData.append("pImage1", pImage1);
-    formData.append("pImage2", pImage2);
-    formData.append("pImage3", pImage3);
+    formData.append("pImage", pImage[0]);
+    formData.append("pImage", pImage[1]);
+    formData.append("pImage", pImage[2]);
+    // formData.append("pImage", pImage1);
+    // formData.append("pImage", pImage2);
+    // formData.append("pImage", pImage3);
     formData.append("pContent", pContent);
     if (imageLength != 3) {
       alert("상품이미지는 3개 선택해주세요");
       return false;
     }
-    await axios.post("/product/edit", formData).then((response) => {
-      if (response.data.status === 201) {
-        window.alert(response.data.msg);
-      } else {
-        window.alert("상품 수정에 실패했습니다.");
-      }
-    });
+    await axios
+      .post(`/product/edit/${id}`, { id, formData })
+      .then((response) => {
+        if (response.data.status === 201) {
+          window.alert(response.data.msg);
+        } else {
+          window.alert("상품 수정에 실패했습니다.");
+        }
+      });
   };
 
   return (
@@ -89,7 +96,7 @@ function AdminProductsUpload() {
                       <td>성별 분류</td>
                       <td>
                         <select
-                          value={product.pGender}
+                          defaultValue={product.pGender}
                           onChange={(e) => setPGender(e.target.value)}
                         >
                           <option>선택하세요</option>
@@ -102,7 +109,7 @@ function AdminProductsUpload() {
                       <td>카테고리 분류</td>
                       <td>
                         <select
-                          value={product.pCaregory}
+                          defaultValue={product.pCaregory}
                           onChange={(e) => setPCaregory(e.target.value)}
                         >
                           <option>선택하세요</option>
@@ -126,18 +133,18 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          value={product.pName}
+                          defaultValue={product.pName}
                           onChange={(e) => setPName(e.target.value)}
-                        ></input>
+                        />
                       </td>
                     </tr>
                     <tr>
                       <td>상품 설명</td>
                       <td>
                         <textarea
-                          value={product.pContent}
+                          defaultValue={product.pContent}
                           onChange={(e) => setPContent(e.target.value)}
-                        ></textarea>
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -145,9 +152,9 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          value={product.pPrice}
+                          defaultValue={product.pPrice}
                           onChange={(e) => setPPrice(e.target.value)}
-                        ></input>
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -155,9 +162,9 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          value={product.pStock}
+                          defaultValue={product.pStock}
                           onChange={(e) => setPStock(e.target.value)}
-                        ></input>
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -176,15 +183,13 @@ function AdminProductsUpload() {
                           name="pImage"
                           onChange={(e) => {
                             setImageLength(e.target.files.length);
-                            setPImage1(e.target.files[0]);
-                            setPImage2(e.target.files[1]);
-                            setPImage3(e.target.files[2]);
+                            setPImage(e.target.files);
                             handleAddImages(e);
                           }}
                           type="file"
                           accept="image/jpg,image/png,image/jpeg,image/gif"
                           multiple
-                        ></input>
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -226,9 +231,9 @@ function AdminProductsUpload() {
         </div>
         <div className="admin-prodUp-btn">
           <button type="button">
-            <a href="/admin/products">취소</a>
+            <Link to="/admin/products">취소</Link>
           </button>
-          <button type="submit">등록</button>
+          <button type="submit">수정</button>
         </div>
       </form>
     </div>
