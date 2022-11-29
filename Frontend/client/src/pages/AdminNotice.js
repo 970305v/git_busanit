@@ -17,19 +17,20 @@ function AdminNotice() {
   const [datas, setDatas] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
 
+  const fetchData = async () => {
+    await axios
+      .get(
+        `/admin/notice?page=${page}&offset=${offset}&typeQuery=${searchType}&searchQuery=${keyword}`
+      )
+      .then((response) => {
+        setDatas(response.data.users);
+        setRows(response.data.totalRows);
+        setPage(response.data.page);
+        setPages(response.data.totalPageNumber);
+      });
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      await axios
-        .get(
-          `/admin/notice?page=${page}&offset=${offset}&typeQuery=${searchType}&searchQuery=${keyword}`
-        )
-        .then((response) => {
-          setDatas(response.data.users);
-          setRows(response.data.totalRows);
-          setPage(response.data.page);
-          setPages(response.data.totalPageNumber);
-        });
-    };
     fetchData();
   }, [page, keyword]);
 
@@ -66,6 +67,7 @@ function AdminNotice() {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       await axios.delete(`notice/${id}`).then((response) => {
         if (response.data.status === 201) {
+          fetchData();
           window.alert(response.data.msg);
         } else {
           window.alert("삭제에 실패했습니다.");
@@ -80,7 +82,7 @@ function AdminNotice() {
         <h1>공지 관리</h1>
         <div className="admin-table-wrap">
           <div className="admin-table-btn">
-            <button>전체목록</button>
+            <button onClick={searchData}>전체목록</button>
             <button>선택삭제</button>
             <Link to="/admin/noticewrite">
               <button>공지작성</button>

@@ -125,13 +125,17 @@ function ProductDetail() {
       </div>
       <div className="product-detail-container">
         <div className="product-detail-content">
-          <img src={`../${product.pImage2}`} />
-          <p>&nbsp;</p>
-          <img src={`../${product.pImage3}`} />
-          <p>&nbsp;</p>
-          <span>{product.pName}</span>
-          <p>&nbsp;</p>
-          <p>{product.pContent}</p>
+          <div className="product-detail-subimg">
+            <img src={`../${product.pImage2}`} />
+          </div>
+          <div className="product-detail-subimg">
+            <img src={`../${product.pImage3}`} />
+          </div>
+          <div>
+            <span>{product.pName}</span>
+            <p>&nbsp;</p>
+            <p>{product.pContent}</p>
+          </div>
         </div>
         <div className="product-delivery">
           <table className="delivery-table">

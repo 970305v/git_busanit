@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/AdminProductsUpload.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function AdminProductsUpload() {
   const navigate = useNavigate();
@@ -171,7 +171,7 @@ function AdminProductsUpload() {
         </div>
         <div className="admin-prodUp-btn">
           <button type="button">
-            <a href="/admin/products">취소</a>
+            <Link to="/admin/products">취소</Link>
           </button>
           <button type="submit">등록</button>
         </div>

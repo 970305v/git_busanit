@@ -170,7 +170,7 @@ router.get("/products/all", (req, res) => {
 
 router.get("/products/men", (req, res) => {
   let sql1 =
-    "select * from product where pgender='MEN' order by pId desc limit 1,3;;";
+    "select * from product where pgender='MEN' order by pId desc limit 0,3;;";
   db.query(sql1, (err, result) => {
     if (err) {
       throw err;
@@ -185,7 +185,7 @@ router.get("/products/men", (req, res) => {
 
 router.get("/products/women", (req, res) => {
   let sql1 =
-    "select * from product where pgender='WOMEN' order by pId desc limit 1,3;";
+    "select * from product where pgender='WOMEN' order by pId desc limit 0,3;";
   db.query(sql1, (err, result) => {
     if (err) {
       throw err;
@@ -329,38 +329,16 @@ router.post(`/buy/:idx`, (req, res) => {
   db.query(sql3, [req.params.idx, req.body.mId], (err, result) => {
     if (err) throw err;
     else {
-      if (result.length == 1) {
-        let sql2 =
-          "UPDATE cart set cQuantity=cQuantity+? WHERE mId = ? and pId = ?";
-        db.query(
-          sql2,
-          [counter, req.body.mId, req.params.idx],
-          (err, result) => {
-            if (err) {
-              throw err;
-            } else {
-              res.send({
-                status: 201,
-              });
-            }
-          }
-        );
-      } else {
-        let sql = "insert into cart values(null, ?, ?, ?);";
-        db.query(
-          sql,
-          [req.body.mId, counter, req.params.idx],
-          (err, result) => {
-            if (err) {
-              throw err;
-            } else {
-              res.send({
-                status: 201,
-              });
-            }
-          }
-        );
-      }
+      let sql = "insert into cart values(null, ?, ?, ?);";
+      db.query(sql, [req.body.mId, counter, req.params.idx], (err, result) => {
+        if (err) {
+          throw err;
+        } else {
+          res.send({
+            status: 201,
+          });
+        }
+      });
     }
   });
 });
@@ -370,7 +348,7 @@ router.get("/order/:idx", (req, res) => {
   let sql =
     "SELECT product.pImage1, product.pName, product.pPrice, cart.*, member.* " +
     "FROM cart JOIN product ON product.pId = cart.pId " +
-    "JOIN member ON cart.mId = member.mId WHERE member.mId = ?;";
+    "JOIN member ON cart.mId = member.mId WHERE cid=(select cid from cart order by cid desc limit 0,1);";
   db.query(sql, [req.params.idx], (err, result) => {
     if (err) {
       throw err;
@@ -486,8 +464,6 @@ router.post("/order/pay", (req, res) => {
     oPayment_bank,
     oPayment_name,
   } = req.body.oInfo;
-  console.log(pid);
-  console.log(pname);
   let sql =
     "INSERT INTO orders values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
   db.query(
@@ -512,6 +488,7 @@ router.post("/order/pay", (req, res) => {
               let i = 0;
               for (i; i < count; i++) {
                 const value = [null, row.oid, oQuantity[i], pid[i], pname[i]];
+                console.log(i);
                 values = [...values, value];
                 let sql4 = `update product set pStock=pStock-${oQuantity[i]} where pid=${pid[i]}; `;
                 sqls = "";

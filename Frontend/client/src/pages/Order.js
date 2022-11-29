@@ -11,18 +11,22 @@ function Order() {
   const data = [{ id: 1 }, { id: 2 }];
 
   let totalPrice = 0;
-
+  for (let i = 1; i < orderInfo.length; i++) {
+    totalPrice = orderInfo[i].cQuantity * orderInfo[i].pPrice;
+  }
   async function getProducts() {
     await axios.get("/order/" + idx).then((response) => {
       if (response.data.status === 201) {
         setOrderInfo(response.data.result);
         setOrdererInfo(response.data.result[0]);
         setOInfo(response.data.result[0]);
+        console.log(response);
       } else {
         window.alert("Failed.");
       }
     });
   }
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -45,8 +49,8 @@ function Order() {
     }
   };
 
-  const [oPoint, setOPoint] = useState(0);
-  const [oPrice, setOPrice] = useState(0);
+  const [oPoint, setOPoint] = useState("0");
+  const [oPrice, setOPrice] = useState("0");
   const [oPayment, setOPayment] = useState("무통장입금");
   const count = orderInfo.length;
   const [oQuantity, setOQuantity] = useState([]);
@@ -55,15 +59,17 @@ function Order() {
   }
   const [pid, setPid] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
-    pid.push(orderInfo[i].pId);
+    pid.push(orderInfo[i].pid);
   }
   const [pname, setPname] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
-    pname.push(orderInfo[i].pName);
+    pname.push(orderInfo[i].pname);
   }
+
   const onEditChang = (e) => {
     setOInfo({ ...oInfo, [e.target.name]: e.target.value });
   };
+
   const orderHandler = async (e) => {
     e.preventDefault();
     const data = {
@@ -104,13 +110,12 @@ function Order() {
     await axios.post("/order/pay", data).then((response) => {
       if (response.data.status === 201) {
         window.alert("주문완료");
-        window.location.assign("/");
       } else {
-        window.alert("상품 주문에 실패했습니다.");
+        window.alert("상품 등록에 실패했습니다.");
       }
     });
   };
-  console.log(count);
+
   return (
     <div className="orderWrap">
       <h1>결제하기</h1>
@@ -123,16 +128,13 @@ function Order() {
             <div className="orderProd">
               {orderInfo.length > 0
                 ? orderInfo.map((product, key) => {
-                    totalPrice += product.pPrice * product.cQuantity;
                     return (
-                      <div className="orderProdInfo" key={key}>
+                      <div className="orderProdInfo">
                         <img src={`../${product.pImage1}`} />
                         <div className="orderProdContents">
                           <p>{product.pname}</p>
                           <p className="prodCount">{product.cQuantity}개</p>
-                          <p className="prodPrice">
-                            {product.pPrice * product.cQuantity}원
-                          </p>
+                          <p className="prodPrice">{totalPrice}원</p>
                         </div>
                       </div>
                     );
@@ -148,13 +150,13 @@ function Order() {
               <input
                 type="text"
                 placeholder="이름"
-                defaultValue={ordererInfo.mName}
+                value={ordererInfo.mName}
                 readOnly
               />
               <input
                 type="text"
                 placeholder="연락처"
-                defaultValue={ordererInfo.mPhone}
+                value={ordererInfo.mPhone}
                 readOnly
               />
             </div>
@@ -162,7 +164,7 @@ function Order() {
               <input
                 type="text"
                 placeholder="이메일"
-                defaultValue={ordererInfo.mEmail}
+                value={ordererInfo.mEmail}
                 readOnly
               ></input>
             </div>
@@ -175,35 +177,35 @@ function Order() {
               <input
                 type="text"
                 placeholder="이름"
-                defaultValue={oInfo.mName || ""}
+                value={oInfo.mName || ""}
                 name="mName"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="우편번호"
-                defaultValue={oInfo.mPostnum}
+                value={oInfo.mPostnum}
                 name="mPostnum"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="주소1"
-                defaultValue={oInfo.mAddr1}
+                value={oInfo.mAddr1}
                 name="mAddr1"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="주소2"
-                defaultValue={oInfo.mAddr2}
+                value={oInfo.mAddr2}
                 name="mAddr2"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="연락처"
-                defaultValue={oInfo.mPhone}
+                value={oInfo.mPhone}
                 name="mPhone"
                 onChange={onEditChang}
               />
@@ -236,7 +238,7 @@ function Order() {
                 <div className="orderTop-left">
                   <p>상품가격</p>
                   <p>배송비</p>
-                  {oPoint != 0 ? <p>포인트</p> : null}
+                  {oPoint != "0" ? <p>포인트</p> : null}
                 </div>
                 <div className="orderTop-right">
                   <p>{totalPrice}원</p>
@@ -251,7 +253,7 @@ function Order() {
                 </div>
                 <div className="orderBottom-right">
                   <span>
-                    {oPoint != 0
+                    {oPoint != "0"
                       ? totalPrice > 50000
                         ? { totalPrice } - { oPoint }
                         : `${totalPrice + 3000 - oPoint}`
@@ -287,7 +289,7 @@ function Order() {
               <input
                 type="text"
                 placeholder="입금자명"
-                defaultValue={oInfo.mName}
+                value={oInfo.mName}
                 name="oPayment_name"
                 onChange={onEditChang}
               />
@@ -324,7 +326,7 @@ function Order() {
             <button
               type="submit"
               value={
-                oPoint != 0
+                oPoint != "0원"
                   ? totalPrice > 50000
                     ? { totalPrice } - { oPoint }
                     : `${totalPrice + 3000 - oPoint}`

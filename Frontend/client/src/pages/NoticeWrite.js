@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/NoticeWrite.css";
 
 function NoticeWrite() {
@@ -7,6 +8,7 @@ function NoticeWrite() {
   const [nTitle, setNTitle] = useState("");
   const [nFile, setNFile] = useState("");
   const [nContent, setNContent] = useState("");
+  const Navigate = useNavigate();
 
   const writeHandler = async (e) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ function NoticeWrite() {
     await axios.post("/admin/noticewrite", formData).then((response) => {
       if (response.data.status === 201) {
         window.alert(response.data.msg);
-        window.location.assign("notice");
+        Navigate("/admin/notice");
       } else {
         window.alert("공지사항 등록에 실패했습니다.");
       }

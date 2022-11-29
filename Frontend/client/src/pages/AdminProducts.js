@@ -136,8 +136,8 @@ function AdminProducts() {
                   <th>상품명</th>
                   <th>성별</th>
                   <th>상품분류</th>
-                  <th>재고</th>
                   <th>가격</th>
+                  <th>재고</th>
                   <th>판매일</th>
                   <th>-</th>
                 </tr>
