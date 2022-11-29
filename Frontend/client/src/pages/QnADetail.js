@@ -5,7 +5,7 @@ import "../styles/QnADetail.css";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
-function QnADetail({ isAdmin }) {
+function QnADetail({ isAdmin, isLogin }) {
   const [datas, setDatas] = useState([]);
   const [qcContent, setQcContent] = useState("");
   const idx = useParams().id;
@@ -46,10 +46,6 @@ function QnADetail({ isAdmin }) {
               <h2>
                 [{data.qCategory}] {data.qTitle}
               </h2>
-
-              {data.mId === localStorage.getItem("idx") ? (
-                <FontAwesomeIcon icon={faTrash} />
-              ) : null}
             </div>
             <div className="content-wrap">
               <div>

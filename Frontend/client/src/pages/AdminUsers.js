@@ -10,7 +10,7 @@ function AdminUsers() {
   const [rows, setRows] = useState(0); // 전체 게시물 수
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(0); // 전체 페이지
-  const [offset, setOffset] = useState(10); // 한 페이지에 표시할 게시물 수
+  const [offset, setOffset] = useState(5); // 한 페이지에 표시할 게시물 수
   const [keyword, setKeyword] = useState("");
   const [searchWords, setSearchWords] = useState("");
   const [searchType, setSearchType] = useState("mEmail");

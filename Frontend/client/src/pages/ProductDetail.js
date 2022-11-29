@@ -43,8 +43,10 @@ function ProductDetail() {
       await axios.post("/cart", { idx, counter, pId: id }).then((response) => {
         if (response.data.status === 201) {
           window.alert(response.data.msg);
-          const isOrder = window.confirm("장바구니 페이지로 이동하시겠습니까?");
-          if (isOrder) {
+          const isOrders = window.confirm(
+            "장바구니 페이지로 이동하시겠습니까?"
+          );
+          if (isOrders) {
             navigate(`/cart/${idx}`);
           } else {
             navigate(-1);
@@ -63,10 +65,40 @@ function ProductDetail() {
     e.preventDefault();
     if (product.pStock > 0) {
       await axios
-        .post(`/buy/${id}`, { pName, counter, mId: idx })
+        .post(`/buy`, { pName, counter, mId: idx })
         .then((response) => {
           if (response.data.status === 201) {
-            navigate("/order");
+            if ((response.data.result.length = 1)) {
+              const isOrder = window.confirm(
+                "장바구니의 동일한 상품이 있습니다. 함께 구매하시겠습니까?"
+              );
+              if (isOrder) {
+                axios
+                  .post(`/buy/cart/${id}`, { pName, counter, mId: idx })
+                  .then((response) => {
+                    if (response.data.status === 201) {
+                      console.log(response.data.result[0]);
+                      navigate("/order", {
+                        state: response.data.result[0],
+                      });
+                    } else {
+                      window.alert("상품 등록에 실패했습니다.");
+                    }
+                  });
+              } else {
+                axios
+                  .post(`/buy/${id}`, { pName, counter, mId: idx })
+                  .then((response) => {
+                    if (response.data.status === 201) {
+                      navigate("/order", {
+                        state: response.data.result[0],
+                      });
+                    } else {
+                      window.alert("상품 등록에 실패했습니다.");
+                    }
+                  });
+              }
+            }
           } else {
             window.alert("상품 등록에 실패했습니다.");
           }

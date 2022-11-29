@@ -15,13 +15,11 @@ function ReviewWrite() {
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(`/reviewWrite/${idx}`, { idx: idx }).then((response) => {
-        console.log(response);
         setOrders(response.data.user);
       });
     };
     fetchData();
   }, [idx]);
-  console.log(orders);
 
   const reviewWriteHandler = async (e) => {
     e.preventDefault();
@@ -42,7 +40,7 @@ function ReviewWrite() {
           window.alert(response.data.msg);
           window.location.assign("/review");
         } else {
-          window.alert("문의 등록에 실패했습니다.");
+          window.alert("리뷰 등록에 실패했습니다.");
         }
       });
     }

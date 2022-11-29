@@ -96,10 +96,10 @@ function Cart() {
               </div>
               <div className="tb-delivery-group">
                 <div className="delivery-priceInfo">
-                  {totalPrice > 50000 ? "0원" : "3,000원"}
+                  {totalPrice > 50000 ? "0원" : "3000원"}
                 </div>
                 <div className="delivery-freeInfo">
-                  50,000원 이상 구매 시 무료
+                  50000원 이상 구매 시 무료
                 </div>
               </div>
             </div>
@@ -113,7 +113,7 @@ function Cart() {
               <div className="bottom-box">
                 <div className="title">배송비</div>
                 <div className="content">
-                  {totalPrice > 50000 ? "0원" : "3,000원"}
+                  {totalPrice > 50000 ? "0원" : "3000원"}
                 </div>
               </div>
             </div>
