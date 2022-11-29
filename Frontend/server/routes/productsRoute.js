@@ -348,7 +348,7 @@ router.get("/order/:idx", (req, res) => {
   let sql =
     "SELECT product.pImage1, product.pName, product.pPrice, cart.*, member.* " +
     "FROM cart JOIN product ON product.pId = cart.pId " +
-    "JOIN member ON cart.mId = member.mId WHERE cid=(select cid from cart order by cid desc limit 0,1);";
+    "JOIN member ON cart.mId = member.mId WHERE member.mId = ?;";
   db.query(sql, [req.params.idx], (err, result) => {
     if (err) {
       throw err;
@@ -455,86 +455,88 @@ router.get("/order/:idx", (req, res) => {
 router.post("/order/pay", (req, res) => {
   const { oPoint, oPrice, oPayment, count, oQuantity, pid, pname, idx } =
     req.body;
-  const {
-    mName,
-    mPostnum,
-    mAddr1,
-    mAddr2,
-    mPhone,
-    oPayment_bank,
-    oPayment_name,
-  } = req.body.oInfo;
+  const { mName, mPhone, oPayment_bank, oPayment_name } = req.body.oInfo;
+
+  let mPostnum = req.body.oInfo;
+  mPostnum === "" ? req.body.zipcode : null;
+  let mAddr1 = req.body.oInfo;
+  mAddr1 === "" ? req.body.address : null;
+  let mAddr2 = req.body.oInfo;
+  mAddr2 === "" ? req.body.address2 : null;
   let sql =
-    "INSERT INTO orders values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
-  db.query(
-    sql,
-    [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment],
-    // [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment +"/" +oPayment_bank + "/" +oPayment_name],
-    (err, result) => {
-      if (err) {
-        throw err;
-      } else {
-        let sql2 = "select oid from orders order by oid desc limit 1;";
-        db.query(sql2, (err, result) => {
-          if (err) {
-            throw err;
-          }
-          Object.keys(result).forEach(function (key) {
-            var row = result[key];
-            let sql1 = "INSERT INTO orderdetails values ?";
-            let values = [];
-            let sqls = "";
-            if (count > 0) {
-              let i = 0;
-              for (i; i < count; i++) {
-                const value = [null, row.oid, oQuantity[i], pid[i], pname[i]];
-                console.log(i);
-                values = [...values, value];
-                let sql4 = `update product set pStock=pStock-${oQuantity[i]} where pid=${pid[i]}; `;
-                sqls = "";
-                sqls = sqls + sql4;
-                sql4 = "";
-              }
-            } else {
-              const value = [
-                null,
-                row.oid,
-                oQuantity[count],
-                pid[count],
-                pname[count],
-              ];
-              values = [...values, value];
-              let sql4 = `update product set pStock=pStock-${oQuantity[count]} where pid=${pid[count]}; `;
-              sqls = "";
-              sqls = sqls + sql4;
-              sql4 = "";
-            }
-            db.query(sql1, [values], (err, result) => {
-              if (err) throw err;
-              else {
-                let sql3 =
-                  "delete from cart where cid in (select A.cid from (select cid from cart where mid=?) A );";
-                db.query(sql3, idx, (err) => {
-                  if (err) throw err;
-                });
-                db.query(sqls, (err) => {
-                  if (err) throw err;
-                });
-                let sql5 = `update member set mPoint=mPoint-${oPoint} where mid=?;`;
-                db.query(sql5, idx, (err) => {
-                  if (err) throw err;
-                });
-                res.send({
-                  status: 201,
-                });
-              }
-            });
-            values = [];
-          });
-        });
-      }
-    }
-  );
+    "INSERT INTO orders(oId, mId, oName, oPostnum, oAddr1, oAddr2, oPhone, oPoint, oPrice, oPayment, oDate) " +
+    "VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, now());";
+  console.log(req.body.oInfo.mPostnum);
+
+  // db.query(
+  //   sql,
+  //   [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment],
+  //   // [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment +"/" +oPayment_bank + "/" +oPayment_name],
+  //   (err, result) => {
+  //     if (err) {
+  //       throw err;
+  //     } else {
+  //       let sql2 = "select oid from orders order by oid desc limit 1;";
+  //       db.query(sql2, (err, result) => {
+  //         if (err) {
+  //           throw err;
+  //         }
+  //         Object.keys(result).forEach(function (key) {
+  //           var row = result[key];
+  //           let sql1 = "INSERT INTO orderdetails values ?";
+  //           let values = [];
+  //           let sqls = "";
+  //           if (count > 0) {
+  //             let i = 0;
+  //             for (i; i < count; i++) {
+  //               const value = [null, row.oid, oQuantity[i], pid[i], pname[i]];
+  //               console.log(i);
+  //               values = [...values, value];
+  //               let sql4 = `update product set pStock=pStock-${oQuantity[i]} where pid=${pid[i]}; `;
+  //               sqls = "";
+  //               sqls = sqls + sql4;
+  //               sql4 = "";
+  //             }
+  //           } else {
+  //             const value = [
+  //               null,
+  //               row.oid,
+  //               oQuantity[count],
+  //               pid[count],
+  //               pname[count],
+  //             ];
+  //             values = [...values, value];
+  //             let sql4 = `update product set pStock=pStock-${oQuantity[count]} where pid=${pid[count]}; `;
+  //             sqls = "";
+  //             sqls = sqls + sql4;
+  //             sql4 = "";
+  //           }
+  //           db.query(sql1, [values], (err, result) => {
+  //             if (err) throw err;
+  //             else {
+  //               let sql3 =
+  //                 "delete from cart where cid in (select A.cid from (select cid from cart where mid=?) A );";
+  //               db.query(sql3, idx, (err) => {
+  //                 if (err) throw err;
+  //               });
+  //               db.query(sqls, (err) => {
+  //                 if (err) throw err;
+  //               });
+  //               let sql5 = `update member set mPoint=mPoint-${oPoint} where mid=?;`;
+  //               db.query(sql5, idx, (err) => {
+  //                 if (err) throw err;
+  //               });
+  //               res.send({
+  //                 status: 201,
+  //               });
+  //             }
+  //           });
+  //           values = [];
+  //         });
+  //       });
+  //     }
+  //   }
+  // );
 });
 
 module.exports = router;

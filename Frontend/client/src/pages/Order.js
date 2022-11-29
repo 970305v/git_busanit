@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "../styles/Order.css";
+import DaumPostcode from "react-daum-postcode";
 
 function Order() {
   const idx = localStorage.getItem("idx");
@@ -9,18 +10,31 @@ function Order() {
   const [oInfo, setOInfo] = useState("");
   const [checkItems, setCheckItems] = useState([]);
   const data = [{ id: 1 }, { id: 2 }];
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [openPost, setOpenPost] = useState(false);
+  const [oPoint, setOPoint] = useState(0);
+  const [oPrice, setOPrice] = useState(0);
+  const [oPayment, setOPayment] = useState("무통장입금");
+  const count = orderInfo.length;
+  const [oQuantity, setOQuantity] = useState([]);
 
   let totalPrice = 0;
-  for (let i = 1; i < orderInfo.length; i++) {
-    totalPrice = orderInfo[i].cQuantity * orderInfo[i].pPrice;
+  let countPrice = [];
+  for (let i = 0; i < orderInfo.length; i++) {
+    countPrice.push(orderInfo[i].cQuantity * orderInfo[i].pPrice);
   }
+  countPrice.forEach((price) => {
+    totalPrice += price;
+  });
+
   async function getProducts() {
     await axios.get("/order/" + idx).then((response) => {
       if (response.data.status === 201) {
         setOrderInfo(response.data.result);
         setOrdererInfo(response.data.result[0]);
         setOInfo(response.data.result[0]);
-        console.log(response);
       } else {
         window.alert("Failed.");
       }
@@ -49,27 +63,34 @@ function Order() {
     }
   };
 
-  const [oPoint, setOPoint] = useState("0");
-  const [oPrice, setOPrice] = useState("0");
-  const [oPayment, setOPayment] = useState("무통장입금");
-  const count = orderInfo.length;
-  const [oQuantity, setOQuantity] = useState([]);
+  const handle = {
+    selectAddress: (data) => {
+      setAddress(data.address);
+      setZipcode(data.zonecode);
+      setOpenPost(false);
+    },
+    addressHandler: () => {
+      setOpenPost((current) => !current);
+    },
+  };
+
   for (let i = 0; i < orderInfo.length; i++) {
     oQuantity.push(orderInfo[i].cQuantity);
   }
   const [pid, setPid] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
-    pid.push(orderInfo[i].pid);
+    pid.push(orderInfo[i].pId);
   }
   const [pname, setPname] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
-    pname.push(orderInfo[i].pname);
+    pname.push(orderInfo[i].pName);
   }
 
   const onEditChang = (e) => {
     setOInfo({ ...oInfo, [e.target.name]: e.target.value });
   };
 
+  console.log(oInfo);
   const orderHandler = async (e) => {
     e.preventDefault();
     const data = {
@@ -79,6 +100,9 @@ function Order() {
       oPrice,
       count,
       oQuantity,
+      zipcode,
+      address,
+      address2,
       pid,
       pname,
       idx,
@@ -91,18 +115,18 @@ function Order() {
       alert("배송지 받는 사람의 이름을 입력해주세요.");
       return false;
     }
-    if (oInfo.mPostnum == "") {
-      alert("배송지 주소의 우편번호를 입력해주세요.");
-      return false;
-    }
-    if (oInfo.mAddr1 == "") {
-      alert("배송지 주소의 기본 주소를 입력해주세요.");
-      return false;
-    }
-    if (oInfo.mAddr2 == "") {
-      alert("배송지 주소의 상세주소를 입력해주세요.");
-      return false;
-    }
+    // if (oInfo.mPostnum == "") {
+    //   alert("배송지 주소의 우편번호를 입력해주세요.");
+    //   return false;
+    // }
+    // if (oInfo.mAddr1 == "") {
+    //   alert("배송지 주소의 기본 주소를 입력해주세요.");
+    //   return false;
+    // }
+    // if (oInfo.mAddr2 == "") {
+    //   alert("배송지 주소의 상세주소를 입력해주세요.");
+    //   return false;
+    // }
     if (oInfo.oPayment_bank == null || oInfo.oPayment_bank == "") {
       alert("무통장입금할 은행을 선택해주세요.");
       return false;
@@ -129,12 +153,14 @@ function Order() {
               {orderInfo.length > 0
                 ? orderInfo.map((product, key) => {
                     return (
-                      <div className="orderProdInfo">
+                      <div className="orderProdInfo" key={key}>
                         <img src={`../${product.pImage1}`} />
                         <div className="orderProdContents">
-                          <p>{product.pname}</p>
+                          <p>{product.pName}</p>
                           <p className="prodCount">{product.cQuantity}개</p>
-                          <p className="prodPrice">{totalPrice}원</p>
+                          <p className="prodPrice" key={key}>
+                            {product.cQuantity * product.pPrice}원
+                          </p>
                         </div>
                       </div>
                     );
@@ -181,27 +207,76 @@ function Order() {
                 name="mName"
                 onChange={onEditChang}
               />
-              <input
-                type="text"
-                placeholder="우편번호"
-                value={oInfo.mPostnum}
-                name="mPostnum"
-                onChange={onEditChang}
-              />
-              <input
-                type="text"
-                placeholder="주소1"
-                value={oInfo.mAddr1}
-                name="mAddr1"
-                onChange={onEditChang}
-              />
-              <input
-                type="text"
-                placeholder="주소2"
-                value={oInfo.mAddr2}
-                name="mAddr2"
-                onChange={onEditChang}
-              />
+              {oInfo.mPostnum === "" ? (
+                <>
+                  <input
+                    type="text"
+                    id="postcode"
+                    name="postcode"
+                    className="postcode"
+                    placeholder="우편번호"
+                    readOnly
+                    value={zipcode}
+                  />
+                  <input
+                    type="button"
+                    className="findPostcode"
+                    value="우편번호 찾기"
+                    onClick={handle.addressHandler}
+                  />
+                  {openPost && (
+                    <DaumPostcode
+                      onComplete={handle.selectAddress}
+                      autoClose={false}
+                    />
+                  )}
+                </>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="우편번호"
+                  value={oInfo.mPostnum}
+                  name="mPostnum"
+                  onChange={onEditChang}
+                />
+              )}
+              {oInfo.mAddr1 === "" ? (
+                <input
+                  type="text"
+                  id="mAddr1"
+                  name="mAddr1"
+                  placeholder="주소"
+                  value={address}
+                  readOnly
+                />
+              ) : (
+                <input
+                  type="text"
+                  placeholder="주소"
+                  value={oInfo.mAddr1}
+                  name="mAddr1"
+                  onChange={onEditChang}
+                />
+              )}
+              {oInfo.mAddr1 === "" ? (
+                <input
+                  type="text"
+                  id="mAddr2"
+                  name="mAddr2"
+                  value={address2}
+                  placeholder="상세주소"
+                  onChange={(e) => setAddress2(e.target.value)}
+                />
+              ) : (
+                <input
+                  type="text"
+                  placeholder="상세주소"
+                  value={oInfo.mAddr2}
+                  name="mAddr2"
+                  onChange={onEditChang}
+                />
+              )}
+
               <input
                 type="text"
                 placeholder="연락처"
@@ -238,7 +313,7 @@ function Order() {
                 <div className="orderTop-left">
                   <p>상품가격</p>
                   <p>배송비</p>
-                  {oPoint != "0" ? <p>포인트</p> : null}
+                  {oPoint != 0 ? <p>포인트</p> : null}
                 </div>
                 <div className="orderTop-right">
                   <p>{totalPrice}원</p>
@@ -252,16 +327,17 @@ function Order() {
                   <p>총 주문금액</p>
                 </div>
                 <div className="orderBottom-right">
-                  <span>
-                    {oPoint != "0"
-                      ? totalPrice > 50000
-                        ? { totalPrice } - { oPoint }
-                        : `${totalPrice + 3000 - oPoint}`
-                      : totalPrice > 50000
-                      ? { totalPrice }
-                      : `${totalPrice + 3000}`}
-                    원
-                  </span>
+                  {oPoint != 0 ? (
+                    totalPrice > 50000 ? (
+                      <span>{totalPrice - oPoint} 원</span>
+                    ) : (
+                      <span>{totalPrice - oPoint + 3000} 원</span>
+                    )
+                  ) : totalPrice > 50000 ? (
+                    <span>{totalPrice} 원</span>
+                  ) : (
+                    <span>{totalPrice + 3000} 원</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -323,21 +399,7 @@ function Order() {
               />
               <span>구매조건 확인 및 결제진행에 동의</span>
             </div>
-            <button
-              type="submit"
-              value={
-                oPoint != "0원"
-                  ? totalPrice > 50000
-                    ? { totalPrice } - { oPoint }
-                    : `${totalPrice + 3000 - oPoint}`
-                  : totalPrice > 50000
-                  ? { totalPrice }
-                  : `${totalPrice + 3000}`
-              }
-              onClick={(e) => {
-                setOPrice(e.target.value);
-              }}
-            >
+            <button type="submit" onClick={() => setOPrice(totalPrice)}>
               결제하기
             </button>
           </div>

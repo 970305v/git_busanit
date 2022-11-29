@@ -17,23 +17,22 @@ function Navbar({ isLogin, isAdmin }) {
   const idx = localStorage.getItem("idx");
 
   useEffect(() => {
+    const getCartCount = async () => {
+      await axios.get("/cart/" + idx).then((response) => {
+        if (response.data.status === 201) {
+          setCarts(response.data.cart);
+        } else {
+          window.alert("Failed.");
+        }
+      });
+    };
     setSearchOpen(false);
     getCartCount();
-  }, [getCartCount()]);
+  }, []);
 
   const searchHandler = async (e) => {
     await axios.get(`/products/all?=${searchWord}`);
   };
-
-  async function getCartCount() {
-    await axios.get("/cart/" + idx).then((response) => {
-      if (response.data.status === 201) {
-        setCarts(response.data.cart);
-      } else {
-        window.alert("Failed.");
-      }
-    });
-  }
 
   return (
     <>
