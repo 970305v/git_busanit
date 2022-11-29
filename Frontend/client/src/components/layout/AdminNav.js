@@ -7,6 +7,7 @@ import "../../styles/AdminNav.css";
 function AdminNav() {
   const logout = () => {
     localStorage.clear();
+    window.location.assign("/");
   };
 
   return (
@@ -38,9 +39,7 @@ function AdminNav() {
               <li>Q&A 관리</li>
             </Link>
             <li>
-              <a href="/" onClick={logout}>
-                로그아웃
-              </a>
+              <a onClick={logout}>로그아웃</a>
             </li>
           </ul>
         </div>

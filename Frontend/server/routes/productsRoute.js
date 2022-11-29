@@ -43,13 +43,12 @@ router.get("/products", (req, res) => {
         [searchType, searchWord, startNums, offset],
         (err, products) => {
           if (err) throw err;
-
           res.json({
             status: 201,
             products: products,
             page: page, // 1, 2, 3 ... 페이지
             totalPageNumber: Math.ceil(result[0].count / offset), // 전체 페이지 수
-            totalRows: result[0].count, // 전체 사용자 수
+            totalRows: result[0].count,
           });
         }
       );
@@ -112,6 +111,41 @@ router.delete("/delete/product/:id", (req, res) => {
   });
 });
 
+router.get("/product/edit/:id", (req, res) => {
+  let sql = "select * from product where pid=?;";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.send({
+        result,
+        status: 201,
+      });
+    }
+  });
+});
+
+router.post("/product/edit/:id", (req, res) => {
+  const { pGender, pCaregory, pName, pStock, pPrice, pContent } = req.body;
+  let sql =
+    "update product set pGender=?, pCaregory=?, pName=?, pStock=?, pPrice=?, pContent=? where pid=?;";
+  db.query(
+    sql,
+    [pGender, pCaregory, pName, pStock, pPrice, pContent, req.params.id],
+    (err, result) => {
+      if (err) {
+        throw err;
+      } else {
+        res.send({
+          result,
+          status: 201,
+          msg: "수정이 완료되었습니다.",
+        });
+      }
+    }
+  );
+});
+
 router.delete("/delete/cart", (req, res) => {
   let sql = "delete from cart where mId=? and pId=? ";
   db.query(sql, [req.query.mId, req.query.pId], (err) => {
@@ -121,20 +155,14 @@ router.delete("/delete/cart", (req, res) => {
 });
 
 router.get("/products/all", (req, res) => {
-  const page = Number.parseInt(req.query.page);
-  const offset = Number.parseInt(req.query.offset);
-  const startNum = page * offset; // 0, 10 -> 10,10 -> 20, 10
-  let sql1 = "select * from product order by pId desc limit ?, ?;";
-  db.query(sql1, [startNum, offset], (err, result) => {
+  let sql1 = "select * from product order by pId desc limit 0,3;";
+  db.query(sql1, (err, result) => {
     if (err) {
       throw err;
     } else {
       res.send({
         result,
         status: 201,
-        page,
-        totalPageNumber: Math.ceil(result.length / offset),
-        totalRows: result.length,
       });
     }
   });
@@ -142,7 +170,7 @@ router.get("/products/all", (req, res) => {
 
 router.get("/products/men", (req, res) => {
   let sql1 =
-    "select * from product where pgender='MEN' order by pId desc limit 1,3;";
+    "select * from product where pgender='MEN' order by pId desc limit 1,3;;";
   db.query(sql1, (err, result) => {
     if (err) {
       throw err;
@@ -227,65 +255,6 @@ router.get("/products/list", (req, res) => {
       });
     }
   }
-
-  // const caregory = req.body.caregory;
-  // const gender = req.query.gender;
-  // console.log(caregory);
-  // if (gender == "all") {
-  //   let sql1 = "select * from product order by pId desc;";
-  //   db.query(sql1, (err, result) => {
-  //     if (err) {
-  //       throw err;
-  //     } else {
-  //       if (caregory != "all") {
-  //         let sql2 =
-  //           "select * from product where pCaregory=? order by pId desc;";
-  //         db.query(sql2, [caregory], (err, result) => {
-  //           if (err) {
-  //             throw err;
-  //           } else {
-  //             res.send({
-  //               result,
-  //               status: 201,
-  //             });
-  //           }
-  //         });
-  //       } else {
-  //         res.send({
-  //           result,
-  //           status: 201,
-  //         });
-  //       }
-  //     }
-  //   });
-  // } else {
-  //   let sql1 = "select * from product where pgender=? order by pId desc;";
-  //   db.query(sql1, [gender], (err, result) => {
-  //     if (err) {
-  //       throw err;
-  //     } else {
-  //       if (caregory != "all") {
-  //         let sql2 =
-  //           "select * from product where pgender=? && pCaregory=? order by pId desc;";
-  //         db.query(sql2, [gender, caregory], (err, result) => {
-  //           if (err) {
-  //             throw err;
-  //           } else {
-  //             res.send({
-  //               result,
-  //               status: 201,
-  //             });
-  //           }
-  //         });
-  //       } else {
-  //         res.send({
-  //           result,
-  //           status: 201,
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
 });
 
 router.get("/detail/:id", (req, res) => {
@@ -302,71 +271,16 @@ router.get("/detail/:id", (req, res) => {
   });
 });
 
-router.get("/product/edit/:id", (req, res) => {
-  let sql = "select * from product where pid=?;";
-  db.query(sql, [req.params.id], (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      res.send({
-        result,
-        status: 201,
-      });
-    }
-  });
-});
-
-// router.post("/product/edit/:id", upload.array("pImage", 3), (req, res) => {
-//   const { pGender, pCaregory, pName, pStock, pPrice, pContent } = req.body;
-//   let sql =
-//     "UPDATE product SET pName = ? , pGender = ?, pCaregory = ?, pStock = ?, pPrice = ?, pImage1 = ?, pImage2 = ?, pImage3 = ?, pContent = ? WHERE pId = ?;";
-//   let reqFiles = [] || "";
-//   console.log(req.files);
-//   console.log(req.file);
-//   // if (req.files.length > 0) {
-//   //   for (let i = 0; i < req.files.length; i++) {
-//   //     reqFiles.push(req.files[i].filename);
-//   //   }
-//   // } else {
-//   //   reqFiles.push(null);
-//   // }
-//   // db.query(
-//   //   sql,
-//   //   [
-//   //     pName,
-//   //     pGender,
-//   //     pCaregory,
-//   //     pStock,
-//   //     pPrice,
-//   //     req.files[0].filename,
-//   //     req.files[1].filename,
-//   //     req.files[2].filename,
-//   //     pContent,
-//   //     req.params.id,
-//   //   ],
-//   //   (err, result) => {
-//   //     if (err) {
-//   //       throw err;
-//   //     } else {
-//   //       res.send({
-//   //         result,
-//   //         status: 201,
-//   //       });
-//   //     }
-//   //   }
-//   // );
-// });
-
 router.post("/cart", (req, res) => {
-  const { idx, counter, pid } = req.body;
+  const { idx, counter, pId } = req.body;
   let sql3 = "select cid from cart where pid=? and mid=?;";
-  db.query(sql3, [pid, idx], (err, result) => {
+  db.query(sql3, [pId, idx], (err, result) => {
     if (err) throw err;
     else {
       if (result.length == 1) {
         let sql2 =
           "update cart set cQuantity=cQuantity+? where mid=? and pid=?";
-        db.query(sql2, [counter, idx, pid], (err, result) => {
+        db.query(sql2, [counter, idx, pId], (err, result) => {
           if (err) {
             throw err;
           } else {
@@ -378,7 +292,7 @@ router.post("/cart", (req, res) => {
         });
       } else {
         let sql = "insert into cart values(null, ?, ?, ?);";
-        db.query(sql, [idx, counter, pid], (err, result) => {
+        db.query(sql, [idx, counter, pId], (err, result) => {
           if (err) {
             throw err;
           } else {
@@ -408,9 +322,55 @@ router.get("/cart/:idx", (req, res) => {
   });
 });
 
+//한개짜리 카트에 저장
+router.post(`/buy/:idx`, (req, res) => {
+  const { counter } = req.body;
+  let sql3 = "SELECT cId FROM cart WHERE pId = ? AND mId = ?;";
+  db.query(sql3, [req.params.idx, req.body.mId], (err, result) => {
+    if (err) throw err;
+    else {
+      if (result.length == 1) {
+        let sql2 =
+          "UPDATE cart set cQuantity=cQuantity+? WHERE mId = ? and pId = ?";
+        db.query(
+          sql2,
+          [counter, req.body.mId, req.params.idx],
+          (err, result) => {
+            if (err) {
+              throw err;
+            } else {
+              res.send({
+                status: 201,
+              });
+            }
+          }
+        );
+      } else {
+        let sql = "insert into cart values(null, ?, ?, ?);";
+        db.query(
+          sql,
+          [req.body.mId, counter, req.params.idx],
+          (err, result) => {
+            if (err) {
+              throw err;
+            } else {
+              res.send({
+                status: 201,
+              });
+            }
+          }
+        );
+      }
+    }
+  });
+});
+//한개짜리 카트에 저장
+
 router.get("/order/:idx", (req, res) => {
   let sql =
-    "select product.pImage1, product.pname, product.pPrice, cart.cId, cart.cQuantity, member.mName, member.mPhone, member.mEmail, member.mPostnum, member.mAddr1, member.mAddr2, member.mid, cart.cid, cart.pid from cart join product on product.pid=cart.pid join member on member.mid=cart.mid;";
+    "SELECT product.pImage1, product.pName, product.pPrice, cart.*, member.* " +
+    "FROM cart JOIN product ON product.pId = cart.pId " +
+    "JOIN member ON cart.mId = member.mId WHERE member.mId = ?;";
   db.query(sql, [req.params.idx], (err, result) => {
     if (err) {
       throw err;
@@ -423,76 +383,117 @@ router.get("/order/:idx", (req, res) => {
   });
 });
 
-router.post("/buy/:idx", (req, res) => {
-  let sql =
-    "INSERT INTO orders values(null, ?, ?, null, null, null, null, null, null, null, null);";
-  db.query(sql, [req.params.idx, req.body.pName], (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      let sql1 = "select oid from orders order by oid desc limit 1;";
-      db.query(sql1, (err, result) => {
-        if (err) throw err;
-        let sql2 = "INSERT INTO orderdetails values(null, ?, ?, ?, ?);";
-        Object.keys(result).forEach(function (key) {
-          var row = result[key];
-          db.query(
-            sql2,
-            [row.oid, req.body.pCounter, req.params.idx, req.body.pName],
-            (err, result) => {
-              if (err) throw err;
-              else {
-                res.send({
-                  result,
-                  status: 201,
-                });
-              }
-            }
-          );
-        });
-      });
-    }
-  });
-});
-
-// 제품 한개 구매하는거 하기 orders orderdetails에 담아둠 *****************
-router.get("/buy/:idx", (req, res) => {
-  let sql =
-    "select pName from product where pid=(select pName orders where pid=?);";
-  db.query(sql, [req.params.idx], (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      res.send({
-        result,
-        status: 201,
-      });
-    }
-  });
-});
-// 제품 한개 구매하는거 하기 orders orderdetails에 담아둠 *****************
+// router.post("/order/pay", (req, res) => {
+//   const { oPoint, oPrice, oPayment, count, oQuantity, pid, pname, idx } =
+//     req.body;
+//   const {
+//     mName,
+//     mPostnum,
+//     mAddr1,
+//     mAddr2,
+//     mPhone,
+//     oPayment_bank,
+//     oPayment_name,
+//   } = req.body.oInfo;
+//   let sql =
+//     "INSERT INTO orders values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
+//   db.query(
+//     sql,
+//     [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment],
+//     // [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment +"/" +oPayment_bank + "/" +oPayment_name],
+//     (err, result) => {
+//       if (err) {
+//         throw err;
+//       } else {
+//         let sql2 = "select oid from orders order by oid desc limit 1;";
+//         db.query(sql2, (err, result) => {
+//           if (err) {
+//             throw err;
+//           }
+//           console.log(result);
+//           Object.keys(result).forEach(function (key) {
+//             var row = result[key];
+//             let sql1 = "INSERT INTO orderdetails values ?";
+//             let values = [];
+//             let sqls = "";
+//             console.log(count);
+//             if (count > 1) {
+//               count.map((Onecount) => {
+//                 const value = [
+//                   null,
+//                   row.oid,
+//                   oQuantity[Onecount],
+//                   pid[Onecount],
+//                   pname[Onecount],
+//                 ];
+//                 values = [...values, value];
+//                 let sql4 = `update product set pStock=pStock-${oQuantity[Onecount]} where pid=${pid[Onecount]}; `;
+//                 sqls = "";
+//                 sqls = sqls + sql4;
+//                 sql4 = "";
+//               });
+//             } else {
+//               const value = [
+//                 null,
+//                 row.oid,
+//                 oQuantity[count],
+//                 pid[count],
+//                 pname[count],
+//               ];
+//               values = [...values, value];
+//               let sql4 = `update product set pStock=pStock-${oQuantity[count]} where pid=${pid[count]}; `;
+//               sqls = "";
+//               sqls = sqls + sql4;
+//               sql4 = "";
+//             }
+//             db.query(sql1, [values], (err, result) => {
+//               if (err) throw err;
+//               else {
+//                 let sql3 =
+//                   "delete from cart where cid in (select A.cid from (select cid from cart where mid=?) A );";
+//                 db.query(sql3, idx, (err) => {
+//                   if (err) throw err;
+//                 });
+//                 db.query(sqls, (err) => {
+//                   if (err) throw err;
+//                 });
+//                 let sql5 = `update member set mPoint=mPoint-${oPoint} where mid=?;`;
+//                 db.query(sql5, idx, (err) => {
+//                   if (err) throw err;
+//                 });
+//                 res.send({
+//                   status: 201,
+//                 });
+//               }
+//             });
+//             values = [];
+//           });
+//         });
+//       }
+//     }
+//   );
+// });
 
 router.post("/order/pay", (req, res) => {
+  const { oPoint, oPrice, oPayment, count, oQuantity, pid, pname, idx } =
+    req.body;
   const {
-    oName,
-    oPostnum,
-    oAddr1,
-    oAddr2,
-    oPhone,
-    oPoint,
-    oPrice,
-    oPayment,
-    count,
-    oQuantity,
-    pid,
-    pname,
-    idx,
-  } = req.body;
+    mName,
+    mPostnum,
+    mAddr1,
+    mAddr2,
+    mPhone,
+    oPayment_bank,
+    oPayment_name,
+  } = req.body.oInfo;
+  console.log(pid);
+  console.log(pname);
   let sql =
     "INSERT INTO orders values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
   db.query(
     sql,
-    [idx, oName, oPostnum, oAddr1, oAddr2, oPhone, oPoint, oPrice, oPayment],
+    [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment],
+    // [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment +"/" +oPayment_bank + "/" +oPayment_name],
     (err, result) => {
       if (err) {
         throw err;
@@ -507,19 +508,16 @@ router.post("/order/pay", (req, res) => {
             let sql1 = "INSERT INTO orderdetails values ?";
             let values = [];
             let sqls = "";
-            if (count.length > 1) {
-              count.map((Onecount) => {
-                const value = [
-                  null,
-                  row.oid,
-                  oQuantity[Onecount],
-                  pid[Onecount],
-                  pname[Onecount],
-                ];
+            if (count > 0) {
+              let i = 0;
+              for (i; i < count; i++) {
+                const value = [null, row.oid, oQuantity[i], pid[i], pname[i]];
                 values = [...values, value];
-                const sql4 = `update product set pStock=pStock-${oQuantity[Onecount]} where pid=${pid[Onecount]}; `;
+                let sql4 = `update product set pStock=pStock-${oQuantity[i]} where pid=${pid[i]}; `;
+                sqls = "";
                 sqls = sqls + sql4;
-              });
+                sql4 = "";
+              }
             } else {
               const value = [
                 null,
@@ -529,8 +527,10 @@ router.post("/order/pay", (req, res) => {
                 pname[count],
               ];
               values = [...values, value];
-              const sql4 = `update product set pStock=pStock-${oQuantity[count]} where pid=${pid[count]}; `;
+              let sql4 = `update product set pStock=pStock-${oQuantity[count]} where pid=${pid[count]}; `;
+              sqls = "";
               sqls = sqls + sql4;
+              sql4 = "";
             }
             db.query(sql1, [values], (err, result) => {
               if (err) throw err;
@@ -543,11 +543,16 @@ router.post("/order/pay", (req, res) => {
                 db.query(sqls, (err) => {
                   if (err) throw err;
                 });
+                let sql5 = `update member set mPoint=mPoint-${oPoint} where mid=?;`;
+                db.query(sql5, idx, (err) => {
+                  if (err) throw err;
+                });
                 res.send({
                   status: 201,
                 });
               }
             });
+            values = [];
           });
         });
       }

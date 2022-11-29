@@ -64,7 +64,7 @@ function TotalRoute({ isLogin, isAdmin }) {
           </Route>
           <Route element={<PrivateRoute isLogin={isLogin} />}>
             <Route path="/mypage/:idx" element={<Mypage isLogin={isLogin} />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/cart/:idx" element={<Cart />} />
             <Route path="/order" element={<Order />} />
             <Route path="/qnawrite" element={<QnAWrite />} />
             <Route path="/reviewWrite/:idx" element={<ReviewWrite />} />

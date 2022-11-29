@@ -32,7 +32,6 @@ function ProductDetail() {
   }
 
   const totalPrice = counter * product.pPrice;
-  const pid = product.pId;
 
   useEffect(() => {
     getProduct();
@@ -40,34 +39,42 @@ function ProductDetail() {
 
   const cartHandler = async (e) => {
     e.preventDefault();
-    await axios.post("/cart", { idx, counter, pid }).then((response) => {
-      if (response.data.status === 201) {
-        window.alert(response.data.msg);
-        const isOrder = window.confirm("장바구니 페이지로 이동하시겠습니까?");
-        if (isOrder) {
-          navigate("/cart");
+    if (product.pStock > 0) {
+      await axios.post("/cart", { idx, counter, pId: id }).then((response) => {
+        if (response.data.status === 201) {
+          window.alert(response.data.msg);
+          const isOrder = window.confirm("장바구니 페이지로 이동하시겠습니까?");
+          if (isOrder) {
+            navigate(`/cart/${idx}`);
+          } else {
+            navigate(-1);
+          }
         } else {
-          navigate(-1);
+          window.alert("상품 등록에 실패했습니다.");
         }
-      } else {
-        window.alert("상품 등록에 실패했습니다.");
-      }
-    });
+      });
+    } else {
+      window.alert("품절 상품입니다.");
+    }
   };
 
   const pName = product.pName;
-  const pCounter = counter;
   const buyHandler = async (e) => {
     e.preventDefault();
-    await axios.post("/buy/" + idx, { pName, pCounter }).then((response) => {
-      if (response.data.status === 201) {
-        navigate("/order");
-      } else {
-        window.alert("상품 등록에 실패했습니다.");
-      }
-    });
+    if (product.pStock > 0) {
+      await axios
+        .post(`/buy/${id}`, { pName, counter, mId: idx })
+        .then((response) => {
+          if (response.data.status === 201) {
+            navigate("/order");
+          } else {
+            window.alert("상품 등록에 실패했습니다.");
+          }
+        });
+    } else {
+      window.alert("품절 상품입니다.");
+    }
   };
-  console.log(product);
   return (
     <div className="container">
       <div className="product">

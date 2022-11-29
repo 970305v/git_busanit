@@ -4,38 +4,21 @@ import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import ReactPaginate from "react-paginate";
 
 function Main() {
   const [allProducts, setAllProducts] = useState([]);
   const [menProducts, setMenProducts] = useState([]);
   const [womenProducts, setWomenProducts] = useState([]);
-  const [rows, setRows] = useState(0); //전체 게시물 수
-  const [page, setPage] = useState(0); //현재 페이지
-  const [pages, setPages] = useState(0); //전체 페이지
-  const [offset, setOffset] = useState(3); //한 페이지에 표시할 데이터 수
   const caregory = "all";
 
   async function getAllProducts() {
-    await axios
-      .get(
-        "/products/all?caregory=" +
-          caregory +
-          "&page=" +
-          page +
-          "&offset=" +
-          offset
-      )
-      .then((response) => {
-        if (response.data.status === 201) {
-          setAllProducts(response.data.result);
-          setPage(response.data.page);
-          setPages(response.data.totalPageNumber);
-          setRows(response.data.totalRows);
-        } else {
-          window.alert("Failed.");
-        }
-      });
+    await axios.get("/products/all?caregory=" + caregory).then((response) => {
+      if (response.data.status === 201) {
+        setAllProducts(response.data.result);
+      } else {
+        window.alert("Failed.");
+      }
+    });
   }
 
   async function getMenProducts() {
@@ -62,17 +45,7 @@ function Main() {
     getAllProducts();
     getMenProducts();
     getWomenProducts();
-  }, [page]);
-
-  const changePage = ({ selected }) => {
-    setPage(selected);
-  };
-  const prevPage = () => {
-    setPage(-1);
-  };
-  const nextPage = () => {
-    setPage(+1);
-  };
+  }, []);
 
   return (
     <div>
@@ -86,7 +59,10 @@ function Main() {
               <label htmlFor="slide03" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img alt="img" src="./assets/img/main_banner2.jpg" />
+              <img
+                alt="img"
+                src="https://cdn.imweb.me/thumbnail/20211014/ac9c7e74b7db2.png"
+              />
               <label htmlFor="slide02" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
@@ -95,7 +71,10 @@ function Main() {
               <label htmlFor="slide01" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img alt="img" src="./assets/img/main_banner1.jpg" />
+              <img
+                alt="img"
+                src="https://contents.sixshop.com/thumbnails/uploadedFiles/183003/default/image_1634643350876_2500.jpg"
+              />
               <label htmlFor="slide03" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
@@ -104,7 +83,7 @@ function Main() {
               <label htmlFor="slide02" className="left">
                 <FontAwesomeIcon icon={faAngleLeft} />
               </label>
-              <img alt="img" src="./assets/img/main_banner3.jpg" />
+              <img alt="img" src="https://kangolkorea.com/main/19.jpg" />
               <label htmlFor="slide01" className="right">
                 <FontAwesomeIcon icon={faAngleRight} />
               </label>
@@ -131,11 +110,7 @@ function Main() {
           <h1>ALL</h1>
           <div className="prodBanner">
             <div>
-              <FontAwesomeIcon
-                icon={faAngleLeft}
-                className="prodLeft"
-                onClick={prevPage}
-              />
+              <FontAwesomeIcon icon={faAngleLeft} className="prodLeft" />
             </div>
             <div className="ProdItems">
               {allProducts.length > 0 ? (
@@ -156,7 +131,7 @@ function Main() {
                 })
               ) : (
                 <div className="product-box">
-                  <img src="./assets/img/img_null.png" />
+                  <img src="https://via.placeholder.com/300.png"></img>
                   <p>
                     <strong>등록된 상품이 없습니다.</strong>
                   </p>
@@ -164,11 +139,7 @@ function Main() {
               )}
             </div>
             <div>
-              <FontAwesomeIcon
-                icon={faAngleRight}
-                className="prodRight"
-                onClick={nextPage}
-              />
+              <FontAwesomeIcon icon={faAngleRight} className="prodRight" />
             </div>
           </div>
         </div>
@@ -197,7 +168,7 @@ function Main() {
                 })
               ) : (
                 <div className="product-box">
-                  <img src="./assets/img/img_null.png"></img>
+                  <img src="https://via.placeholder.com/300.png"></img>
                   <p>
                     <strong>등록된 상품이 없습니다.</strong>
                   </p>
@@ -234,7 +205,7 @@ function Main() {
                 })
               ) : (
                 <div className="product-box">
-                  <img src="./assets/img/img_null.png"></img>
+                  <img src="https://via.placeholder.com/300.png"></img>
                   <p>
                     <strong>등록된 상품이 없습니다.</strong>
                   </p>

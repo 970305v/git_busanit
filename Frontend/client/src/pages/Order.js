@@ -1,148 +1,116 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "../styles/Order.css";
-import DaumPostcode from "react-daum-postcode";
 
 function Order() {
   const idx = localStorage.getItem("idx");
   const [orderInfo, setOrderInfo] = useState([]);
   const [ordererInfo, setOrdererInfo] = useState([]);
-  const [isAllChecked, setIsAllChecked] = useState(false);
-  const [checkedItems, setCheckedItems] = useState([]);
+  const [oInfo, setOInfo] = useState("");
+  const [checkItems, setCheckItems] = useState([]);
+  const data = [{ id: 1 }, { id: 2 }];
 
   let totalPrice = 0;
 
   async function getProducts() {
-    await axios
-      .all([axios.get("/order/" + idx), axios.get("/buy/" + idx)])
-      .then((response) => {
-        if (response.data.status === 201) {
-          setOrderInfo(response.data.result);
-          setOrdererInfo(response.data.result[0]);
-          console.log(orderInfo);
-          console.log(ordererInfo);
-        } else {
-          window.alert("Failed.");
-        }
-      });
+    await axios.get("/order/" + idx).then((response) => {
+      if (response.data.status === 201) {
+        setOrderInfo(response.data.result);
+        setOrdererInfo(response.data.result[0]);
+        setOInfo(response.data.result[0]);
+      } else {
+        window.alert("Failed.");
+      }
+    });
   }
-
   useEffect(() => {
     getProducts();
   }, []);
-  // 제품 한개 구매하는거 하기 orders orderdetails에 담아둠 *****************
 
-  const selectAll = (checked) => {
-    //전체 선택
-    setIsAllChecked(!isAllChecked);
+  const handleSingleCheck = (checked, id) => {
     if (checked) {
-      setCheckedItems([...checkedItems, "provision", "privacy"]);
-    } else if (
-      (!checked && checkedItems.includes("provision")) ||
-      (!checked && checkedItems.includes("privacy"))
-    ) {
-      setCheckedItems([]);
-    }
-  };
-
-  const agreeHandler = (checked, value) => {
-    if (checked) {
-      setCheckedItems([...checkedItems, value]);
-    } else if (!checked && checkedItems.includes(value)) {
-      setCheckedItems(checkedItems.filter((el) => el !== value));
-    }
-  };
-
-  useEffect(() => {
-    if (checkedItems.length >= 2) {
-      setIsAllChecked(true);
+      setCheckItems((prev) => [...prev, id]);
     } else {
-      setIsAllChecked(false);
+      setCheckItems(checkItems.filter((el) => el !== id));
     }
-  }, [checkedItems]);
+  };
 
-  const [oName, setOName] = useState("");
-  const [oPostnum, setOPostnum] = useState("");
-  const [oAddr1, setOAddr1] = useState("");
-  const [oAddr2, setOAddr2] = useState("");
-  const [openPost, setOpenPost] = useState(false);
-  const [oPhone, setOPhone] = useState("");
+  const handleAllCheck = (checked) => {
+    if (checked) {
+      const idArray = [];
+      data.forEach((el) => idArray.push(el.id));
+      setCheckItems(idArray);
+    } else {
+      setCheckItems([]);
+    }
+  };
+
   const [oPoint, setOPoint] = useState(0);
-  const [oPrice, setOPrice] = useState(totalPrice);
+  const [oPrice, setOPrice] = useState(0);
   const [oPayment, setOPayment] = useState("무통장입금");
-  const [count, setCount] = useState([]);
-
-  const phoneHandler = (e) => {
-    // 전화번호 정규식
-    const regex = /^[0-9\b -]{0,13}$/;
-    if (regex.test(e.target.value)) {
-      setOPhone(e.target.value);
-    }
-  };
-  const handle = {
-    // 카카오 주소 api
-    selectAddress: (data) => {
-      setOPostnum(data.zonecode);
-      setOAddr1(data.address);
-      setOpenPost(false);
-    },
-    addressHandler: () => {
-      setOpenPost((current) => !current);
-    },
-  };
-  useEffect(() => {
-    if (oPhone.length === 10) {
-      setOPhone(oPhone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"));
-    }
-    if (oPhone.length === 13) {
-      setOPhone(
-        oPhone.replace(/-/g, "").replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
-      );
-    }
-  }, [oPhone]);
-
-  for (let i = 0; i < orderInfo.length; i++) {
-    count.push(i);
-  }
+  const count = orderInfo.length;
   const [oQuantity, setOQuantity] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
     oQuantity.push(orderInfo[i].cQuantity);
   }
   const [pid, setPid] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
-    pid.push(orderInfo[i].pid);
+    pid.push(orderInfo[i].pId);
   }
   const [pname, setPname] = useState([]);
   for (let i = 0; i < orderInfo.length; i++) {
-    pname.push(orderInfo[i].pname);
+    pname.push(orderInfo[i].pName);
   }
-
+  const onEditChang = (e) => {
+    setOInfo({ ...oInfo, [e.target.name]: e.target.value });
+  };
   const orderHandler = async (e) => {
     e.preventDefault();
     const data = {
-      oName,
-      oPostnum,
-      oAddr1,
-      oAddr2,
-      oPhone,
+      oInfo,
       oPoint,
-      oPrice,
       oPayment,
+      oPrice,
       count,
       oQuantity,
       pid,
       pname,
       idx,
     };
+    if (checkItems.length < 2) {
+      alert("동의 항목 체크해주세요.");
+      return false;
+    }
+    if (oInfo.mName == "") {
+      alert("배송지 받는 사람의 이름을 입력해주세요.");
+      return false;
+    }
+    if (oInfo.mPostnum == "") {
+      alert("배송지 주소의 우편번호를 입력해주세요.");
+      return false;
+    }
+    if (oInfo.mAddr1 == "") {
+      alert("배송지 주소의 기본 주소를 입력해주세요.");
+      return false;
+    }
+    if (oInfo.mAddr2 == "") {
+      alert("배송지 주소의 상세주소를 입력해주세요.");
+      return false;
+    }
+    if (oInfo.oPayment_bank == null || oInfo.oPayment_bank == "") {
+      alert("무통장입금할 은행을 선택해주세요.");
+      return false;
+    }
     await axios.post("/order/pay", data).then((response) => {
       if (response.data.status === 201) {
         window.alert("주문완료");
+        window.location.assign("/");
       } else {
-        window.alert("상품 등록에 실패했습니다.");
+        window.alert("상품 주문에 실패했습니다.");
       }
     });
   };
-
+  console.log(count);
   return (
     <div className="orderWrap">
       <h1>결제하기</h1>
@@ -157,7 +125,7 @@ function Order() {
                 ? orderInfo.map((product, key) => {
                     totalPrice += product.pPrice * product.cQuantity;
                     return (
-                      <div className="orderProdInfo">
+                      <div className="orderProdInfo" key={key}>
                         <img src={`../${product.pImage1}`} />
                         <div className="orderProdContents">
                           <p>{product.pname}</p>
@@ -177,18 +145,25 @@ function Order() {
               <span>주문자 정보</span>
             </div>
             <div className="orderer-top">
-              <input type="text" placeholder="이름" value={ordererInfo.mName} />
+              <input
+                type="text"
+                placeholder="이름"
+                defaultValue={ordererInfo.mName}
+                readOnly
+              />
               <input
                 type="text"
                 placeholder="연락처"
-                value={ordererInfo.mPhone}
+                defaultValue={ordererInfo.mPhone}
+                readOnly
               />
             </div>
             <div className="orderer-bottom">
               <input
                 type="text"
                 placeholder="이메일"
-                value={ordererInfo.mEmail}
+                defaultValue={ordererInfo.mEmail}
+                readOnly
               ></input>
             </div>
           </div>
@@ -199,47 +174,38 @@ function Order() {
             <div className="addressInput">
               <input
                 type="text"
-                placeholder="이름(미입력시 주문자명)"
-                value={oName}
-                onChange={(e) => setOName(e.target.value)}
+                placeholder="이름"
+                defaultValue={oInfo.mName || ""}
+                name="mName"
+                onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="우편번호"
-                value={oPostnum}
-                readOnly
-                onChange={(e) => setOPostnum(e.target.value)}
+                defaultValue={oInfo.mPostnum}
+                name="mPostnum"
+                onChange={onEditChang}
               />
-              <input
-                type="button"
-                className="findPostcode"
-                value="우편번호 찾기"
-                onClick={handle.addressHandler}
-              />
-              {openPost && (
-                <DaumPostcode
-                  onComplete={handle.selectAddress}
-                  autoClose={false}
-                />
-              )}
               <input
                 type="text"
                 placeholder="주소1"
-                value={oAddr1}
-                readOnly
-                onChange={(e) => setOAddr1(e.target.value)}
+                defaultValue={oInfo.mAddr1}
+                name="mAddr1"
+                onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="주소2"
-                value={oAddr2}
-                onChange={(e) => setOAddr2(e.target.value)}
+                defaultValue={oInfo.mAddr2}
+                name="mAddr2"
+                onChange={onEditChang}
               />
               <input
                 type="text"
-                placeholder="연락처(미입력시 주문자 연락처)"
-                value={oPhone}
-                onChange={phoneHandler}
+                placeholder="연락처"
+                defaultValue={oInfo.mPhone}
+                name="mPhone"
+                onChange={onEditChang}
               />
             </div>
           </div>
@@ -251,10 +217,14 @@ function Order() {
             </div>
             <div className="payInput">
               <span>보유</span>
-              <span style={{ color: "#a7a7a7" }}>1000원</span>
+              <span>{ordererInfo.mPoint}Point</span>
             </div>
             <div className="payInput">
-              <input type="text" onChange={(e) => setOPoint(e.target.value)} />
+              <input
+                type="text"
+                placeholder="0"
+                onChange={(e) => setOPoint(e.target.value)}
+              />
             </div>
           </div>
           <div className="Info-box">
@@ -271,7 +241,7 @@ function Order() {
                 <div className="orderTop-right">
                   <p>{totalPrice}원</p>
                   <p>{totalPrice > 50000 ? "0원" : "3,000원"}</p>
-                  {oPoint != 0 ? <p>{oPoint}</p> : null}
+                  {oPoint != 0 ? <p>{oPoint}원</p> : null}
                 </div>
               </div>
               <div className="order-divLine"></div>
@@ -280,16 +250,16 @@ function Order() {
                   <p>총 주문금액</p>
                 </div>
                 <div className="orderBottom-right">
-                  <p>
+                  <span>
                     {oPoint != 0
                       ? totalPrice > 50000
                         ? { totalPrice } - { oPoint }
-                        : `${totalPrice + 3000 - 1000}`
+                        : `${totalPrice + 3000 - oPoint}`
                       : totalPrice > 50000
                       ? { totalPrice }
                       : `${totalPrice + 3000}`}
                     원
-                  </p>
+                  </span>
                 </div>
               </div>
             </div>
@@ -299,21 +269,28 @@ function Order() {
               <span>결제수단</span>
             </div>
             <div className="payCheckbox">
-              <input
-                type="radio"
-                checked
-                readOnly
-                value={oPayment}
-                onChange={(e) => setOPayment(e.target.value)}
-              />
+              <input type="radio" checked readOnly />
               <span>무통장입금</span>
             </div>
-            <select className="payBank">
-              <option>선택하세요</option>
-              <option>부산은행</option>
+            <select
+              className="payBank"
+              name="oPayment_bank"
+              onChange={onEditChang}
+            >
+              <option value="">선택하세요</option>
+              <option value="부산은행">부산은행</option>
+              <option value="신한은행">신한은행</option>
+              <option value="우리은행">우리은행</option>
+              <option value="농협은행">농협은행</option>
             </select>
             <div className="payInput">
-              <input type="text" placeholder="입금자명(미입력시 주문자명)" />
+              <input
+                type="text"
+                placeholder="입금자명"
+                defaultValue={oInfo.mName}
+                name="oPayment_name"
+                onChange={onEditChang}
+              />
             </div>
           </div>
           <div className="Info-box">
@@ -321,10 +298,8 @@ function Order() {
               <input
                 type="checkbox"
                 name="selcetAll"
-                onChange={(e) => {
-                  selectAll(e.currentTarget.checked);
-                }}
-                checked={isAllChecked}
+                onChange={(e) => handleAllCheck(e.target.checked)}
+                checked={checkItems.length === data.length ? true : false}
               />
               <span>전체 동의</span>
             </div>
@@ -332,10 +307,8 @@ function Order() {
               <span> └ </span>
               <input
                 type="checkbox"
-                onChange={(e) =>
-                  agreeHandler(e.currentTarget.checked, e.target.value)
-                }
-                checked={checkedItems.includes("provision") ? true : false}
+                onChange={(e) => handleSingleCheck(e.target.checked, 1)}
+                checked={checkItems.includes(data[0].id) ? true : false}
               />
               <span>개인정보 수집 및 이용 동의</span>
             </div>
@@ -343,14 +316,28 @@ function Order() {
               <span> └ </span>
               <input
                 type="checkbox"
-                onChange={(e) =>
-                  agreeHandler(e.currentTarget.checked, e.target.value)
-                }
-                checked={checkedItems.includes("privacy") ? true : false}
+                onChange={(e) => handleSingleCheck(e.target.checked, 2)}
+                checked={checkItems.includes(data[1].id) ? true : false}
               />
               <span>구매조건 확인 및 결제진행에 동의</span>
             </div>
-            <button type="submit">결제하기</button>
+            <button
+              type="submit"
+              value={
+                oPoint != 0
+                  ? totalPrice > 50000
+                    ? { totalPrice } - { oPoint }
+                    : `${totalPrice + 3000 - oPoint}`
+                  : totalPrice > 50000
+                  ? { totalPrice }
+                  : `${totalPrice + 3000}`
+              }
+              onClick={(e) => {
+                setOPrice(e.target.value);
+              }}
+            >
+              결제하기
+            </button>
           </div>
         </div>
       </form>

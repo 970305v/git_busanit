@@ -19,6 +19,7 @@ function Mypage() {
 
   const logout = () => {
     localStorage.clear();
+    window.location.assign("/");
   };
 
   useEffect(() => {
@@ -72,9 +73,7 @@ function Mypage() {
                 </span>
               </div>
               <div className="logout">
-                <a href="/" onClick={logout}>
-                  로그아웃
-                </a>
+                <a onClick={logout}>로그아웃</a>
               </div>
               <div className="input-box">
                 <div className="input-item">

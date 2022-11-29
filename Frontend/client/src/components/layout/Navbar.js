@@ -88,7 +88,7 @@ function Navbar({ isLogin, isAdmin }) {
                         <FontAwesomeIcon icon={faUser} id="icon-btn" />
                       </Link>
                     )}
-                    <Link to="/cart">
+                    <Link to={`/cart/${idx}`}>
                       <FontAwesomeIcon
                         icon={faCartShopping}
                         id="icon-btn"

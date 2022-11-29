@@ -15,18 +15,18 @@ CREATE TABLE member(
     mRegdate DATE DEFAULT (current_date) 
 );
 
-CREATE TABLE product(
-    pId INT auto_increment primary key,
-    pName VARCHAR(100) NOT NULL,
-    pGender VARCHAR(5) NOT NULL,
-    pCaregory VARCHAR(20) NOT NULL,
-    pStock INT(10) NOT NULL,
-    pPrice INT(10) NOT NULL,
-    pImage1 VARCHAR(255) NOT NULL,
-    pImage2 VARCHAR(255),
-    pImage3 VARCHAR(255),
-    pContent TEXT NOT NULL,
-    regdate VARCHAR(255) NOT NULL
+create table product(
+    pId int auto_increment primary key,
+    pName varchar(100) not null,
+    pGender varchar(5) not null,
+    pCaregory varchar(20) not null,
+    pStock int(10) not null,
+    pPrice int(10) not null,
+    pImage1 varchar(255) not null,
+    pImage2 varchar(255),
+    pImage3 varchar(255),
+    pContent text not null,
+    regdate varchar(255) not null
 );
 
 CREATE TABLE qna(
@@ -37,7 +37,7 @@ CREATE TABLE qna(
     qTitle VARCHAR(100) NOT NULL,
     qContent TEXT NOT NULL,
     qImage1 VARCHAR(255),
- 	 qImage2 VARCHAR(255),
+ 	qImage2 VARCHAR(255),
     qImage3 VARCHAR(255),
     qSecret BOOLEAN,
     qHit INT(50) DEFAULT 0,
@@ -55,6 +55,7 @@ CREATE TABLE qna_comment(
 	FOREIGN KEY (qId) REFERENCES qna (qId)
 );
 
+
 CREATE TABLE notice(
     nId INT AUTO_INCREMENT PRIMARY KEY ,
     mId INT,
@@ -68,39 +69,36 @@ CREATE TABLE notice(
     FOREIGN KEY (mId) REFERENCES member (mId)
 );
 
-
-CREATE TABLE cart(
-    cId INT AUTO_INCREMENT PRIMARY KEY,
-    mId INT,
-    pId INT,
-    cQuantity INT,
+create table cart(
+    cId int auto_increment primary key,
+    mId int,
+    cQuantity int(10) not null,
+    pId int,
     FOREIGN KEY (mId) REFERENCES member (mId),
     FOREIGN KEY (pId) REFERENCES product (pId)
 );
 
-CREATE TABLE orders(
-    oId INT AUTO_INCREMENT PRIMARY KEY,
-    mId INT,
+create table orders(
+    oId int auto_increment primary key,
+    mId int,
     oName varchar(255),
-    oPostnum VARCHAR(5),
-    oAddr1 VARCHAR(255),
-    oAddr2 VARCHAR(255),
-    oPhone varchar(255),
+    oPostnum varchar(5),
+    oAddr1 varchar(255),
+    oAddr2 varchar(255),
+    oPhone varchar(13), 
     oPoint INT(10),
     oPrice INT(10),
-    oPayment VARCHAR(100), 
-    oDate DATE DEFAULT (current_date),
-    FOREIGN KEY (mId) REFERENCES member (mId)
-    );
-
+    oPayment varchar(10),
+    oDate date,
+    FOREIGN KEY (mId) REFERENCES member (mId)    
+);
 
 create table orderDetails(
-    odId INT AUTO_INCREMENT PRIMARY KEY,
-    oId INT,
-    mId INT,
-    cId INT,
-    pId INT,
-    FOREIGN KEY (mId) REFERENCES member (mId),
+    odId int auto_increment primary key,
+    oId int,
+    oQuantity int(10),
+    pId int,
+    pName varchar(255),
     FOREIGN KEY (oId) REFERENCES orders (oId),
     FOREIGN KEY (pId) REFERENCES product (pId)
 );

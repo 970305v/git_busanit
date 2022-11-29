@@ -37,7 +37,6 @@ function QnADetail({ isAdmin }) {
       });
   };
 
-  console.log(datas);
   return (
     <div className="board-container">
       {datas.map((data, key) => {

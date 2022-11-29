@@ -15,11 +15,13 @@ function ReviewWrite() {
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(`/reviewWrite/${idx}`, { idx: idx }).then((response) => {
+        console.log(response);
         setOrders(response.data.user);
       });
     };
     fetchData();
   }, [idx]);
+  console.log(orders);
 
   const reviewWriteHandler = async (e) => {
     e.preventDefault();
