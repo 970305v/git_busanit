@@ -89,7 +89,7 @@ function AdminProducts() {
             <div className="buttons">
               <div className="button-left">
                 <button onClick={searchData}>전체목록</button>
-                <button>선택삭제</button>
+                {/* <button>선택삭제</button> */}
               </div>
               <div className="button-right">
                 <button>
@@ -176,12 +176,12 @@ function AdminProducts() {
                               수정
                             </Link>
                           </button>
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() => deleteItem(product.pId)}
                           >
                             삭제
-                          </button>
+                          </button> */}
                         </td>
                       </tr>
                     );

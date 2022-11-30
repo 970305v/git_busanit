@@ -324,11 +324,14 @@ router.get("/cart/:idx", (req, res) => {
 
 //한개짜리 카트에 저장
 router.post(`/buy`, (req, res) => {
+  console.log(req.body.pId);
+  console.log(req.body.mId);
   const { counter } = req.body;
   let sql3 = "SELECT cId FROM cart WHERE pId = ? AND mId = ?;";
-  db.query(sql3, [req.params.idx, req.body.mId], (err, result) => {
+  db.query(sql3, [req.body.pId, req.body.mId], (err, result) => {
     if (err) throw err;
     else {
+      console.log(result);
       res.send({
         result,
         status: 201,
@@ -337,20 +340,37 @@ router.post(`/buy`, (req, res) => {
   });
 });
 
-router.post(`/buy/cart/:idx`, (req, res) => {
+router.post(`/buy/cart/add/:idx`, (req, res) => {
   const { counter } = req.body;
-  let sql2 = "UPDATE cart set cQuantity=cQuantity+? WHERE mId = ? and pId = ?";
-  db.query(sql2, [counter, req.body.mId, req.params.idx], (err) => {
+  let sql2 = "insert into cart values(null, ?, ?, ?);";
+  db.query(sql2, [req.params.idx, counter, req.body.pId], (err) => {
     if (err) {
       throw err;
     } else {
-      let sql1 = "select cid from cart where mid=? and pid=?";
-      db.query(sql1, [req.body.mId, req.params.idx], (err, result) => {
+      let sql1 = "select cid from cart order by cid desc limit 0,1";
+      db.query(sql1, [req.params.idx, req.body.pId], (err, result) => {
         res.send({
           status: 201,
           result,
         });
-        console.log(result);
+      });
+    }
+  });
+});
+
+router.post(`/buy/cart/:idx`, (req, res) => {
+  const { counter } = req.body;
+  let sql2 = "UPDATE cart set cQuantity=cQuantity+? WHERE mId = ? and pId = ?";
+  db.query(sql2, [counter, req.params.idx, req.body.pId], (err) => {
+    if (err) {
+      throw err;
+    } else {
+      let sql1 = "select cid from cart where mid=? and pid=?";
+      db.query(sql1, [req.params.idx, req.body.pId], (err, result) => {
+        res.send({
+          status: 201,
+          result,
+        });
       });
     }
   });
@@ -369,7 +389,6 @@ router.post(`/buy/:idx`, (req, res) => {
           status: 201,
           result,
         });
-        console.log(result);
       });
     }
   });
@@ -423,7 +442,6 @@ router.post("/order/pay", (req, res) => {
   } = req.body.oInfo;
   let sql =
     "INSERT INTO orders values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());";
-  console.log(oPrice);
   db.query(
     sql,
     [idx, mName, mPostnum, mAddr1, mAddr2, mPhone, oPoint, oPrice, oPayment],

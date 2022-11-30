@@ -83,7 +83,7 @@ function AdminNotice() {
         <div className="admin-table-wrap">
           <div className="admin-table-btn">
             <button onClick={searchData}>전체목록</button>
-            <button>선택삭제</button>
+            {/* <button>선택삭제</button> */}
             <Link to="/admin/noticewrite">
               <button>공지작성</button>
             </Link>

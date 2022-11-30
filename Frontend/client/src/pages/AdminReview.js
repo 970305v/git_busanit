@@ -81,7 +81,7 @@ function AdminReview() {
         <div className="admin-table-wrap">
           <div className="admin-table-btn">
             <button onClick={searchData}>전체목록</button>
-            <button>선택삭제</button>
+            {/* <button>선택삭제</button> */}
             <div>
               <span>
                 <strong>리뷰 수 : {rows}</strong> 개

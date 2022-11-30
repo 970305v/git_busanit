@@ -15,7 +15,7 @@ function AdminProductsUpload() {
       if (response.data.status === 201) {
         setProduct(response.data.result[0]);
       } else {
-        window.alert("상품 불러오기를 실패했습니다.");
+        window.alert("상품 수정을 실패했습니다.");
         navigate("/admin/products");
       }
     });
@@ -62,7 +62,7 @@ function AdminProductsUpload() {
                         <select
                           onChange={onEditChang}
                           name="pGender"
-                          value={product.pGender}
+                          defaultValue={product.pGender}
                         >
                           <option>선택하세요</option>
                           <option>MEN</option>
@@ -76,7 +76,7 @@ function AdminProductsUpload() {
                         <select
                           onChange={onEditChang}
                           name="pCaregory"
-                          value={product.pCaregory}
+                          defaultValue={product.pCaregory}
                         >
                           <option>선택하세요</option>
                           <option>상의</option>
@@ -100,7 +100,7 @@ function AdminProductsUpload() {
                         <input
                           type="text"
                           name="pName"
-                          value={product.pName || ""}
+                          defaultValue={product.pName || ""}
                           onChange={onEditChang}
                         ></input>
                       </td>
@@ -109,7 +109,7 @@ function AdminProductsUpload() {
                       <td>상품 설명</td>
                       <td>
                         <textarea
-                          value={product.pContent || ""}
+                          defaultValue={product.pContent || ""}
                           onChange={onEditChang}
                           name="pContent"
                         ></textarea>
@@ -120,7 +120,7 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          value={product.pPrice || ""}
+                          defaultValue={product.pPrice || ""}
                           onChange={onEditChang}
                           name="pPrice"
                         ></input>
@@ -131,7 +131,7 @@ function AdminProductsUpload() {
                       <td>
                         <input
                           type="text"
-                          value={product.pStock}
+                          defaultValue={product.pStock}
                           onChange={onEditChang}
                           name="pStock"
                         ></input>

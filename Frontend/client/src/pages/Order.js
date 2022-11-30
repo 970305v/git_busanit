@@ -13,6 +13,13 @@ function Order() {
   const data = [{ id: 1 }, { id: 2 }];
 
   let totalPrice = 0;
+  let countPrice = [];
+  for (let i = 0; i < orderInfo.length; i++) {
+    countPrice.push(orderInfo[i].cQuantity * orderInfo[i].pPrice);
+  }
+  countPrice.forEach((price) => {
+    totalPrice += price;
+  });
 
   const location = useLocation();
 
@@ -64,7 +71,7 @@ function Order() {
   };
 
   const [oPoint, setOPoint] = useState(0);
-  const [oPrice, setOPrice] = useState("0");
+  const [oPrice, setOPrice] = useState(0);
   const [oPayment, setOPayment] = useState("무통장입금");
   const count = orderInfo.length;
   const [oQuantity, setOQuantity] = useState([]);
@@ -130,6 +137,7 @@ function Order() {
       }
     });
   };
+
   return (
     <div className="orderWrap">
       <h1>결제하기</h1>
@@ -142,7 +150,6 @@ function Order() {
             <div className="orderProd">
               {orderInfo.length > 0
                 ? orderInfo.map((product, key) => {
-                    totalPrice += product.pPrice * product.cQuantity;
                     return (
                       <div className="orderProdInfo" key={key}>
                         <img src={`../${product.pImage1}`} />
@@ -167,13 +174,13 @@ function Order() {
               <input
                 type="text"
                 placeholder="이름"
-                value={ordererInfo.mName}
+                defaultValue={ordererInfo.mName}
                 readOnly
               />
               <input
                 type="text"
                 placeholder="연락처"
-                value={ordererInfo.mPhone}
+                defaultValue={ordererInfo.mPhone}
                 readOnly
               />
             </div>
@@ -181,7 +188,7 @@ function Order() {
               <input
                 type="text"
                 placeholder="이메일"
-                value={ordererInfo.mEmail}
+                defaultValue={ordererInfo.mEmail}
                 readOnly
               ></input>
             </div>
@@ -194,35 +201,35 @@ function Order() {
               <input
                 type="text"
                 placeholder="이름"
-                value={oInfo.mName || ""}
+                defaultValue={oInfo.mName || ""}
                 name="mName"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="우편번호"
-                value={oInfo.mPostnum}
+                defaultValue={oInfo.mPostnum}
                 name="mPostnum"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="주소1"
-                value={oInfo.mAddr1}
+                defaultValue={oInfo.mAddr1}
                 name="mAddr1"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="주소2"
-                value={oInfo.mAddr2}
+                defaultValue={oInfo.mAddr2}
                 name="mAddr2"
                 onChange={onEditChang}
               />
               <input
                 type="text"
                 placeholder="연락처"
-                value={oInfo.mPhone}
+                defaultValue={oInfo.mPhone}
                 name="mPhone"
                 onChange={onEditChang}
               />
@@ -234,8 +241,8 @@ function Order() {
             <div className="infoTitle">
               <span>포인트</span>
             </div>
-            <div className="payInput setFlex">
-              <span style={{ color: "#666666" }}>보유</span>
+            <div className="payInput">
+              <span>보유</span>
               <span>{ordererInfo.mPoint}Point</span>
             </div>
             <div className="payInput">
@@ -269,16 +276,17 @@ function Order() {
                   <p>총 주문금액</p>
                 </div>
                 <div className="orderBottom-right">
-                  <span>
-                    {oPoint != "0원"
-                      ? totalPrice > 50000
-                        ? `${totalPrice - oPoint}`
-                        : `${totalPrice + 3000 - oPoint}`
-                      : totalPrice > 50000
-                      ? { totalPrice }
-                      : `${totalPrice + 3000}`}
-                    원
-                  </span>
+                  {oPoint != 0 ? (
+                    totalPrice > 50000 ? (
+                      <span>{totalPrice - oPoint} 원</span>
+                    ) : (
+                      <span>{totalPrice - oPoint + 3000} 원</span>
+                    )
+                  ) : totalPrice > 50000 ? (
+                    <span>{totalPrice} 원</span>
+                  ) : (
+                    <span>{totalPrice + 3000} 원</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -306,7 +314,7 @@ function Order() {
               <input
                 type="text"
                 placeholder="입금자명"
-                value={oInfo.mName}
+                defaultValue={oInfo.mName}
                 name="oPayment_name"
                 onChange={onEditChang}
               />
@@ -340,21 +348,7 @@ function Order() {
               />
               <span>구매조건 확인 및 결제진행에 동의</span>
             </div>
-            <button
-              type="submit"
-              value={
-                oPoint != "0"
-                  ? totalPrice > 50000
-                    ? `${totalPrice - oPoint}`
-                    : `${totalPrice + 3000 - oPoint}`
-                  : totalPrice > 50000
-                  ? { totalPrice }
-                  : `${totalPrice + 3000}`
-              }
-              onClick={(e) => {
-                setOPrice(e.target.value);
-              }}
-            >
+            <button type="submit" onClick={() => setOPrice(totalPrice)}>
               결제하기
             </button>
           </div>
