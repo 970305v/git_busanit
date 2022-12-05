@@ -32,6 +32,7 @@ aside {
 .my_profile a.profile_img img {
   width: 55px;
   height: 55px;
+  margin-right : 15px;
 }
 
 .my_profile .my_id {
@@ -171,9 +172,13 @@ aside {
 /**************************
 FEED BOARD
 **************************/
-div.feed_board {
+.feed_board_wrap {
+    display : block;
+}
+.feed_board {
   flex: 6.5;
   margin-right: 15px;
+  margin-bottom: 10px;
 }
 
 /* FEED - common */
@@ -215,9 +220,15 @@ div.feed_board {
 }
 
 /* FEED - content */
+.feed_imgs_wrap {
+    width: 630px;
+    height: 630px;
+    padding: 5px;
+}
 .feed_imgs img,
 .feed_imgs video {
   width: 100%;
+  height: 100%;
 }
 
 .interactions {

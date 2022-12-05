@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,8 +39,9 @@ public class MemberController {
 	
 	@RequestMapping({"/", "/home"})
 	public String home(Model model) {
-		List<BoardDto> boardList = boardDao.boardAll();
-		model.addAttribute("board", boardList);
+		List<Map> boardMap = boardDao.boardAll();
+		model.addAttribute("board", boardMap);
+		System.out.println(model);
 		return "index";
 	}
 	

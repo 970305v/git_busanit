@@ -23,7 +23,7 @@
         <!--my profile-->
         <div class="my_profile">
           <a href="#n" class="profile_img">
-            <img class="round-img" th:src="@{/img/profile_no.jpg}"/>
+            <img class="round-img" th:src="@{/img/profile_no.png}"/>
           </a>
           <span class="my_id">
             <p th:if="${session.login != null}" th:text="${session.login.getMUserid()}" class="txt_id"></p>
@@ -82,7 +82,7 @@
               </a>
               <span class="user_id">
                 <a href="#n" class="txt_id">recommender ID</a>
-                <p>follwor list</p>
+                <p>follower list</p>
               </span>
               <button type="button">팔로우</button>
             </div>
@@ -92,7 +92,7 @@
               </a>
               <span class="user_id">
                 <a href="#n" class="txt_id">recommender ID</a>
-                <p>follwor list</p>
+                <p>follower list</p>
               </span>
               <button type="button">팔로우</button>
             </div>
@@ -112,6 +112,7 @@
       </aside>
 
       <!--FEED BOARD-->
+  <div class="feed_board_wrap">
       <div class="feed_board" th:each="board:${board}">
         <!--FEED COMPONENT-->
         <article class="feed">
@@ -120,13 +121,15 @@
             <a href="#n" class="poster_img">
               <img class="round-img" />
             </a>
-            <a href="#n" class="poster_id txt_id" >Following ID</a>
+            <a th:href="'/profile/' + ${board.mIdx}" class="poster_id txt_id" th:text="${board.mUserid}">Following ID</a>
             <button><i class="fas fa-ellipsis-h"></i>옵션 더보기</button>
           </div>
 
           <!--content-->
           <section class="feed_imgs">
+            <div class="feed_imgs_wrap">
             <img th:src="${board.imgPath}" />
+            </div>
             <div class="interactions">
               <div class="my_emotion">
                 <button type="button"><i class="far fa-heart"></i>like</button>
@@ -180,6 +183,7 @@
           </div>
         </article>
       </div>
+    </div>
     </main>
   </body>
 </html>

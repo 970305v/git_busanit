@@ -11,7 +11,7 @@
     <select id="boardDetail" resultType="com.example.demo.dto.BoardDto">
         SELECT * FROM board WHERE bIdx = #{bIdx}
     </select>
-    <select id="boardAll" resultType="com.example.demo.dto.BoardDto">
-        SELECT * FROM board
+    <select id="boardAll" resultType="Map">
+        SELECT board.*, member.mIdx, member.mUserid, mPhoto FROM board LEFT JOIN member ON board.mIdx = member.mIdx ORDER BY bIdx DESC;
     </select>
 </mapper>
