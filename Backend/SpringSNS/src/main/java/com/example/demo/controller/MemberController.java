@@ -1,68 +1,83 @@
 package com.example.demo.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.example.demo.dao.BoardDao;
+import com.example.demo.dto.BoardDto;
+import org.apache.ibatis.annotations.Param;
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dto.MemberDto;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class MemberController {
 	
 	@Autowired
-	MemberDao dao;
+	private MemberDao dao;
+
+	@Autowired
+	private BoardDao boardDao;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
+	public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads";
 	
 	@RequestMapping({"/", "/home"})
-	public String Home() {
+	public String home(Model model) {
+		List<BoardDto> boardList = boardDao.boardAll();
+		model.addAttribute("board", boardList);
 		return "index";
 	}
 	
 	@GetMapping("/login")
-	public String Login() {
+	public String login() {
 		return "login";
 	}
 	
 	@GetMapping("/register")
-	public String Register() {
+	public String register() {
 		return "register";
 	}
 	
-	@GetMapping("/mypage")
-	public String Mypage() {
-		return "mypage";
+	@GetMapping("/profile/{idx}")
+	public String profile(@PathVariable("idx") Long idx, Model model) {
+		List<MemberDto> list = dao.selectOne(idx);
+		List<BoardDto> boardList = boardDao.selectOne(idx);
+		model.addAttribute("list", list);
+		model.addAttribute("board", boardList);
+		return "profile";
 	}
 	
 	@PostMapping("/registProc")
-	public String RegistProc(MemberDto dto) {
+	public String registProc(MemberDto dto) {
 		dao.register(dto);
        return "redirect:/";
 	}
 	
 	@PostMapping("/idCheck")
 	@ResponseBody
-	public HashMap<String, Object> IdCheck(@RequestBody MemberDto dto) {
+	public HashMap<String, Object> idCheck(@RequestBody MemberDto dto) {
 		HashMap<String, Object> map = new HashMap<>();
-        map.put("result", dao.idCheck(dto.getmUserid()));
+        map.put("result", dao.idCheck(dto.getMUserid()));
         return map;
 	}
 	
 	@PostMapping("/loginProc")
-	public String LoginProc(String mUserid, String mPwd, HttpServletRequest request) {
+	public String loginProc(String mUserid, String mPwd, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberDto login = dao.login(mUserid, mPwd);
 		if(login != null) {
@@ -73,15 +88,16 @@ public class MemberController {
 		}
 	}
 	@RequestMapping("/logout")
-	public String Logout(HttpServletRequest request) {
+	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return "redirect:/";
 	}
-	
-	@RequestMapping("profile/edit")
-	public String EditProfile() {
-		return "profile";
+	@GetMapping("/profile/edit/{idx}")
+	public String editProfile(@PathVariable("idx") Long idx, Model model) {
+		List<MemberDto> list = dao.selectOne(idx);
+		model.addAttribute("list", list);
+		return "editProfile";
 	}
 }
 

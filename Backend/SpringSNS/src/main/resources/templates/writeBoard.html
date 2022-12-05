@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+  <html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+   <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link th:href="@{/css/writeBoard.css}" rel="stylesheet" />
+    <title>글 작성하기</title>
+  </head>
+  <body>
+  <!-- header -->
+  <th:block th:replace="/header"></th:block>
+  <!-- header -->
+  <main class="container wrap">
+    <div class="container">
+        <form action="writeProc" method = "POST" enctype="multipart/form-data">
+        <div class="profile-wrap">
+            <input type="hidden" th:value="${session.login.mIdx}" name="mIdx"/>
+          <label>이미지</label><input type="file" name="file" />
+          <textarea
+            name="bContent"
+            placeholder="내용"></textarea>
+            <input type="text" name="bHashtag" placeholder="해쉬태그"/>
+          <button class="edit-btn" type="submit">작성하기</button>
+        </div>
+      </form>
+    </div>
+  </main>
+    <script>
+      const userid = document.getElementById("userid");
+      const chkBtn = document.getElementById("idChk");
+      userid.addEventListener("keyup", () => {
+        let isIdvalue = userid.value.length;
+        if (0 < isIdvalue) {
+          chkBtn.classList.add("active");
+        } else {
+          chkBtn.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>

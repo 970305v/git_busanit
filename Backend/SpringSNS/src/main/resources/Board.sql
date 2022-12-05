@@ -1,0 +1,14 @@
+CREATE TABLE board(
+	bIdx BIGINT AUTO_INCREMENT PRIMARY KEY,
+	mIdx BIGINT,
+	bImage1 VARCHAR(255),
+	bImage2 VARCHAR(255),
+	bImage3 VARCHAR(255),
+	bImage4 VARCHAR(255),
+	bImage5 VARCHAR(255),
+	bContent TEXT,
+	bHashtag VARCHAR(255),
+	bRegdate DATE DEFAULT (CURRENT_DATE),
+	bUpdate DATE,
+	FOREIGN KEY (mIdx) REFERENCES member (mIdx)
+);

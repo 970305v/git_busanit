@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.BoardMapper">
+   <insert id="write">
+       INSERT INTO board(bIdx, mIdx, bImage1, imgPath, bContent, bHashtag)
+       VALUES(NULL, #{mIdx}, #{bImage1}, #{imgPath}, #{bContent}, #{bHashtag})
+   </insert>
+    <select id="selectOne" resultType="com.example.demo.dto.BoardDto">
+        SELECT * FROM board WHERE mIdx = #{mIdx}
+    </select>
+    <select id="boardDetail" resultType="com.example.demo.dto.BoardDto">
+        SELECT * FROM board WHERE bIdx = #{bIdx}
+    </select>
+    <select id="boardAll" resultType="com.example.demo.dto.BoardDto">
+        SELECT * FROM board
+    </select>
+</mapper>

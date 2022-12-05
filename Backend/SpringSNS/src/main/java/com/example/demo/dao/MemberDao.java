@@ -7,41 +7,27 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.dto.MemberDto;
 import com.example.demo.mapper.MemberMapper;
 
-/*
- * 
- * CREATE TABLE member(
-    mIdx INT AUTO_INCREMENT PRIMARY KEY,
-    mUserid VARCHAR(255) NOT NULL UNIQUE,
-    mPwd VARCHAR(255) NOT NULL,
-    mName VARCHAR(255) NOT NULL,
-    mPhone VARCHAR(13),
-    mPhoto VARCHAR(255),
-    mInfo TEXT,
-    mAuth VARCHAR(10) DEFAULT 'user',
-    mRegdate DATE DEFAULT (current_date),
-    mUpdate DATE 
-);
- * */
+import java.util.List;
 
 @Repository
 public class MemberDao implements MemberMapper {
 
 	@Autowired
-	private MemberMapper MemberMapper;
+	private MemberMapper memberMapper;
 	
     @Autowired
     private PasswordEncoder passwordEncoder;
     
     @Override
  	public int register(MemberDto dto) {
- 		String encodedPassword = passwordEncoder.encode(dto.getmPwd());
- 		dto.setmPwd(encodedPassword);
- 		return MemberMapper.register(dto);
+ 		String encodedPassword = passwordEncoder.encode(dto.getMPwd());
+ 		dto.setMPwd(encodedPassword);
+ 		return memberMapper.register(dto);
  	}
 
  	@Override
  	public int idCheck(String mUserid) {
- 		return MemberMapper.idCheck(mUserid);
+ 		return memberMapper.idCheck(mUserid);
  	}
  	
  	 @Override
@@ -49,15 +35,20 @@ public class MemberDao implements MemberMapper {
      	if(getUserAccount(mUserid) == null) {
      		return null;
      	}
-     	if (!passwordEncoder.matches(mPwd, getUserAccount(mUserid).getmPwd())) {
+     	if (!passwordEncoder.matches(mPwd, getUserAccount(mUserid).getMPwd())) {
      		return null;	
      	}
-     	return MemberMapper.login(mUserid, getUserAccount(mUserid).getmPwd());
+     	return memberMapper.login(mUserid, getUserAccount(mUserid).getMPwd());
      }
     @Override
     public MemberDto getUserAccount(String mUserid) {
-    	return MemberMapper.getUserAccount(mUserid);
+    	return memberMapper.getUserAccount(mUserid);
     }
+
+	@Override
+	public List<MemberDto> selectOne(Long idx) {
+		return memberMapper.selectOne(idx);
+	}
 }
 
 

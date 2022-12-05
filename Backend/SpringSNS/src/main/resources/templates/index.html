@@ -23,10 +23,10 @@
         <!--my profile-->
         <div class="my_profile">
           <a href="#n" class="profile_img">
-            <img class="round-img" />
+            <img class="round-img" th:src="@{/img/profile_no.jpg}"/>
           </a>
           <span class="my_id">
-            <p th:if="${session.login != null}" th:text="${session.login.getmUserid()}" class="txt_id"></p>
+            <p th:if="${session.login != null}" th:text="${session.login.getMUserid()}" class="txt_id"></p>
             <a th:if="${session.login == null}" href="/login">Login</a>
             <a th:if="${session.login != null}" href="/logout">Logout</a>
           </span>
@@ -112,7 +112,7 @@
       </aside>
 
       <!--FEED BOARD-->
-      <div class="feed_board">
+      <div class="feed_board" th:each="board:${board}">
         <!--FEED COMPONENT-->
         <article class="feed">
           <!--top-->
@@ -120,13 +120,13 @@
             <a href="#n" class="poster_img">
               <img class="round-img" />
             </a>
-            <a href="#n" class="poster_id txt_id">Following ID</a>
+            <a href="#n" class="poster_id txt_id" >Following ID</a>
             <button><i class="fas fa-ellipsis-h"></i>옵션 더보기</button>
           </div>
 
           <!--content-->
           <section class="feed_imgs">
-            <img />
+            <img th:src="${board.imgPath}" />
             <div class="interactions">
               <div class="my_emotion">
                 <button type="button"><i class="far fa-heart"></i>like</button>
@@ -154,13 +154,8 @@
           </section>
 
           <section class="feed_txt">
-            <a href="#n" class="txt_id">User ID</a>
-            <span
-              >건방진 고양이. 나의 찍찍 펀치를 받아라. <br />
-              건방진 고양이. 나의 찍찍 펀치를 받아라. 건방진 고양이. 나의 찍찍
-              펀치를 받아라. 건방진 고양이. 나의 찍찍 펀치를 받아라. 건방진
-              고양이. 나의 찍찍 펀치를 받아라.</span
-            >
+            <a href="#n" class="txt_id"></a>
+            <span th:text="${board.bContent}"></span>
             <a href="#n" class="more">더보기</a>
           </section>
 
@@ -168,8 +163,8 @@
             <div id="listComment" class="list_comment">
               <p class="txt_comment">
                 <span>
-                  <a href="#n" class="txt_id">follow ID</a>
-                  <span>나는 냥냥</span>
+                  <a href="#n" class="txt_id">댓글단 팔로워 아이디</a>
+                  <span>댓글 내용</span>
                 </span>
                 <button id="delete" type="button">X</button>
               </p>

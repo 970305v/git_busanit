@@ -24,19 +24,22 @@ header .wrap {
   padding: 15px 0;
 }
 
-header a.logo {
-  height: 20px;
+.logo-icon-img {
+    width : 25px;
+    height : 25px;
 }
 
 header .logo h1 {
+   display : inline;
   height: 100%;
-  margin-left: 35px;
+  margin-left: 15px;
   padding-left: 15px;
   border-left: 1px solid #262626;
   font-size: 25px;
   line-height: 15px;
   font-weight: 100;
 }
+
 
 .search-wrap {
   display: flex;

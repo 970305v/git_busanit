@@ -13,4 +13,7 @@
    <select id="getUserAccount" resultType="com.example.demo.dto.MemberDto">
       SELECT * FROM member WHERE mUserid = #{mUserid}
     </select>
+    <select id="selectOne" resultType="com.example.demo.dto.MemberDto">
+        SELECT * FROM member WHERE mIdx = #{mIdx}
+    </select>
 </mapper>

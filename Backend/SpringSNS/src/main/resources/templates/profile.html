@@ -6,37 +6,41 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 정보</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
      <link th:href="@{/css/profile.css}" rel="stylesheet" />
-    <title>회원 정보 수정</title>
   </head>
   <body>
-    <div class="container">
-      <form>
-        <div class="profile-wrap">
-          <input name="userid" id="userid" type="text" placeholder="아이디" />
-          <button class="idChk" id="idChk">중복확인</button>
-          <input name="username" id="username" type="text" placeholder="이름" />
-          <input name="phone" id="phone" type="text" placeholder="전화번호" />
-          <textarea
-            name="userinfo"
-            placeholder="소개"
-            maxlength="100"
-          ></textarea>
-          <button class="edit-btn" type="submit">정보 수정</button>
+    <!--HEADER-->
+   <th:block th:replace="/header"></th:block>
+    <!--//HEADER-->
+    <main class="container wrap">
+      <div class="profile-container" th:each="list:${list}">
+        <div class="profile-img-wrap">
+            <img class="profile-img" th:src="@{/img/profile_no.jpg}"/>
         </div>
-      </form>
-    </div>
-    <script>
-      const userid = document.getElementById("userid");
-      const chkBtn = document.getElementById("idChk");
-      userid.addEventListener("keyup", () => {
-        let isIdvalue = userid.value.length;
-        if (0 < isIdvalue) {
-          chkBtn.classList.add("active");
-        } else {
-          chkBtn.classList.remove("active");
-        }
-      });
-    </script>
+        <div>
+            <input type="hidden" id="mIdx" th:value="${list.mIdx}">
+          <p><h2 th:text="${list.mUserid}">프로필 아이디</h2></p>
+          <p th:if="${list.mIdx == session.login.mIdx}"><a th:href="'/profile/edit/' + ${list.mIdx}">정보수정</a></p>
+            <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="@{/writeBoard}">게시물 쓰기</a></span>
+          <span>게시물 : <strong> 0 </strong></span>
+          <span>팔로워 : <strong th:text="${list.mFollower}">  </strong></span>
+          <span>팔로잉 : <strong th:text="${list.mFollowing}"> </strong></span>
+          <p><strong th:text="${list.mName}">이름</strong></p>
+          <p th:text="${list.mInfo}">자기소개</p>
+        </div>
+      </div>
+      <div class="grid-container">
+        <div class="grid-box" th:each="board:${board}">
+            <a th:href="'/board/' + ${board.bIdx}">
+            <img class="content-img" th:src="${board.imgPath}">
+            </a>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
