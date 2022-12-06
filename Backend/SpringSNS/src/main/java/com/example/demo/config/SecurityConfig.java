@@ -24,7 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         cors().disable().
         authorizeRequests().
         antMatchers("/**", "/error/*", "/login", "/loginProc").permitAll().
-        antMatchers("/profile/**").authenticated().
         anyRequest().authenticated();
         http.formLogin().loginPage("/login");
 	}
