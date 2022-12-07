@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,9 +41,7 @@ public class MemberController {
 	
 	@RequestMapping({"/", "/home"})
 	public String home(Model model) {
-		List<Map> boardMap = boardDao.boardAll();
-		model.addAttribute("board", boardMap);
-		System.out.println(model);
+		model.addAttribute("board", boardDao.boardAll());
 		return "index";
 	}
 	
@@ -57,10 +57,8 @@ public class MemberController {
 	
 	@GetMapping("/profile/{idx}")
 	public String profile(@PathVariable("idx") Long idx, Model model) {
-		List<MemberDto> list = dao.selectOne(idx);
-		List<BoardDto> boardList = boardDao.selectOne(idx);
-		model.addAttribute("list", list);
-		model.addAttribute("board", boardList);
+		model.addAttribute("list", dao.selectOne(idx));
+		model.addAttribute("board", boardDao.selectOne(idx));
 		return "profile";
 	}
 	
@@ -100,6 +98,20 @@ public class MemberController {
 		List<MemberDto> list = dao.selectOne(idx);
 		model.addAttribute("list", list);
 		return "editProfile";
+	}
+	@PostMapping("/profile/edit/{idx}")
+	public String editProfile(@ModelAttribute MemberDto dto, @PathVariable("idx") long idx, MultipartFile file) throws Exception {
+		String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+		UUID uuid = UUID.randomUUID();
+		String fileName = uuid + "_" + file.getOriginalFilename();
+		File saveFile = new File(projectPath, fileName);
+		file.transferTo(saveFile);
+		dto.setMPhoto(fileName);
+		dto.setMProfilePath("/files/"+fileName);
+		System.out.println(dto);
+		System.out.println(idx);
+		dao.memberUp(dto, idx);
+		return "redirect:/";
 	}
 }
 

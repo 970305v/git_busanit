@@ -17,6 +17,7 @@ public class MemberDto {
 	private String mPwd;
 	private String mName;
 	private String mPhone;
+	private String mProfilePath;
 	private String mPhoto;
 	private Long mFollower;
 	private Long mFollowing;

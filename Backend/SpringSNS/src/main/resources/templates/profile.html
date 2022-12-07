@@ -25,8 +25,8 @@
         <div>
             <input type="hidden" id="mIdx" th:value="${list.mIdx}">
           <p><h2 th:text="${list.mUserid}">프로필 아이디</h2></p>
-          <p th:if="${list.mIdx == session.login.mIdx}"><a th:href="'/profile/edit/' + ${list.mIdx}">정보수정</a></p>
-            <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="@{/writeBoard}">게시물 쓰기</a></span>
+          <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="'/profile/edit/' + ${list.mIdx}">프로필 편집</a></span>
+            <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="@{/writeBoard}">게시물 쓰기</a></span></br>
           <span>게시물 : <strong> 0 </strong></span>
           <span>팔로워 : <strong th:text="${list.mFollower}">  </strong></span>
           <span>팔로잉 : <strong th:text="${list.mFollowing}"> </strong></span>

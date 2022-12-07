@@ -49,6 +49,11 @@ public class MemberDao implements MemberMapper {
 	public List<MemberDto> selectOne(Long idx) {
 		return memberMapper.selectOne(idx);
 	}
+
+	@Override
+	public MemberDto memberUp(MemberDto dto, long idx) {
+		return memberMapper.memberUp(dto, idx);
+	}
 }
 
 

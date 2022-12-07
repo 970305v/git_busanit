@@ -19,5 +19,5 @@ public interface MemberMapper {
 	public MemberDto login(@Param("mUserid") String mUserid, @Param("mPwd") String mPwd);
 	public MemberDto getUserAccount(@Param("mUserid") String mUserid);
 	public List<MemberDto> selectOne(Long idx);
-
+	public MemberDto memberUp(MemberDto dto, long idx);
 }

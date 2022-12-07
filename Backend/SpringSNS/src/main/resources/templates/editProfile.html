@@ -11,15 +11,20 @@
   </head>
   <body>
     <div class="container">
-      <form action="profile/edit" method="post">
+      <form th:action="@{${list[0].mIdx}}" method ="POST" enctype="multipart/form-data" charset=utf-8>
         <div class="profile-wrap">
-          <input name="userid" id="userid" type="text" placeholder="아이디" />
+            <div class="preview-img">
+            <img id="preview" class="preview"/>
+            </div>
+            <input id="file" type="file" name="file" accept="image/*" onchange="readURL(this);">
+          <input name="mUserid" id="mUserid" type="text" placeholder="아이디" required/>
           <button class="idChk" id="idChk">중복확인</button>
-          <input name="username" id="username" type="text" placeholder="이름" />
-          <input name="phone" id="phone" type="text" placeholder="전화번호" />
+          <input id="mName" name="mName" type="text" placeholder="이름" required/>
+          <input id="mPhone" name="mPhone" type="text" placeholder="전화번호" required/>
           <textarea
-            name="userinfo"
-            placeholder="소개"></textarea>
+            name="mInfo"
+            placeholder="소개"
+            required></textarea>
           <button class="edit-btn" type="submit">정보 수정</button>
         </div>
       </form>
@@ -35,6 +40,17 @@
           chkBtn.classList.remove("active");
         }
       });
+     function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("preview").src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById("preview").src = "";
+        }
+      }
     </script>
   </body>
 </html>

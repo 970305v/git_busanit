@@ -4,6 +4,7 @@ CREATE TABLE member(
     mPwd VARCHAR(255) NOT NULL,
     mName VARCHAR(255) NOT NULL,
     mPhone VARCHAR(13),
+    mProfilePath VARCHAR(255),
     mPhoto VARCHAR(255),
     mFollower BIGINT DEFAULT 0,
     mFollowing BIGINT DEFAULT 0,
