@@ -51,7 +51,7 @@ public class MemberDao implements MemberMapper {
 	}
 
 	@Override
-	public MemberDto memberUp(MemberDto dto, long idx) {
+	public int memberUp(MemberDto dto, long idx) {
 		return memberMapper.memberUp(dto, idx);
 	}
 }

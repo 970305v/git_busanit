@@ -20,7 +20,8 @@
     <main class="container wrap">
       <div class="profile-container" th:each="list:${list}">
         <div class="profile-img-wrap">
-            <img class="profile-img" th:src="@{/img/profile_no.png}"/>
+            <img th:if="${list.mProfilePath == null}" class="profile-img" th:src="@{/img/profile_no.png}"/>
+            <img th:if="${list.mProfilePath != null}" class="profile-img" th:src="@{${list.mProfilePath}}"/>
         </div>
         <div>
             <input type="hidden" id="mIdx" th:value="${list.mIdx}">

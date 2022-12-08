@@ -23,7 +23,10 @@
         <!--my profile-->
         <div class="my_profile">
           <a href="#n" class="profile_img">
-            <img class="round-img" th:src="@{/img/profile_no.png}"/>
+            <img class="round-img" th:if="${session.login == null}" th:src="@{/img/profile_no.png}"/>
+            <img class="round-img" th:if="${session.login != null && session.login.getMProfilePath == null}"  th:src="@{/img/profile_no.png}"/>
+            <img class="round-img" th:if="${session.login != null && session.login.getMProfilePath != null}" th:src="${session.login.getMProfilePath}"/>
+
           </a>
           <span class="my_id">
             <p th:if="${session.login != null}" th:text="${session.login.getMUserid()}" class="txt_id"></p>
@@ -119,7 +122,8 @@
           <!--top-->
           <div class="new_poster">
             <a href="#n" class="poster_img">
-              <img class="round-img" />
+              <img th:if="${board.mProfilePath == null}" class="round-img" th:src="@{/img/profile_no.png}"/>
+              <img th:if="${board.mProfilePath != null}" class="round-img" th:src="${board.mProfilePath}"/>
             </a>
             <a th:if="${session.login != null}" th:href="'/profile/' + ${board.mIdx}" class="poster_id txt_id" th:text="${board.mUserid}">Following ID</a>
             <a th:unless="${session.login != null}" href="/login" class="poster_id txt_id" th:text="${board.mUserid}">Following ID</a>

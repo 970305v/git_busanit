@@ -100,7 +100,7 @@ public class MemberController {
 		return "editProfile";
 	}
 	@PostMapping("/profile/edit/{idx}")
-	public String editProfile(@ModelAttribute MemberDto dto, @PathVariable("idx") long idx, MultipartFile file) throws Exception {
+	public String editProfile(@ModelAttribute MemberDto dto, @PathVariable("idx") long idx, MultipartFile file, HttpServletRequest request) throws Exception {
 		String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
 		UUID uuid = UUID.randomUUID();
 		String fileName = uuid + "_" + file.getOriginalFilename();
@@ -108,9 +108,9 @@ public class MemberController {
 		file.transferTo(saveFile);
 		dto.setMPhoto(fileName);
 		dto.setMProfilePath("/files/"+fileName);
-		System.out.println(dto);
-		System.out.println(idx);
 		dao.memberUp(dto, idx);
+		HttpSession session = request.getSession();
+		session.invalidate();
 		return "redirect:/";
 	}
 }
