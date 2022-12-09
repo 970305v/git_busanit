@@ -27,8 +27,12 @@
             <input type="hidden" id="mIdx" th:value="${list.mIdx}">
           <p><h2 th:text="${list.mUserid}">프로필 아이디</h2></p>
           <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="'/profile/edit/' + ${list.mIdx}">프로필 편집</a></span>
-            <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="@{/writeBoard}">게시물 쓰기</a></span></br>
-          <span>게시물 : <strong> 0 </strong></span>
+          <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="@{/writeBoard}">게시물 쓰기</a></span></br>
+
+            <span th:if="${list.mIdx != session.login.mIdx}">
+                <button class="cta blue" onclick="toggleSubscribe(${profileDto.id}, this)">구독취소</button>
+</span></br>
+          <span>게시물 : <strong >  </strong></span>
           <span>팔로워 : <strong th:text="${list.mFollower}">  </strong></span>
           <span>팔로잉 : <strong th:text="${list.mFollowing}"> </strong></span>
           <p><strong th:text="${list.mName}">이름</strong></p>
@@ -43,5 +47,34 @@
         </div>
       </div>
     </main>
+  <script>
+
+  console.log([[${board.BoardDto}]]);
+function toggleSubscribe(idx, obj) {
+	if ($(obj).text() === "구독취소") {
+		$.ajax({
+			type: "delete",
+			url: "/api/subscribe/" + toUserId,
+			dataType: "text"
+		}).done(res => {
+			$(obj).text("구독하기");
+			$(obj).toggleClass("blue");
+		}).fail(error => {
+			alert(error.responseText);
+		});
+	} else {
+		$.ajax({
+			type: "post",
+			url: "/api/subscribe/" + toUserId,
+			dataType: "text"
+		}).done(res => {
+			$(obj).text("구독취소");
+			$(obj).toggleClass("blue");
+		}).fail(error => {
+			alert(error.responseText);
+		});
+	}
+}
+  </script>
   </body>
 </html>
