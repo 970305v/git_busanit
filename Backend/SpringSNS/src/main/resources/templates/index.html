@@ -137,53 +137,36 @@
             </div>
             <div class="interactions">
               <div class="my_emotion">
-                <button type="button"><i class="far fa-heart"></i>like</button>
-                <button type="button">
-                  <i class="far fa-comment"></i>write_comment
-                </button>
-                <button type="button">
-                  <i class="far fa-paper-plane"></i>send_DM
-                </button>
+                <button type="button"><i class="far fa-heart"></i></button>
+                <button type="button"><i class="far fa-comment"></i></button>
+                <button type="button"><i class="far fa-paper-plane"></i></button>
               </div>
               <div class="pagnation"></div>
-              <button type="button" class="bookmark">
-                <i class="far fa-bookmark"></i>bookmark
-              </button>
             </div>
             <p>
-              <a href="#n" class="like_user">
-                <img class="round-img" />
-                <span class="txt_id">강당당</span>
-              </a>
-              님
-              <a href="#n" class="like_num txt_id">외 10명</a>
-              이 좋아합니다
+              <a href="#n" class="like_user"><span class="txt_id">UserID</span></a> 외
+              <a href="#n" class="like_num txt_id">LikeCount명</a>이 좋아합니다.
             </p>
           </section>
 
           <section class="feed_txt">
             <a href="#n" class="txt_id"></a>
             <span th:text="${board.bContent}"></span>
-            <a href="#n" class="more">더보기</a>
           </section>
-
           <div class="comments">
             <div id="listComment" class="list_comment">
               <p class="txt_comment">
                 <span>
-                  <a href="#n" class="txt_id">댓글단 팔로워 아이디</a>
-                  <span>댓글 내용</span>
+                  <a href="#n" class="txt_id">FollowerID</a>
+                  <span>Comment</span>
                 </span>
-                <button id="delete" type="button">X</button>
               </p>
             </div>
-            <form id="post" class="post_comment">
-              <textarea
-                id="newComment"
-                type="in"
-                placeholder="댓글 달기..."
-              ></textarea>
-              <button id="btnPost" type="submit">게시</button>
+            <form th:if="${session.login != null}" th:action="@{/replyProc}" id="post" method="post" class="post_comment">
+              <input type="hidden" name="bIdx" id="bIdx" th:value="${board.bIdx}"/>
+              <input type="hidden" name="mIdx" id="mIdx" th:value="${session.login.getMIdx}"/>
+              <textarea id="content" name="content" placeholder="댓글 달기..."></textarea>
+              <button id="btnPost" type="submit">등록</button>
             </form>
           </div>
         </article>

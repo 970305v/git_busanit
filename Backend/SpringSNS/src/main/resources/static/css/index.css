@@ -350,5 +350,7 @@ FEED BOARD
 
 .post_comment button {
   flex: 1;
-  color: #0095f6;
+  color: #fff;
+  background-color : #0095f6;
+  border-radius : 3px;
 }

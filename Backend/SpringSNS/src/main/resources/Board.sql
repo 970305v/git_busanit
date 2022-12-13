@@ -5,7 +5,16 @@ CREATE TABLE board(
 	imgPath VARCHAR(255),
 	bContent TEXT,
 	bHashtag VARCHAR(255),
+	bLike BIGINT DEFAULT 0,
 	bRegdate DATE DEFAULT (CURRENT_DATE),
 	bUpdate DATE,
 	FOREIGN KEY (mIdx) REFERENCES member (mIdx)
+);
+
+CREATE TABLE reply(
+	re_Idx BIGINT PRIMARY KEY AUTO_INCREMENT,
+	bIdx BIGINT,
+	mIdx BIGINT,
+	content TEXT,
+	re_regdate DATE DEFAULT (CURRENT_DATE)
 );

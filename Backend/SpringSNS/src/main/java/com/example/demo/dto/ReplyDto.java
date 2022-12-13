@@ -1,9 +1,6 @@
 package com.example.demo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,15 +10,12 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BoardDto {
+public class ReplyDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long re_Idx;
     private Long bIdx;
     private Long mIdx;
-    private String bImage1;
-    private String imgPath;
-    private String bContent;
-    private String bHashtag;
-    private String bRegdate;
-    private String bUpdate;
+    private String content;
+    private String re_regdate;
 }

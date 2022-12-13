@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <head>
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,7 +12,7 @@
 <body>
 	<div class="container">
 		<h1><a th:href="@{/}">Instagram</a></h1>
-		<form th:action="@{/registProc}" th:onsubmit="return submitCheck();" method="post">
+		<form id="reg-form" th:action="${submitCheck}" method="post">
 			<div class="register-wrap">
 				<input name="mUserid" id="mUserid" type="text"
 					oninput="this.value = this.value.replace(/[^a-z0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -27,11 +27,9 @@
 				<button class="register-btn" type="submit">회원가입</button>
 			</div>
 		</form>
-
-		<span>이미 계정이 있으신가요 ?
-			<a th:href="@{/login}" style="color: #52adff">로그인</a></span>
+		<span>이미 계정이 있으신가요 ?<a th:href="@{/login}" style="color: #52adff"> 로그인</a></span>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+
 	<script type="text/javascript" th:inline="javascript">
 		function checkID() {
 			$("#mUserid").change(function () {
@@ -62,8 +60,16 @@
 					},
 				});
 			}
-	
-		$(mPwd2).keyup(function () {
+		$("#mUserid").keyup(function () {
+			if (0 < $("#mUserid").val().length) {
+				$("#idChk").addClass("active");
+				$("#idChk").attr("disabled", false);
+			} else {
+				$("#idChk").removeClass("active");
+				$("#idChk").attr("disabled", true);
+			}
+		});
+		$("#mPwd2").keyup(function () {
 			isMatch = false;
 			if ($(mPwd).val() === $(mPwd2).val()) {
 				isMatch = true;
@@ -74,16 +80,10 @@
 			}
 		});
 
-		$(mUserid).keyup(function () {
-			if (0 < $("#mUserid").val().length) {
-				$("#idChk").addClass("active");
-				$("#idChk").attr("disabled", false);
-			} else {
-				$("#idChk").removeClass("active");
-				$("#idChk").attr("disabled", true);
-			}
-		});
 		function submitCheck() {
+		  /*<![CDATA[*/
+    		var action = [[ @{/registProc} ]];
+			/*]]>*/
 			if ($("#mUserid").val().length === 0) {
 				alert("아이디를 입력해주세요.");
 				$("#mUserid").focus();
@@ -92,13 +92,11 @@
 				alert("비밀번호를 확인해주세요.");
 				return false;
 			} else {
-				alert("회원가입이 완료되었습니다.");
-				
 				return true;
 			}
+			alert("회원가입이 완료되었습니다.");
+			$("#reg-form").attr("action" = action);
 		}
-
 	</script>
 </body>
-
 </html>

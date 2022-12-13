@@ -9,6 +9,7 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class MemberDto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

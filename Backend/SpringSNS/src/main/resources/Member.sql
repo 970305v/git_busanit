@@ -10,6 +10,6 @@ CREATE TABLE member(
     mFollowing BIGINT DEFAULT 0,
     mInfo TEXT,
     mAuth VARCHAR(10) DEFAULT 'user',
-    mRegdate DATE DEFAULT (current_date),
+    mRegdate DATE DEFAULT (CURRENT_DATE),
     mUpdate DATE
 );

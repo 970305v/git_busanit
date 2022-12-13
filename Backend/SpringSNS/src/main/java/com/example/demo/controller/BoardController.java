@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.BoardDao;
+import com.example.demo.dao.ReplyDao;
 import com.example.demo.dto.BoardDto;
+import com.example.demo.dto.ReplyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import java.util.UUID;
 public class BoardController {
     @Autowired
     private BoardDao dao;
+    @Autowired
+    private ReplyDao replyDao;
 
     @GetMapping(value="/writeBoard")
     public String write() {
@@ -32,6 +36,13 @@ public class BoardController {
         dao.write(dto);
         return "redirect:/";
     }
+
+    @PostMapping("/replyProc")
+    public String replyProc(ReplyDto dto) {
+        replyDao.writeReply(dto);
+        return "redirect:/";
+    }
+
     @GetMapping("/board/{idx}")
     public String boardDetail() {
         return "writeBoard";
