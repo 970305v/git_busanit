@@ -18,7 +18,7 @@ body {
   flex-direction: column;
   padding: 100px;
   background-color: #fff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #d8d8d8;
   text-align: center;
 }
 
@@ -39,12 +39,12 @@ body {
   color: #000;
   background-color: #fafafa;
   border-radius: 5px;
-  border: 1px solid #f1f1f1;
+  border: 1px solid #d8d8d8;
   font-size: 16px;
 }
 
 .login-wrap input:focus {
-  border: 1px solid #d6d6d6;
+  border: 1px solid #aaa;
 }
 
 .login-wrap button {

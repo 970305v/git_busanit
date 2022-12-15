@@ -16,9 +16,7 @@
             <div class="preview-img">
             <img id="preview" class="preview"/>
             </div>
-            <input id="file" type="file" name="file" accept="image/*" onchange="readURL(this);">
-          <input name="mUserid" id="mUserid" type="text" placeholder="아이디" required/>
-          <button class="idChk" id="idChk">중복확인</button>
+            <input id="file" type="file" name="file" accept="image/*" onchange="readURL(this);" placeholder="프로필 사진">
           <input id="mName" name="mName" type="text" placeholder="이름" required/>
           <input id="mPhone" name="mPhone" type="text" placeholder="전화번호" required/>
           <textarea
@@ -29,17 +27,7 @@
         </div>
       </form>
     </div>
-    <script>
-      const userid = document.getElementById("mUserid");
-      const chkBtn = document.getElementById("idChk");
-      userid.addEventListener("keyup", () => {
-        let isIdvalue = userid.value.length;
-        if (0 < isIdvalue) {
-          chkBtn.classList.add("active");
-        } else {
-          chkBtn.classList.remove("active");
-        }
-      });
+    <script th:inline="javascript">
      function readURL(input) {
         if (input.files && input.files[0]) {
           var reader = new FileReader();

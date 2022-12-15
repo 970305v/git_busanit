@@ -7,10 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>내 정보</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
-    />
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+             integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+             crossorigin="anonymous" referrerpolicy="no-referrer" />
      <link th:href="@{/css/profile.css}" rel="stylesheet" />
   </head>
   <body>
@@ -25,17 +24,19 @@
         </div>
         <div>
             <input type="hidden" id="mIdx" th:value="${list.mIdx}">
-          <p><h2 th:text="${list.mUserid}">프로필 아이디</h2></p>
-          <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="'/profile/edit/' + ${list.mIdx}">프로필 편집</a></span>
-          <span th:if="${list.mIdx == session.login.mIdx}"><a th:href="@{/writeBoard}">게시물 쓰기</a></span></br>
-            <span th:if="${list.mIdx != session.login.mIdx}">
-                <button class="cta blue" onclick="toggleSubscribe(${profileDto.id}, this)">구독취소</button>
-            </span></br>
+          <p>
+            <h2 th:text="${list.mUserid}">프로필 아이디</h2>
+            <span th:if="${list.mIdx == session.login.mIdx}">
+                <a th:href="@{/writeBoard}"><i class="fa-solid fa-pen"></i></a>
+            </span>
+          </p>
           <span>게시물 : <strong th:text="${#lists.size(board)}"></strong></span>
-          <span>팔로워 : <strong th:text="${list.mFollower}">  </strong></span>
-          <span>팔로잉 : <strong th:text="${list.mFollowing}"> </strong></span>
+          <span>팔로워 : <strong th:text="${list.mFollower}"></strong></span>
+          <span>팔로잉 : <strong th:text="${list.mFollowing}"></strong></span>
           <p><strong th:text="${list.mName}">이름</strong></p>
           <p th:text="${list.mInfo}">자기소개</p>
+          <a th:if="${list.mIdx == session.login.mIdx}" th:href="'/profile/edit/' + ${list.mIdx}"><button  class="editProfileBtn">프로필 편집</button></a>
+          <a th:unless="${list.mIdx == session.login.mIdx}" th:href="'/profile/edit/' + ${list.mIdx}"><button class="followBtn">팔로우</button></a>
         </div>
       </div>
       <div class="grid-container">
@@ -47,34 +48,6 @@
       </div>
     </main>
   <script th:inline="javascript">
-  console.log([[${board}]])
-  </script>
-    <script>
-function toggleSubscribe(idx, obj) {
-	if ($(obj).text() === "구독취소") {
-		$.ajax({
-			type: "delete",
-			url: "/api/subscribe/" + toUserId,
-			dataType: "text"
-		}).done(res => {
-			$(obj).text("구독하기");
-			$(obj).toggleClass("blue");
-		}).fail(error => {
-			alert(error.responseText);
-		});
-	} else {
-		$.ajax({
-			type: "post",
-			url: "/api/subscribe/" + toUserId,
-			dataType: "text"
-		}).done(res => {
-			$(obj).text("구독취소");
-			$(obj).toggleClass("blue");
-		}).fail(error => {
-			alert(error.responseText);
-		});
-	}
-}
   </script>
   </body>
 </html>

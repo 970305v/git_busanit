@@ -2,10 +2,11 @@
   <html lang="ko"
 	xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-   <head>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<head>
 <link th:href="@{/css/header.css}" rel="stylesheet" />
-   </head>
-   <body>
+</head>
+<body>
    <th:block th:fragment="header">
  <!--HEADER-->
     <header>
@@ -17,10 +18,11 @@
         </div>
         <nav class="icon-wrap">
           <ul>
-            <li class="research"><a href="#">탐색</a></li>
             <li class="like"><a href="#">좋아요</a></li>
-            <li class="mypage"><a th:if="${session.login == null}" href="/login">my profile</a>
-            <a th:if="${session.login != null}" th:href="@{'/profile/' + ${session.login.getMIdx()}}">my profile</a></li>
+            <li class="mypage">
+            <a th:if="${session.login == null}" href="/login">my profile</a>
+            <a th:unless="${session.login == null}" th:href="@{'/profile/' + ${session.login.getMIdx()}}">my profile</a>
+            </li>
           </ul>
         </nav>
       </div>

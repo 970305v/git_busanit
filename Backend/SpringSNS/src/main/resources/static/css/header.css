@@ -12,7 +12,7 @@ header {
   position: fixed;
   width: 100%;
   background-color: #fff;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #d8d8d8;
 }
 
 header .wrap {
@@ -47,7 +47,7 @@ header .logo h1 {
   padding: 0 5px;
   margin: 0 15%;
   background-color: #fafafa;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #d8d8d8;
   text-align: center;
 }
 

@@ -18,12 +18,12 @@
 				<button id="btnLogin" disabled type="submit">로그인</button>
 			</div>
 		</form>
-
 		<span>계정이 없으신가요 ?
-			<a th:href="@{/register}" style="color: #52adff">가입하기</a></span>
+			<a th:href="@{/register}" style="color: #52adff">가입하기</a>
+		</span>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-	<script>
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+	<script th:inline="javascript">
 		$(mUserid).keyup(function () {
 			if (0 < $("#mUserid").val().length && 0 < $("#mPwd").val().length) {
 				$("#btnLogin").addClass("active");

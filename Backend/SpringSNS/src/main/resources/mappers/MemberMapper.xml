@@ -17,6 +17,6 @@
         SELECT * FROM member WHERE mIdx = #{mIdx}
     </select>
     <update id="memberUp">
-        UPDATE member SET mUserid = #{dto.mUserid}, mName = #{dto.mName}, mProfilePath = #{dto.mProfilePath}, mPhoto = #{dto.mPhoto}, mInfo = #{dto.mInfo}, mUpdate = NOW() WHERE mIdx = #{idx}
+        UPDATE member SET mName = #{dto.mName}, mProfilePath = #{dto.mProfilePath}, mPhoto = #{dto.mPhoto}, mInfo = #{dto.mInfo}, mUpdate = NOW() WHERE mIdx = #{idx}
     </update>
 </mapper>

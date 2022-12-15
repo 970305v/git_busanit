@@ -123,11 +123,10 @@
           <div class="new_poster">
             <a href="#n" class="poster_img">
               <img th:if="${board.mProfilePath == null}" class="round-img" th:src="@{/img/profile_no.png}"/>
-              <img th:if="${board.mProfilePath != null}" class="round-img" th:src="${board.mProfilePath}"/>
+              <img th:unless="${board.mProfilePath == null}" class="round-img" th:src="${board.mProfilePath}"/>
             </a>
-            <a th:if="${session.login != null}" th:href="'/profile/' + ${board.mIdx}" class="poster_id txt_id" th:text="${board.mUserid}">Following ID</a>
-            <a th:unless="${session.login != null}" href="/login" class="poster_id txt_id" th:text="${board.mUserid}">Following ID</a>
-            <button><i class="fas fa-ellipsis-h"></i>옵션 더보기</button>
+            <a th:if="${session.login != null}" th:href="'/profile/' + ${board.mIdx}" class="poster_id txt_id" th:text="${board.mUserid}"></a>
+            <a th:unless="${session.login != null}" href="/login" class="poster_id txt_id" th:text="${board.mUserid}"></a>
           </div>
 
           <!--content-->
@@ -144,8 +143,7 @@
               <div class="pagnation"></div>
             </div>
             <p>
-              <a href="#n" class="like_user"><span class="txt_id">UserID</span></a> 외
-              <a href="#n" class="like_num txt_id">LikeCount명</a>이 좋아합니다.
+              <strong>0명</strong>이 좋아합니다.
             </p>
           </section>
 
