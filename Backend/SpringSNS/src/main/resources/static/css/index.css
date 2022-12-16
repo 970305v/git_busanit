@@ -352,5 +352,7 @@ FEED BOARD
   flex: 1;
   color: #fff;
   background-color : #0095f6;
+  padding : 6px 4px;
   border-radius : 3px;
+  cursor : pointer;
 }

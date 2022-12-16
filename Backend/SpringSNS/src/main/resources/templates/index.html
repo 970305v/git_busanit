@@ -113,13 +113,11 @@
         </article>
         <!--//WIDGET - recommend-->
       </aside>
-
-      <!--FEED BOARD-->
-  <div class="feed_board_wrap">
+    <!-- 피드 게시물 -->
+    <div class="feed_board_wrap">
       <div class="feed_board" th:each="board:${board}">
-        <!--FEED COMPONENT-->
+        <!-- 게시물 프로필 -->
         <article class="feed">
-          <!--top-->
           <div class="new_poster">
             <a href="#n" class="poster_img">
               <img th:if="${board.mProfilePath == null}" class="round-img" th:src="@{/img/profile_no.png}"/>
@@ -129,16 +127,16 @@
             <a th:unless="${session.login != null}" href="/login" class="poster_id txt_id" th:text="${board.mUserid}"></a>
           </div>
 
-          <!--content-->
+          <!-- 게시물 내용 -->
           <section class="feed_imgs">
             <div class="feed_imgs_wrap">
             <img th:src="${board.imgPath}" />
             </div>
+            <!-- 게시물 댓글 -->
             <div class="interactions">
               <div class="my_emotion">
                 <button type="button"><i class="far fa-heart"></i></button>
                 <button type="button"><i class="far fa-comment"></i></button>
-                <button type="button"><i class="far fa-paper-plane"></i></button>
               </div>
               <div class="pagnation"></div>
             </div>

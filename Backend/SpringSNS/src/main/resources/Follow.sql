@@ -1,4 +1,5 @@
 CREATE TABLE follow(
-    follow_mIdx INT,
-    follower_mIdx INT UNIQUE
+    fIdx BIGINT AUTO_INCREMENT PRIMARY KEY,
+    follow_mIdx BIGINT,
+    follower_mIdx BIGINT,
 );

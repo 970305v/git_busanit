@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.example.demo.dao.BoardDao;
+import com.example.demo.dao.FollowDao;
 import com.example.demo.dto.BoardDto;
 import org.apache.ibatis.annotations.Param;
 import org.hibernate.internal.build.AllowSysOut;
@@ -35,6 +36,9 @@ public class MemberController {
 
 	@Autowired
 	private BoardDao boardDao;
+
+	@Autowired
+	private FollowDao followDao;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -60,6 +64,8 @@ public class MemberController {
 	public String profile(@PathVariable("idx") Long idx, Model model) {
 		model.addAttribute("list", dao.selectOne(idx));
 		model.addAttribute("board", boardDao.selectOne(idx));
+		model.addAttribute("following", followDao.followingCount(idx));
+		model.addAttribute("follower", followDao.followerCount(idx));
 		return "profile";
 	}
 	

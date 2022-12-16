@@ -2,13 +2,13 @@
   <html lang="ko"
 	xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
    <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>내 정보</title>
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-             integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
              crossorigin="anonymous" referrerpolicy="no-referrer" />
      <link th:href="@{/css/profile.css}" rel="stylesheet" />
   </head>
@@ -31,12 +31,12 @@
             </span>
           </p>
           <span>게시물 : <strong th:text="${#lists.size(board)}"></strong></span>
-          <span>팔로워 : <strong th:text="${list.mFollower}"></strong></span>
-          <span>팔로잉 : <strong th:text="${list.mFollowing}"></strong></span>
+          <span>팔로워 : <strong th:text="${follower}"></strong></span>
+          <span>팔로잉 : <strong th:text="${following}"></strong></span>
           <p><strong th:text="${list.mName}">이름</strong></p>
           <p th:text="${list.mInfo}">자기소개</p>
-          <a th:if="${list.mIdx == session.login.mIdx}" th:href="'/profile/edit/' + ${list.mIdx}"><button  class="editProfileBtn">프로필 편집</button></a>
-          <a th:unless="${list.mIdx == session.login.mIdx}" th:href="'/profile/edit/' + ${list.mIdx}"><button class="followBtn">팔로우</button></a>
+          <a th:if="${list.mIdx == session.login.mIdx}" th:href="'/profile/edit/' + ${list.mIdx}"><button class="editProfileBtn">프로필 편집</button></a>
+            <button th:unless="${list.mIdx == session.login.mIdx}" th:onclick="|follow(${list.mIdx},${session.login.mIdx})|" class="followBtn">팔로우</button>
         </div>
       </div>
       <div class="grid-container">
@@ -48,6 +48,22 @@
       </div>
     </main>
   <script th:inline="javascript">
+      const follow = (userID, loginID) => {
+      var form = {
+        follower_mIdx : loginID
+      };
+            $.ajax({
+			type: "post",
+			url: "/follow/" + userID,
+			contentType: "application/json",
+            data: JSON.stringify(form),
+            success: function (result) {
+                if (result.result == null) {
+                    console.log("return nul 임");
+                }
+          },
+        });
+      }
   </script>
   </body>
 </html>

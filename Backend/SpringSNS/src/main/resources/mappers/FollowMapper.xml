@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.FollowMapper">
+    <insert id="follow">
+        INSERT INTO follow(fIdx, follow_mIdx, follower_mIdx) VALUES(NULL, #{follow_mIdx}, #{follower_mIdx})
+    </insert>
+    <select id="followerCount" resultType="int">
+        SELECT COUNT(follower_mIdx) AS count FROM follow WHERE follow_mIdx = #{follow_mIdx}
+    </select>
+    <select id="followingCount" resultType="int">
+        SELECT COUNT(follow_mIdx) AS count FROM follow WHERE follower_mIdx = #{follower_mIdx}
+    </select>
+    <select id="followingCheck" resultType="int">
+        SELECT follow_mIdx FROM follow WHERE follower_mIdx = #{follower_mIdx}
+    </select>
+</mapper>

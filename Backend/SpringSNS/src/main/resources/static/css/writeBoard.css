@@ -6,11 +6,13 @@ body {
   height: 100%;
 }
 
+body {
+  display : flex;
+  justify-content: center;
+}
 .center-wrap {
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: #fafafa;
 }
 
 .container {
@@ -31,13 +33,52 @@ body {
 .preview-img .preview {
    border: 1px solid #d8d8d8;
    border-radius : 3px;
-   width: 300px;
-   height: 300px;
+   width: 250px;
+   height: 250px;
    margin-bottom : 20px;
 }
 
-.profile-wrap input[type="text"],
-input[type="password"] {
+.filebox {
+  margin-bottom : 10px;
+}
+
+.filebox .upload-name {
+  display: inline-block;
+  height: 45px;
+  padding: 10px 20px;
+  vertical-align: middle;
+  border: 1px solid #d6d6d6;
+  width : 310px;
+  color : #8e8e8e;
+  background-color: #fafafa;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.filebox label {
+  display: inline-block;
+  padding: 10px 20px;
+  width : 77px;
+  color: #fff;
+  vertical-align: middle;
+  background-color: #999999;
+  cursor: pointer;
+  font-size: 14px;
+  height: 45px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.profile-wrap input[type="text"] {
   width: 400px;
   height: 45px;
   padding: 10px 20px;
@@ -46,9 +87,10 @@ input[type="password"] {
   background-color: #fafafa;
   border-radius: 5px;
   border: 1px solid #d6d6d6;
-  font-size: 16px;
-  overflow:hidden;
+  font-size: 14px;
+  overflow : hidden;
 }
+
 .profile-wrap textarea {
   width: 400px;
   padding: 10px 20px;
@@ -57,8 +99,8 @@ input[type="password"] {
   background-color: #fafafa;
   border-radius: 5px;
   border: 1px solid #d6d6d6;
-  font-size: 16px;
-    resize: none;
+  font-size: 14px;
+  resize: none;
 }
 
 .profile-wrap input:focus,

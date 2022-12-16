@@ -25,21 +25,19 @@ header .wrap {
 }
 
 .logo-icon-img {
-    width : 25px;
-    height : 25px;
+  width : 25px;
+  height : 25px;
+  vertical-align : middle;
 }
 
 header .logo h1 {
-   display : inline;
+  display : inline;
   height: 100%;
-  margin-left: 15px;
-  padding-left: 15px;
-  border-left: 1px solid #262626;
+  margin-left: 10px;
   font-size: 25px;
-  line-height: 15px;
+  vertical-align : middle;
   font-weight: 100;
 }
-
 
 .search-wrap {
   display: flex;
@@ -83,22 +81,6 @@ header .logo h1 {
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
-}
-
-.icon-wrap ul li:before {
-  content: "";
-  position: absolute;
-  bottom: -7px;
-  left: 50%;
-  margin-left: -1.5px;
-  width: 4px;
-  height: 4px;
-  background-color: #e04141;
-  border-radius: 4px;
-}
-
-.icon-wrap ul li.research {
-  background-image: url("https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png");
 }
 
 .icon-wrap ul li.like {

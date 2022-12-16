@@ -2,6 +2,8 @@
   <html lang="ko"
 	xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
    <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -21,10 +23,12 @@
             <div class="preview-img">
                 <img id="preview" class="preview"/>
             </div>
-            <input id="file" type="file" name="file" accept="image/*" onchange="readURL(this);" placeholder="이미지">
-          <textarea
-            name="bContent"
-            placeholder="내용"></textarea>
+            <div class="filebox">
+                <input class="upload-name" placeholder="첨부파일" readonly>
+                <label for="file">찾기</label>
+                <input type="file" id="file" name="file" accept="image/*" onchange="readURL(this);">
+            </div>
+          <textarea name="bContent" placeholder="내용"></textarea>
             <input type="text" name="bHashtag" placeholder="해쉬태그"/>
           <button class="edit-btn" type="submit">작성하기</button>
         </div>
@@ -32,22 +36,13 @@
     </div>
   </div>
     <script th:inline="javascript">
-      const userid = document.getElementById("userid");
-      const chkBtn = document.getElementById("idChk");
-      userid.addEventListener("keyup", () => {
-        let isIdvalue = userid.value.length;
-        if (0 < isIdvalue) {
-          chkBtn.classList.add("active");
-        } else {
-          chkBtn.classList.remove("active");
-        }
-      });
-
-       function readURL(input) {
+      function readURL(input) {
         if (input.files && input.files[0]) {
           var reader = new FileReader();
+          var fileName = $("#file").val();
           reader.onload = function (e) {
             document.getElementById("preview").src = e.target.result;
+            $(".upload-name").val(fileName);
           };
           reader.readAsDataURL(input.files[0]);
         } else {
