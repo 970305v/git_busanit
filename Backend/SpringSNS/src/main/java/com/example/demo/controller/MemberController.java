@@ -47,6 +47,8 @@ public class MemberController {
 	@RequestMapping({"/", "/home"})
 	public String home(Model model) {
 		model.addAttribute("board", boardDao.boardAll());
+		model.addAttribute("likes", boardDao.boardLikes());
+		System.out.println(model);
 		return "index";
 	}
 	
@@ -119,6 +121,11 @@ public class MemberController {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return "redirect:/";
+	}
+
+	@GetMapping("/modal/modal1")
+	public String modal1() {
+		return "detailBoard";
 	}
 }
 

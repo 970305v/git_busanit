@@ -3,11 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.dao.BoardDao;
 import com.example.demo.dao.ReplyDao;
 import com.example.demo.dto.BoardDto;
+import com.example.demo.dto.FollowDto;
+import com.example.demo.dto.LikesDto;
 import com.example.demo.dto.ReplyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -46,5 +47,21 @@ public class BoardController {
     @GetMapping("/board/{idx}")
     public String boardDetail() {
         return "writeBoard";
+    }
+
+    @PostMapping("/likes/{idx}")
+    @ResponseBody
+    public String follow(@PathVariable("idx") Long idx, @RequestBody LikesDto dto) {
+        System.out.println(idx);
+        System.out.println(dto);
+        System.out.println(dao.likesCheck(idx, dto.getLikes_mIdx()));
+        if (dao.likesCheck(idx, dto.getLikes_mIdx()) == null) {
+            dto.setLikes_bIdx(idx);
+            dao.likes(dto);
+            return "true";
+        } else {
+            System.out.println("좋아요 실패");
+            return null;
+        }
     }
 }

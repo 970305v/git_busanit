@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Instagram</title>
+     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
@@ -34,84 +35,6 @@
             <a th:if="${session.login != null}" href="/logout">Logout</a>
           </span>
         </div>
-
-        <!--WIDGET - story-->
-        <article class="widget stories">
-          <div class="widget_ttl">
-            <span>스토리</span>
-            <a href="#n">모두 보기</a>
-          </div>
-
-          <section class="list_story">
-            <div class="story">
-              <a href="#n" class="follower_img">
-                <img class="round-img" />
-              </a>
-              <span class="user_id">
-                <a href="#n" class="txt_id">Fallowing ID</a>
-                <p>3h ago</p>
-              </span>
-            </div>
-            <div class="story">
-              <a href="#n" class="follower_img">
-                <img class="round-img" />
-              </a>
-              <span class="user_id">
-                <a href="#n" class="txt_id">Fallowing ID</a>
-                <p>3h ago</p>
-              </span>
-            </div>
-            <div class="story">
-              <a href="#n" class="follower_img">
-                <img class="round-img" />
-              </a>
-              <span class="user_id">
-                <a href="#n" class="txt_id">Fallowing ID</a>
-                <p>3h ago</p>
-              </span>
-            </div>
-          </section>
-        </article>
-        <article class="widget recommends">
-          <div class="widget_ttl">
-            <span>회원님을 위한 추천</span>
-            <a href="#n">모두 보기</a>
-          </div>
-
-          <section class="list_recommend">
-            <div class="recommend">
-              <a href="#n" class="recommend_img">
-                <img class="round-img" />
-              </a>
-              <span class="user_id">
-                <a href="#n" class="txt_id">recommender ID</a>
-                <p>follower list</p>
-              </span>
-              <button type="button">팔로우</button>
-            </div>
-            <div class="recommend">
-              <a href="#n" class="recommend_img">
-                <img class="round-img" />
-              </a>
-              <span class="user_id">
-                <a href="#n" class="txt_id">recommender ID</a>
-                <p>follower list</p>
-              </span>
-              <button type="button">팔로우</button>
-            </div>
-            <div class="recommend">
-              <a href="#n" class="recommend_img">
-                <img class="round-img" />
-              </a>
-              <span class="user_id">
-                <a href="#n" class="txt_id">recommender ID</a>
-                <p>follwor list</p>
-              </span>
-              <button type="button">팔로우</button>
-            </div>
-          </section>
-        </article>
-        <!--//WIDGET - recommend-->
       </aside>
     <!-- 피드 게시물 -->
     <div class="feed_board_wrap">
@@ -135,13 +58,14 @@
             <!-- 게시물 댓글 -->
             <div class="interactions">
               <div class="my_emotion">
-                <button type="button"><i class="far fa-heart"></i></button>
+                <button th:if="${session.login == null}" type="button"><i class="far fa-heart"></i></button>
+                <button th:unless="${session.login == null}" th:onclick="|likes(${board.bIdx}, ${session.login.mIdx})|" id="likesBtn" class="likesBtn"><i class="far fa-heart"></i></button>
                 <button type="button"><i class="far fa-comment"></i></button>
               </div>
               <div class="pagnation"></div>
             </div>
             <p>
-              <strong>0명</strong>이 좋아합니다.
+              <strong th:text="${#lists.size(likes)}"></strong>명이 좋아합니다.
             </p>
           </section>
 
@@ -169,5 +93,23 @@
       </div>
     </div>
     </main>
+  <script th:inline="javascript">
+    const likes = (boardID, loginID) => {
+      var form = {
+        likes_mIdx : loginID
+      };
+            $.ajax({
+			type: "post",
+			url: "/likes/" + boardID,
+			contentType: "application/json",
+            data: JSON.stringify(form),
+            success: function (result) {
+                if (result.result == null) {
+
+                }
+          },
+        });
+      }
+  </script>
   </body>
 </html>

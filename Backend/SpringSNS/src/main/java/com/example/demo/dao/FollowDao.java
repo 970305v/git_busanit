@@ -5,6 +5,9 @@ import com.example.demo.mapper.FollowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class FollowDao implements FollowMapper {
     @Autowired
@@ -25,7 +28,17 @@ public class FollowDao implements FollowMapper {
     }
 
     @Override
-    public int followingCheck(Long idx) {
-        return followMapper.followingCheck(idx);
+    public Integer followingCheck(Long idx, Long follower_mIdx) {
+        return followMapper.followingCheck(idx, follower_mIdx);
+    }
+
+    @Override
+    public List<Map> myFollow(Long idx) {
+        return followMapper.myFollow(idx);
+    }
+
+    @Override
+    public List<Map> myFollower(Long idx) {
+        return followMapper.myFollower(idx);
     }
 }

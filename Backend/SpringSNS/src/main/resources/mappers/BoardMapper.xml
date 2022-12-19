@@ -16,4 +16,15 @@
         FROM board LEFT JOIN member ON board.mIdx = member.mIdx
         ORDER BY bIdx DESC;
     </select>
+    <select id="boardLikes" resultType="Map">
+        SELECT board.bIdx, likes.*
+        FROM likes LEFT JOIN board ON likes.likes_bIdx = board.bIdx;
+    </select>
+    <!--  좋아요  -->
+    <insert id="likes">
+        INSERT INTO likes(lIdx, likes_mIdx, likes_bIdx) VALUES(NULL, #{likes_mIdx}, #{likes_bIdx})
+    </insert>
+    <select id="likesCheck" resultType="Integer">
+        SELECT likes_mIdx FROM likes WHERE likes_bIdx = #{idx} AND likes_mIdx = #{likes_mIdx}
+    </select>
 </mapper>

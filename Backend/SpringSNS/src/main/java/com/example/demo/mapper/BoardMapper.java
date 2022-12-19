@@ -1,6 +1,7 @@
 package com.example.demo.mapper;
 
 import com.example.demo.dto.BoardDto;
+import com.example.demo.dto.LikesDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,4 +13,7 @@ public interface BoardMapper {
     public List<BoardDto> selectOne(Long idx);
     public List<BoardDto> boardDetail(Long idx);
     public List<Map> boardAll();
+    public List<Map> boardLikes();
+    public Integer likesCheck(Long idx, Long likes_mIdx);
+    public int likes(LikesDto dto);
 }

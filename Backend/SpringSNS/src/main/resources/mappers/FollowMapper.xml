@@ -10,7 +10,17 @@
     <select id="followingCount" resultType="int">
         SELECT COUNT(follow_mIdx) AS count FROM follow WHERE follower_mIdx = #{follower_mIdx}
     </select>
-    <select id="followingCheck" resultType="int">
-        SELECT follow_mIdx FROM follow WHERE follower_mIdx = #{follower_mIdx}
+    <select id="followingCheck" resultType="Integer">
+        SELECT follow_mIdx FROM follow WHERE follow_mIdx = #{idx} AND follower_mIdx = #{follower_mIdx}
+    </select>
+    <select id="myFollow" resultType="Map">
+        SELECT follower_mIdx, member.mIdx, member.mUserid, member.mProfilePath
+        FROM follow LEFT JOIN member ON follow.follower_mIdx = member.mIdx
+        WHERE follow_mIdx = #{follow_mIdx}
+    </select>
+    <select id="myFollower" resultType="Map">
+        SELECT follow_mIdx, member.mIdx, member.mUserid, member.mProfilePath
+        FROM follow LEFT JOIN member ON follow.follow_mIdx = member.mIdx
+        WHERE follower_mIdx = #{follower_mIdx}
     </select>
 </mapper>

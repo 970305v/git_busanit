@@ -17,15 +17,16 @@ public class FollowController {
     @PostMapping("/follow/{idx}")
     @ResponseBody
     public String follow(@PathVariable("idx") Long idx, @RequestBody FollowDto dto) {
+        System.out.println(idx);
         System.out.println(dto);
-        System.out.println(dao.followingCheck(dto.getFollow_mIdx()));
-//        if (dao.followingCheck(dto.getFollow_mIdx()) == idx) {
-//          return null;
-//        } else {
-//            dto.setFollow_mIdx(idx);
-//            dao.follow(dto);
-//            return "true";
-//        }
-        return null;
+        System.out.println(dao.followingCheck(idx, dto.getFollow_mIdx()));
+        if (dao.followingCheck(idx ,dto.getFollower_mIdx()) == null) {
+            dto.setFollow_mIdx(idx);
+            dao.follow(dto);
+            return "true";
+        } else {
+            System.out.println("팔로우 실패");
+            return null;
+        }
     }
 }
