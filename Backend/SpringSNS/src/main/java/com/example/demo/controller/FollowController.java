@@ -17,9 +17,6 @@ public class FollowController {
     @PostMapping("/follow/{idx}")
     @ResponseBody
     public String follow(@PathVariable("idx") Long idx, @RequestBody FollowDto dto) {
-        System.out.println(idx);
-        System.out.println(dto);
-        System.out.println(dao.followingCheck(idx, dto.getFollow_mIdx()));
         if (dao.followingCheck(idx ,dto.getFollower_mIdx()) == null) {
             dto.setFollow_mIdx(idx);
             dao.follow(dto);

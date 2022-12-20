@@ -6,10 +6,13 @@
        VALUES(NULL, #{mIdx}, #{bImage1}, #{imgPath}, #{bContent}, #{bHashtag})
    </insert>
     <select id="selectOne" resultType="com.example.demo.dto.BoardDto">
-        SELECT * FROM board WHERE mIdx = #{mIdx}
+        SELECT * FROM board WHERE mIdx = #{mIdx} ORDER BY bIdx DESC
     </select>
-    <select id="boardDetail" resultType="com.example.demo.dto.BoardDto">
-        SELECT * FROM board WHERE bIdx = #{bIdx}
+    <!-- 게시물 상세보기  -->
+    <select id="boardDetail" resultType="Map">
+        SELECT board.*, member.mIdx, member.mUserid, member.mProfilePath
+        FROM board LEFT JOIN member ON board.mIdx = member.mIdx
+        WHERE bIdx = #{bIdx}
     </select>
     <select id="boardAll" resultType="Map">
         SELECT board.*, member.mIdx, member.mUserid, member.mProfilePath
@@ -26,5 +29,8 @@
     </insert>
     <select id="likesCheck" resultType="Integer">
         SELECT likes_mIdx FROM likes WHERE likes_bIdx = #{idx} AND likes_mIdx = #{likes_mIdx}
+    </select>
+    <select id="likesOne" resultType="int">
+        SELECT COUNT(lIdx) AS 'count' FROM likes WHERE likes_bIdx = #{idx};
     </select>
 </mapper>

@@ -35,7 +35,6 @@
           <span>게시물 : <strong th:text="${#lists.size(board)}"></strong></span>
           <span>팔로워 : <button data-toggle="modal" data-target="#exampleModal"><strong th:text="${follower}"></strong></button></span>
           <span>팔로잉 : <strong th:text="${following}"></strong></span>
-            <th:block th:replace="detailBoard :: modal('exampleModal')">modal</th:block>
             <p><strong th:text="${list.mName}">이름</strong></p>
           <p th:text="${list.mInfo}">자기소개</p>
           <a th:if="${list.mIdx == session.login.mIdx}" th:href="'/profile/edit/' + ${list.mIdx}"><button class="editProfileBtn">프로필 편집</button></a>
@@ -67,11 +66,6 @@
           },
         });
       }
-      $("#exampleModal").on("show.bs.modal", function () {
-        $.get("/modals/modal1", function (data) {
-            $("#exampleModal").find(".modal-body").html(data);
-        })
-    });
 
   </script>
   </body>

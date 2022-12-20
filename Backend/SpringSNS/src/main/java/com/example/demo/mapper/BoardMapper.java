@@ -11,9 +11,10 @@ import java.util.Map;
 public interface BoardMapper {
     public int write(BoardDto dto);
     public List<BoardDto> selectOne(Long idx);
-    public List<BoardDto> boardDetail(Long idx);
+    public List<Map> boardDetail(Long idx);
     public List<Map> boardAll();
     public List<Map> boardLikes();
     public Integer likesCheck(Long idx, Long likes_mIdx);
     public int likes(LikesDto dto);
+    public int likesOne(Long idx);
 }

@@ -5,6 +5,9 @@ import com.example.demo.mapper.ReplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class ReplyDao implements ReplyMapper {
 
@@ -13,5 +16,10 @@ public class ReplyDao implements ReplyMapper {
     @Override
     public int writeReply(ReplyDto dto) {
         return replyMapper.writeReply(dto);
+    }
+
+    @Override
+    public List<Map> replyDetail(Long idx) {
+        return replyMapper.replyDetail(idx);
     }
 }

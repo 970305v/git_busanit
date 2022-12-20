@@ -3,11 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.dao.BoardDao;
 import com.example.demo.dao.ReplyDao;
 import com.example.demo.dto.BoardDto;
-import com.example.demo.dto.FollowDto;
 import com.example.demo.dto.LikesDto;
 import com.example.demo.dto.ReplyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,16 +45,16 @@ public class BoardController {
     }
 
     @GetMapping("/board/{idx}")
-    public String boardDetail() {
-        return "writeBoard";
+    public String boardDetail(@PathVariable("idx") Long idx, Model model) {
+        model.addAttribute("board", dao.boardDetail(idx));
+        model.addAttribute("reply", replyDao.replyDetail(idx));
+        model.addAttribute("likes", dao.likesOne(idx));
+        return "detailBoard";
     }
 
     @PostMapping("/likes/{idx}")
     @ResponseBody
     public String follow(@PathVariable("idx") Long idx, @RequestBody LikesDto dto) {
-        System.out.println(idx);
-        System.out.println(dto);
-        System.out.println(dao.likesCheck(idx, dto.getLikes_mIdx()));
         if (dao.likesCheck(idx, dto.getLikes_mIdx()) == null) {
             dto.setLikes_bIdx(idx);
             dao.likes(dto);

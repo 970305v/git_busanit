@@ -48,7 +48,6 @@ public class MemberController {
 	public String home(Model model) {
 		model.addAttribute("board", boardDao.boardAll());
 		model.addAttribute("likes", boardDao.boardLikes());
-		System.out.println(model);
 		return "index";
 	}
 	

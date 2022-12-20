@@ -4,7 +4,10 @@
     <insert id="writeReply">
         INSERT INTO reply(re_Idx, bIdx, mIdx, content) VALUES(NULL, #{bIdx}, #{mIdx}, #{content})
     </insert>
-    <select id="selectOne" resultType="com.example.demo.dto.BoardDto">
-        SELECT * FROM reply WHERE mIdx = #{mIdx}
+    <!-- 게시물 상세보기 - 댓글목록  -->
+    <select id="replyDetail" resultType="Map">
+        SELECT reply.*, member.mIdx, member.mUserid, member.mProfilePath FROM reply
+        LEFT JOIN member ON reply.mIdx = member.mIdx
+        WHERE reply.bIdx = #{bIdx}
     </select>
 </mapper>

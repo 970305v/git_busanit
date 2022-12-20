@@ -1,29 +1,100 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+/>
 <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link th:href="@{/css/detailBoard.css}" rel="stylesheet" />
+  <title>게시물 상세보기</title>
 </head>
 <body>
-<!-- Modal -->
-<div th:fragment="modal(id)" class="modal fade" th:id="${id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-        egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+<!-- header -->
+<th:block th:replace="/header"></th:block>
+<!-- header -->
+<div class="center-wrap">
+  <div class="container">
+    <div class="feed_board_wrap">
+      <div class="feed_board" th:each="board:${board}">
+        <!-- 게시물 프로필 -->
+        <article class="feed">
+          <div class="new_poster">
+              <a href="#n" class="poster_img">
+              <img th:if="${board.mProfilePath == null}" class="round-img" th:src="@{/img/profile_no.png}"/>
+              <img th:unless="${board.mProfilePath == null}" class="round-img" th:src="${board.mProfilePath}"/>
+            </a>
+            <a th:if="${session.login != null}" th:href="'/profile/' + ${board.mIdx}" class="poster_id txt_id" th:text="${board.mUserid}"></a>
+            <a th:unless="${session.login != null}" href="/login" class="poster_id txt_id" th:text="${board.mUserid}"></a>
+          </div>
+          <!-- 게시물 내용 -->
+          <section class="feed_imgs">
+            <div class="feed_imgs_wrap">
+              <img th:src="${board.imgPath}" />
+            </div>
+            <!-- 게시물 댓글 -->
+            <div class="interactions">
+              <div class="my_emotion">
+                <button th:if="${session.login == null}" type="button"><i class="far fa-heart"></i></button>
+                <button th:unless="${session.login == null}" th:onclick="|likes(${board.bIdx}, ${session.login.mIdx})|" id="likesBtn" class="likesBtn">
+                  <i class="far fa-heart"></i>
+                </button>
+                <button type="button"><i class="far fa-comment"></i></button>
+              </div>
+              <div class="pagnation">
+                <button type="button"><i class="far fa-trash"></i></button>
+              </div>
+            </div>
+            <p>
+              <strong th:text="${likes}"></strong>명이 좋아합니다.
+            </p>
+          </section>
+
+          <section class="feed_txt">
+            <span th:text="${board.bContent}"></span>
+            <p th:text="${board.bHashtag}" style="color:#52adff;"></p>
+          </section>
+          <div class="comments">
+            <div id="listComment" class="list_comment">
+              <p class="txt_comment"th:each="reply:${reply}">
+                <span>
+                  <a href="#n" class="txt_id" th:text="${reply.mUserid}">FollowerID</a>
+                  <span th:text="${reply.content}">Comment</span>
+                </span>
+              </p>
+            </div>
+            <form th:if="${session.login != null}" th:action="@{/replyProc}" id="post" method="post" class="post_comment">
+              <input type="hidden" name="bIdx" id="bIdx" th:value="${board.bIdx}"/>
+              <input type="hidden" name="mIdx" id="mIdx" th:value="${session.login.getMIdx}"/>
+              <textarea id="content" name="content" placeholder="댓글 달기..."></textarea>
+              <button id="btnPost" type="submit">등록</button>
+            </form>
+          </div>
+        </article>
       </div>
     </div>
   </div>
 </div>
+<script th:inline="javascript">
+    const likes = (boardID, loginID) => {
+      var form = {
+        likes_mIdx : loginID
+      };
+            $.ajax({
+			type: "post",
+			url: "/likes/" + boardID,
+			contentType: "application/json",
+            data: JSON.stringify(form),
+            success: function (result) {
+
+          },
+        });
+      }
+  </script>
 </body>
 </html>

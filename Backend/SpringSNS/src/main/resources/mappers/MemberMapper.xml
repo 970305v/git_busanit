@@ -14,9 +14,9 @@
       SELECT * FROM member WHERE mUserid = #{mUserid}
     </select>
     <select id="selectOne" resultType="com.example.demo.dto.MemberDto">
-        SELECT * FROM member WHERE mIdx = #{mIdx}
+      SELECT * FROM member WHERE mIdx = #{mIdx}
     </select>
     <update id="memberUp">
-        UPDATE member SET mName = #{dto.mName}, mProfilePath = #{dto.mProfilePath}, mPhoto = #{dto.mPhoto}, mInfo = #{dto.mInfo}, mUpdate = NOW() WHERE mIdx = #{idx}
+      UPDATE member SET mName = #{dto.mName}, mProfilePath = #{dto.mProfilePath}, mPhoto = #{dto.mPhoto}, mInfo = #{dto.mInfo}, mUpdate = NOW() WHERE mIdx = #{idx}
     </update>
 </mapper>

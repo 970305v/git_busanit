@@ -27,7 +27,6 @@
             <img class="round-img" th:if="${session.login == null}" th:src="@{/img/profile_no.png}"/>
             <img class="round-img" th:if="${session.login != null && session.login.getMProfilePath == null}"  th:src="@{/img/profile_no.png}"/>
             <img class="round-img" th:if="${session.login != null && session.login.getMProfilePath != null}" th:src="${session.login.getMProfilePath}"/>
-
           </a>
           <span class="my_id">
             <p th:if="${session.login != null}" th:text="${session.login.getMUserid()}" class="txt_id"></p>
@@ -70,18 +69,9 @@
           </section>
 
           <section class="feed_txt">
-            <a href="#n" class="txt_id"></a>
             <span th:text="${board.bContent}"></span>
           </section>
           <div class="comments">
-            <div id="listComment" class="list_comment">
-              <p class="txt_comment">
-                <span>
-                  <a href="#n" class="txt_id">FollowerID</a>
-                  <span>Comment</span>
-                </span>
-              </p>
-            </div>
             <form th:if="${session.login != null}" th:action="@{/replyProc}" id="post" method="post" class="post_comment">
               <input type="hidden" name="bIdx" id="bIdx" th:value="${board.bIdx}"/>
               <input type="hidden" name="mIdx" id="mIdx" th:value="${session.login.getMIdx}"/>

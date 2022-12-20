@@ -27,8 +27,8 @@ public class BoardDao implements BoardMapper
     }
 
     @Override
-    public List<BoardDto> boardDetail(Long idx) {
-        return boardMapper.selectOne(idx);
+    public List<Map> boardDetail(Long idx) {
+        return boardMapper.boardDetail(idx);
     }
 
     @Override
@@ -49,5 +49,10 @@ public class BoardDao implements BoardMapper
     @Override
     public int likes(LikesDto dto) {
         return boardMapper.likes(dto);
+    }
+
+    @Override
+    public int likesOne(Long idx) {
+        return boardMapper.likesOne(idx);
     }
 }
